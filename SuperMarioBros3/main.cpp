@@ -1,5 +1,8 @@
 #include <windows.h>
 
+#include <stdio.h> //VA_PRINT
+
+
 #define WINDOW_CLASS_NAME L"GameWindow"
 #define WINDOW_TITLE L"Super Mario Bros 3"
 #define WINDOW_ICON_PATH L"brick.ico" 
@@ -20,6 +23,30 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	return 0;
+}
+
+#define _W(x)  __W(x)
+#define __W(x)  L##x
+
+#define VA_PRINTS(s) {				\
+		va_list argp;				\
+		va_start(argp, fmt);		\
+		vswprintf_s(s, fmt, argp);	\
+		va_end(argp);				\
+}		
+
+void DebugOut(const wchar_t* fmt, ...)
+{
+	wchar_t s[4096];
+	VA_PRINTS(s);
+	OutputDebugString(s);
+}
+
+void DebugOutTitle(const wchar_t* fmt, ...)
+{
+	wchar_t s[1024];
+	VA_PRINTS(s);
+	SetWindowText(hWnd, s);
 }
 
 HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int ScreenHeight) {
@@ -57,7 +84,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	if (!hWnd)
 	{
 		DWORD ErrCode = GetLastError();
-		//DebugOut((wchar_t*)L"[ERROR] CreateWindow failed! ErrCode: %d\nAt: %s %d \n", ErrCode, _W(__FILE__), __LINE__);
+		DebugOut((wchar_t*)L"[ERROR] CreateWindow failed! ErrCode: %d\nAt: %s %d \n", ErrCode, _W(__FILE__), __LINE__);
 		return 0;
 	}
 
