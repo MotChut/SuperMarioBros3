@@ -21,6 +21,24 @@ ID3DX10Sprite* spriteObject = NULL;
 int BackBufferWidth = 0;
 int BackBufferHeight = 0;
 
+#define TEXTURE_PATH_BRICK L"brick.png"
+#define BRICK_START_X 8.0f
+#define BRICK_START_Y 200.0f
+
+#define BRICK_START_VX 0.2f
+
+#define BRICK_WIDTH 16.0f
+#define BRICK_HEIGHT 16.0f
+
+ID3D10Texture2D* texBrick = NULL;				// Texture object to store brick image
+ID3DX10Sprite* spriteObject = NULL;				// Sprite handling object 
+
+D3DX10_SPRITE spriteBrick;
+
+float brick_x = BRICK_START_X;
+float brick_vx = BRICK_START_VX;
+float brick_y = BRICK_START_Y;
+
 HWND hWnd = 0;
 
 //DEBUGGING
@@ -161,6 +179,75 @@ void InitDirectX(HWND hWnd)
 	return;
 }
 
+void LoadResources()
+{
+	ID3D10Resource* pD3D10Resource = NULL;
+
+	// Loads the texture into a temporary ID3D10Resource object
+	HRESULT hr = D3DX10CreateTextureFromFile(pD3DDevice,
+		TEXTURE_PATH_BRICK,
+		NULL,
+		NULL,
+		&pD3D10Resource,
+		NULL);
+
+	// Make sure the texture was loaded successfully
+	if (FAILED(hr))
+	{
+		DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s \n", TEXTURE_PATH_BRICK);
+		return;
+	}
+
+	// Translates the ID3D10Resource object into a ID3D10Texture2D object
+	pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&texBrick);
+	pD3D10Resource->Release();
+
+	if (!texBrick) {
+		DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
+		return;
+	}
+
+	// Get the texture details
+	D3D10_TEXTURE2D_DESC desc;
+	texBrick->GetDesc(&desc);
+
+	// Create a shader resource view of the texture
+	D3D10_SHADER_RESOURCE_VIEW_DESC SRVDesc;
+
+	// Clear out the shader resource view description structure
+	ZeroMemory(&SRVDesc, sizeof(SRVDesc));
+
+	// Set the texture format
+	SRVDesc.Format = desc.Format;
+	// Set the type of resource
+	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
+	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
+
+	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
+
+	pD3DDevice->CreateShaderResourceView(texBrick, &SRVDesc, &gSpriteTextureRV);
+
+	// Set the sprite’s shader resource view
+	spriteBrick.pTexture = gSpriteTextureRV;
+
+	// top-left location in U,V coords
+	spriteBrick.TexCoord.x = 0;
+	spriteBrick.TexCoord.y = 0;
+
+	// Determine the texture size in U,V coords
+	spriteBrick.TexSize.x = 1.0f;
+	spriteBrick.TexSize.y = 1.0f;
+
+	// Set the texture index. Single textures will use 0
+	spriteBrick.TextureIndex = 0;
+
+	// The color to apply to this sprite, full color applies white.
+	spriteBrick.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+
+
+	DebugOut((wchar_t*)L"[INFO] Texture loaded Ok: %s \n", TEXTURE_PATH_BRICK);
+}
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
@@ -225,6 +312,10 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	if (hWnd == 0) return 0;
 
 	InitDirectX(hWnd);
+
+	LoadResources();
+
+
 
 	return 0;
 }
