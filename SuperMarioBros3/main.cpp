@@ -13,10 +13,14 @@
 #define WINDOW_WIDTH 640
 #define WINDOW_HEIGHT 480
 
+#define BACKGROUND_COLOR D3DXCOLOR(0.2f, 0.2f, 0.2f, 0.2f)
+
+#define MAX_FRAME_RATE 100
+
 ID3D10Device* pD3DDevice = NULL;
 IDXGISwapChain* pSwapChain = NULL; 
 ID3D10RenderTargetView* pRenderTargetView = NULL;
-ID3DX10Sprite* spriteObject = NULL;
+
 
 int BackBufferWidth = 0;
 int BackBufferHeight = 0;
@@ -248,6 +252,55 @@ void LoadResources()
 	DebugOut((wchar_t*)L"[INFO] Texture loaded Ok: %s \n", TEXTURE_PATH_BRICK);
 }
 
+void Update(DWORD dt)
+{
+	//Uncomment the whole function to see the brick moves and bounces back when hitting left and right edges
+	//brick_x++;
+
+	brick_x += brick_vx * dt;
+
+	// NOTE: BackBufferWidth is indeed related to rendering!!
+	float right_edge = BackBufferWidth - BRICK_WIDTH;
+
+	if (brick_x < 0 || brick_x > right_edge) {
+		brick_vx = -brick_vx;
+	}
+}
+
+void Render()
+{
+	if (pD3DDevice != NULL)
+	{
+		// clear the target buffer
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+
+		// start drawing the sprites
+		spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE);
+
+		// The translation matrix to be created
+		D3DXMATRIX matTranslation;
+		// Create the translation matrix
+		D3DXMatrixTranslation(&matTranslation, brick_x, (BackBufferHeight - brick_y), 0.1f);
+
+		// Scale the sprite to its correct width and height
+		D3DXMATRIX matScaling;
+		D3DXMatrixScaling(&matScaling, BRICK_WIDTH, BRICK_HEIGHT, 1.0f);
+
+		// Setting the sprite’s position and size
+		spriteBrick.matWorld = (matScaling * matTranslation);
+
+		spriteObject->DrawSpritesImmediate(&spriteBrick, 1, 0, 0);
+
+		// Finish up and send the sprites to the hardware
+		spriteObject->End();
+
+		//DebugOutTitle((wchar_t*)L"%s (%0.1f,%0.1f) v:%0.1f", WINDOW_TITLE, brick_x, brick_y, brick_vx);
+
+		// display the next item in the swap chain
+		pSwapChain->Present(0, 0);
+	}
+}
+
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	switch (message) {
@@ -306,6 +359,42 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	return hWnd;
 }
 
+int Run()
+{
+	MSG msg;
+	int done = 0;
+	ULONGLONG frameStart = GetTickCount64();
+	ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
+
+	while (!done)
+	{
+		if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE))
+		{
+			if (msg.message == WM_QUIT) done = 1;
+
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+
+		ULONGLONG now = GetTickCount64();
+
+		// dt: the time between (beginning of last frame) and now
+		// this frame: the frame we are about to render
+		ULONGLONG dt = now - frameStart;
+
+		if (dt >= tickPerFrame)
+		{
+			frameStart = now;
+			Update((DWORD)dt);
+			Render();
+		}
+		else
+			Sleep((DWORD)(tickPerFrame - dt));
+	}
+
+	return 1;
+}
+
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 	hWnd = CreateGameWindow(hInstance, nCmdShow, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -315,7 +404,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	LoadResources();
 
-
+	Run();
 
 	return 0;
 }
