@@ -15,7 +15,7 @@
 
 #define BACKGROUND_COLOR D3DXCOLOR(0.2f, 0.2f, 0.2f, 0.2f)
 
-#define MAX_FRAME_RATE 100
+#define MAX_FRAME_RATE 120
 
 ID3D10Device* pD3DDevice = NULL;
 IDXGISwapChain* pSwapChain = NULL; 
@@ -395,6 +395,33 @@ int Run()
 	return 1;
 }
 
+void Cleanup()
+{
+	// release the rendertarget
+	if (pRenderTargetView)
+	{
+		pRenderTargetView->Release();
+	}
+	// release the swapchain
+	if (pSwapChain)
+	{
+		pSwapChain->Release();
+	}
+	// release the D3D Device
+	if (pD3DDevice)
+	{
+		pD3DDevice->Release();
+	}
+
+	if (spriteObject)
+	{
+		spriteObject->Release();
+		spriteObject = NULL;
+	}
+
+	DebugOut((wchar_t*)L"[INFO] Cleanup Ok\n");
+}
+
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
 	hWnd = CreateGameWindow(hInstance, nCmdShow, WINDOW_WIDTH, WINDOW_HEIGHT);
 
@@ -405,6 +432,8 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	LoadResources();
 
 	Run();
+
+	Cleanup();
 
 	return 0;
 }
