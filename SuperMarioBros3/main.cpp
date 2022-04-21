@@ -6,6 +6,7 @@
 #include <stdio.h> //VA_PRINT
 
 
+//Window Structures
 #define WINDOW_CLASS_NAME L"GameWindow"
 #define WINDOW_TITLE L"Super Mario Bros 3"
 #define WINDOW_ICON_PATH L"brick.ico" 
@@ -17,6 +18,7 @@
 
 #define MAX_FRAME_RATE 120
 
+//Objects stuff
 ID3D10Device* pD3DDevice = NULL;
 IDXGISwapChain* pSwapChain = NULL; 
 ID3D10RenderTargetView* pRenderTargetView = NULL;
@@ -25,6 +27,7 @@ ID3D10RenderTargetView* pRenderTargetView = NULL;
 int BackBufferWidth = 0;
 int BackBufferHeight = 0;
 
+//Game Texture
 #define TEXTURE_PATH_BRICK L"brick.png"
 #define BRICK_START_X 8.0f
 #define BRICK_START_Y 200.0f
@@ -34,6 +37,8 @@ int BackBufferHeight = 0;
 #define BRICK_WIDTH 16.0f
 #define BRICK_HEIGHT 16.0f
 
+
+//Sprites:
 ID3D10Texture2D* texBrick = NULL;				// Texture object to store brick image
 ID3DX10Sprite* spriteObject = NULL;				// Sprite handling object 
 
@@ -43,7 +48,7 @@ float brick_x = BRICK_START_X;
 float brick_vx = BRICK_START_VX;
 float brick_y = BRICK_START_Y;
 
-HWND hWnd = 0;
+HWND hWnd = 0; // Window Handler
 
 //DEBUGGING
 //##################################################
@@ -74,7 +79,9 @@ void DebugOutTitle(const wchar_t* fmt, ...)
 
 void InitDirectX(HWND hWnd)
 {
-	// retrieve client area width & height so that we can create backbuffer height & width accordingly 
+	//CREATE DEVICE AND SWAP CHAIN
+	//-------------------------------------------------------------------------------------------------
+	// Retrieve client area width & height so that we can create backbuffer height & width accordingly 
 	RECT r;
 	GetClientRect(hWnd, &r);
 
@@ -101,6 +108,11 @@ void InitDirectX(HWND hWnd)
 	swapChainDesc.OutputWindow = hWnd;
 	swapChainDesc.Windowed = TRUE;
 
+
+	// HRESULT is 32-bit value used to describe an error or warning
+	// Attach function to HRESULT should help us to examine if the code runs properly
+	 
+	
 	// Create the D3D device and the swap chain
 	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL, //video adapter - optional
 		D3D10_DRIVER_TYPE_REFERENCE, //Driver type
@@ -111,7 +123,7 @@ void InitDirectX(HWND hWnd)
 		&pSwapChain,
 		&pD3DDevice);
 
-	if (hr != S_OK)
+	if (hr != S_OK) 
 	{
 		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
 		return;
@@ -126,6 +138,9 @@ void InitDirectX(HWND hWnd)
 		return;
 	}
 
+	//-------------------------------------------------------------------------------------------------
+	//CREATE AND SET RENDER TARGET VIEW TO THE DEVICE
+	//-------------------------------------------------------------------------------------------------
 	// create the render target view
 	hr = pD3DDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
 
@@ -151,8 +166,9 @@ void InitDirectX(HWND hWnd)
 	viewPort.TopLeftX = 0;
 	viewPort.TopLeftY = 0;
 	pD3DDevice->RSSetViewports(1, &viewPort);
-
-
+	//-------------------------------------------------------------------------------------------------
+	//CREATE AND SET RENDER TARGET VIEW TO THE DEVICE
+	//-------------------------------------------------------------------------------------------------
 	// create the sprite object to handle sprite drawing 
 	hr = D3DX10CreateSprite(pD3DDevice, 0, &spriteObject);
 
