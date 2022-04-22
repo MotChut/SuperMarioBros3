@@ -21,4 +21,3 @@ void SetDebugWindow(HWND hwnd)
 {
 	_hwnd = hwnd;
 }
-//////////////////////////////////////////
