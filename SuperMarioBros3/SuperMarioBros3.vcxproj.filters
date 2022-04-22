@@ -75,9 +75,6 @@
     <ClCompile Include="Mario.cpp">
       <Filter>Game Framework\Characters\Mario</Filter>
     </ClCompile>
-    <ClCompile Include="Brick.cpp">
-      <Filter>Game Framework\Characters\Brick</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
