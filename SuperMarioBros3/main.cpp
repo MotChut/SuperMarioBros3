@@ -1,11 +1,11 @@
 #include <windows.h>
-
 #include <d3d10.h>
 #include <d3dx10.h>
-
-#include <stdio.h> //VA_PRINT
+#include <vector>
 
 #include "Debug.h"
+#include "Game.h"
+#include "GameObject.h"
 
 
 //Window Structures
@@ -13,282 +13,100 @@
 #define WINDOW_TITLE L"Super Mario Bros 3"
 #define WINDOW_ICON_PATH L"brick.ico" 
 
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 480
-
-#define BACKGROUND_COLOR D3DXCOLOR(0.2f, 0.2f, 0.2f, 0.2f)
-
-#define MAX_FRAME_RATE 120
-
-//Objects stuff
-ID3D10Device* pD3DDevice = NULL;
-IDXGISwapChain* pSwapChain = NULL; 
-ID3D10RenderTargetView* pRenderTargetView = NULL;
-
-
-int BackBufferWidth = 0;
-int BackBufferHeight = 0;
-
-//Game Texture
 #define TEXTURE_PATH_BRICK L"brick.png"
-#define BRICK_START_X 8.0f
-#define BRICK_START_Y 200.0f
+#define TEXTURE_PATH_MARIO L"mario.png"
 
-#define BRICK_START_VX 0.2f
+#define TEXTURE_PATH_MISC L"misc.png"
 
-#define BRICK_WIDTH 16.0f
-#define BRICK_HEIGHT 16.0f
-
-
-//Sprites:
-ID3D10Texture2D* texBrick = NULL;				// Texture object to store brick image
-ID3DX10Sprite* spriteObject = NULL;				// Sprite handling object 
-
-D3DX10_SPRITE spriteBrick;
-
-float brick_x = BRICK_START_X;
-float brick_vx = BRICK_START_VX;
-float brick_y = BRICK_START_Y;
-
-HWND hWnd = 0; // Window Handler
+#define BACKGROUND_COLOR D3DXCOLOR(0.5f, 0.5f, 0.5f, 0.0f)
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 240
 
 
-void InitDirectX(HWND hWnd)
-{
-	//CREATE DEVICE AND SWAP CHAIN
-	//-------------------------------------------------------------------------------------------------
-	// Retrieve client area width & height so that we can create backbuffer height & width accordingly 
-	RECT r;
-	GetClientRect(hWnd, &r);
+using namespace std;
 
-	BackBufferWidth = r.right + 1;
-	BackBufferHeight = r.bottom + 1;
+CMario* mario;
+#define MARIO_START_X 10.0f
+#define MARIO_START_Y 100.0f
+#define MARIO_START_VX 0.1f
+#define MARIO_START_VY 0.1f
 
 
-	// Create & clear the DXGI_SWAP_CHAIN_DESC structure
-	DXGI_SWAP_CHAIN_DESC swapChainDesc;
-	ZeroMemory(&swapChainDesc, sizeof(swapChainDesc));
+CBrick* brick;
+#define BRICK_X 10.0f
+#define BRICK_Y 120.0f
 
-	// Fill in the needed values
-	swapChainDesc.BufferDesc.Width = BackBufferWidth;
-	swapChainDesc.BufferDesc.Height = BackBufferHeight;
-	swapChainDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	swapChainDesc.BufferDesc.RefreshRate.Numerator = 60;
-	swapChainDesc.BufferDesc.RefreshRate.Denominator = 1;
+LPTEXTURE texMario = NULL;
+LPTEXTURE texBrick = NULL;
+LPTEXTURE texMisc = NULL;
 
-	swapChainDesc.SampleDesc.Count = 1;
-	swapChainDesc.SampleDesc.Quality = 0;
-
-	swapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	swapChainDesc.BufferCount = 1;
-	swapChainDesc.OutputWindow = hWnd;
-	swapChainDesc.Windowed = TRUE;
-
-
-	// HRESULT is 32-bit value used to describe an error or warning
-	// Attach function to HRESULT should help us to examine if the code runs properly
-	 
-	
-	// Create the D3D device and the swap chain
-	HRESULT hr = D3D10CreateDeviceAndSwapChain(NULL, //video adapter - optional
-		D3D10_DRIVER_TYPE_REFERENCE, //Driver type
-		NULL,	//Software
-		0,	//Flags
-		D3D10_SDK_VERSION, //*pFeatureLevels
-		&swapChainDesc, 
-		&pSwapChain,
-		&pD3DDevice);
-
-	if (hr != S_OK) 
-	{
-		DebugOut((wchar_t*)L"[ERROR] D3D10CreateDeviceAndSwapChain has failed %s %d", _W(__FILE__), __LINE__);
-		return;
-	}
-
-	// Get the back buffer from the swapchain
-	ID3D10Texture2D* pBackBuffer;
-	hr = pSwapChain->GetBuffer(0, __uuidof(ID3D10Texture2D), (LPVOID*)&pBackBuffer);
-	if (hr != S_OK)
-	{
-		DebugOut((wchar_t*)L"[ERROR] pSwapChain->GetBuffer has failed %s %d", _W(__FILE__), __LINE__);
-		return;
-	}
-
-	//-------------------------------------------------------------------------------------------------
-	//CREATE AND SET RENDER TARGET VIEW TO THE DEVICE
-	//-------------------------------------------------------------------------------------------------
-	// create the render target view
-	hr = pD3DDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
-
-	// release the back buffer
-	pBackBuffer->Release();
-
-	// Make sure the render target view was created successfully
-	if (hr != S_OK)
-	{
-		DebugOut((wchar_t*)L"[ERROR] CreateRenderTargetView has failed %s %d", _W(__FILE__), __LINE__);
-		return;
-	}
-
-	// set the render target
-	pD3DDevice->OMSetRenderTargets(1, &pRenderTargetView, NULL);
-
-	// create and set the viewport
-	D3D10_VIEWPORT viewPort;
-	viewPort.Width = BackBufferWidth;
-	viewPort.Height = BackBufferHeight;
-	viewPort.MinDepth = 0.0f;
-	viewPort.MaxDepth = 1.0f;
-	viewPort.TopLeftX = 0;
-	viewPort.TopLeftY = 0;
-	pD3DDevice->RSSetViewports(1, &viewPort);
-	//-------------------------------------------------------------------------------------------------
-	//CREATE AND SET RENDER TARGET VIEW TO THE DEVICE
-	//-------------------------------------------------------------------------------------------------
-	// create the sprite object to handle sprite drawing 
-	hr = D3DX10CreateSprite(pD3DDevice, 0, &spriteObject);
-
-	// Make sure the sprite creation was successful
-	if (hr != S_OK)
-	{
-		DebugOut((wchar_t*)L"[ERROR] D3DX10CreateSprite has failed %s %d", _W(__FILE__), __LINE__);
-		return;
-	}
-
-	D3DXMATRIX matProjection;
-
-	// Create the projection matrix using the values in the viewport
-	D3DXMatrixOrthoOffCenterLH(&matProjection,
-		(float)viewPort.TopLeftX,
-		(float)viewPort.Width,
-		(float)viewPort.TopLeftY,
-		(float)viewPort.Height,
-		0.1f,
-		10);
-	hr = spriteObject->SetProjectionTransform(&matProjection);
-
-
-
-
-	DebugOut((wchar_t*)L"[INFO] InitDirectX has been successful\n");
-
-	return;
-}
 
 void LoadResources()
 {
-	ID3D10Resource* pD3D10Resource = NULL;
+	CGame* game = CGame::GetInstance();
+	texBrick = game->LoadTexture(TEXTURE_PATH_BRICK);
+	texMario = game->LoadTexture(TEXTURE_PATH_MARIO);
+	texMisc = game->LoadTexture(TEXTURE_PATH_MISC);
 
-	// Loads the texture into a temporary ID3D10Resource object
-	HRESULT hr = D3DX10CreateTextureFromFile(pD3DDevice,
-		TEXTURE_PATH_BRICK,
-		NULL,
-		NULL,
-		&pD3D10Resource,
-		NULL);
-
-	// Make sure the texture was loaded successfully
-	if (FAILED(hr))
-	{
-		DebugOut((wchar_t*)L"[ERROR] Failed to load texture file: %s \n", TEXTURE_PATH_BRICK);
-		return;
-	}
-
-	// Translates the ID3D10Resource object into a ID3D10Texture2D object
-	pD3D10Resource->QueryInterface(__uuidof(ID3D10Texture2D), (LPVOID*)&texBrick);
-	pD3D10Resource->Release();
-
-	if (!texBrick) {
-		DebugOut((wchar_t*)L"[ERROR] Failed to convert from ID3D10Resource to ID3D10Texture2D \n");
-		return;
-	}
-
-	// Get the texture details
-	D3D10_TEXTURE2D_DESC desc;
-	texBrick->GetDesc(&desc);
-
-	// Create a shader resource view of the texture
-	D3D10_SHADER_RESOURCE_VIEW_DESC SRVDesc;
-
-	// Clear out the shader resource view description structure
-	ZeroMemory(&SRVDesc, sizeof(SRVDesc));
-
-	// Set the texture format
-	SRVDesc.Format = desc.Format;
-	// Set the type of resource
-	SRVDesc.ViewDimension = D3D10_SRV_DIMENSION_TEXTURE2D;
-	SRVDesc.Texture2D.MipLevels = desc.MipLevels;
-
-	ID3D10ShaderResourceView* gSpriteTextureRV = NULL;
-
-	pD3DDevice->CreateShaderResourceView(texBrick, &SRVDesc, &gSpriteTextureRV);
-
-	// Set the sprite’s shader resource view
-	spriteBrick.pTexture = gSpriteTextureRV;
-
-	// top-left location in U,V coords
-	spriteBrick.TexCoord.x = 0;
-	spriteBrick.TexCoord.y = 0;
-
-	// Determine the texture size in U,V coords
-	spriteBrick.TexSize.x = 1.0f;
-	spriteBrick.TexSize.y = 1.0f;
-
-	// Set the texture index. Single textures will use 0
-	spriteBrick.TextureIndex = 0;
-
-	// The color to apply to this sprite, full color applies white.
-	spriteBrick.ColorModulate = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	mario = new CMario(MARIO_START_X, MARIO_START_Y, MARIO_START_VX, MARIO_START_VY, texMario);
+	brick = new CBrick(BRICK_X, BRICK_Y, texBrick);
 
 
-	DebugOut((wchar_t*)L"[INFO] Texture loaded Ok: %s \n", TEXTURE_PATH_BRICK);
+	// objects.push_back(mario);
+	// for(i)		 
+	//		objects.push_back(new CGameObject(BRICK_X+i*BRICK_WIDTH,....);
+	//
+
+	//
+	// int x = BRICK_X;
+	// for(i)
+	//		... new CGameObject(x,.... 
+	//		x+=BRICK_WIDTH;
 }
 
 void Update(DWORD dt)
 {
-	//Uncomment the whole function to see the brick moves and bounces back when hitting left and right edges
-	//brick_x++;
+	/*
+	for (int i=0;i<n;i++)
+		objects[i]->Update(dt);
+	*/
 
-	brick_x += brick_vx * dt;
+	//mario->Update(dt);
+	//brick->Update(dt);
 
-	// NOTE: BackBufferWidth is indeed related to rendering!!
-	float right_edge = BackBufferWidth - BRICK_WIDTH;
-
-	if (brick_x < 0 || brick_x > right_edge) {
-		brick_vx = -brick_vx;
-	}
+	//DebugOutTitle(L"01 - Skeleton %0.1f, %0.1f", mario->GetX(), mario->GetY());
 }
 
 void Render()
 {
+	CGame* g = CGame::GetInstance();
+
+	ID3D10Device* pD3DDevice = g->GetDirect3DDevice();
+	IDXGISwapChain* pSwapChain = g->GetSwapChain();
+	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
+	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
+
 	if (pD3DDevice != NULL)
 	{
-		// clear the target buffer
+		// clear the background 
 		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
 
-		// start drawing the sprites
-		spriteObject->Begin(D3DX10_SPRITE_SORT_TEXTURE);
+		spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 
-		// The translation matrix to be created
-		D3DXMATRIX matTranslation;
-		// Create the translation matrix
-		D3DXMatrixTranslation(&matTranslation, brick_x, (BackBufferHeight - brick_y), 0.1f);
+		// Use Alpha blending for transparent sprites
+		FLOAT NewBlendFactor[4] = { 0,0,0,0 };
+		pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-		// Scale the sprite to its correct width and height
-		D3DXMATRIX matScaling;
-		D3DXMatrixScaling(&matScaling, BRICK_WIDTH, BRICK_HEIGHT, 1.0f);
+		//brick->Render();
+		//mario->Render();
 
-		// Setting the sprite’s position and size
-		spriteBrick.matWorld = (matScaling * matTranslation);
+		// Uncomment this line to see how to draw a porttion of a texture  
+		//g->Draw(10, 10, texMisc, 300, 117, 317, 134);
 
-		spriteObject->DrawSpritesImmediate(&spriteBrick, 1, 0, 0);
+		g->Draw(10, 10, texMario, 215, 120, 234, 137);
 
-		// Finish up and send the sprites to the hardware
-		spriteObject->End();
 
-		//DebugOutTitle((wchar_t*)L"%s (%0.1f,%0.1f) v:%0.1f", WINDOW_TITLE, brick_x, brick_y, brick_vx);
-
-		// display the next item in the swap chain
+		spriteHandler->End();
 		pSwapChain->Present(0, 0);
 	}
 }
@@ -308,13 +126,14 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int ScreenHeight) {
 	WNDCLASSEX wc;
-
 	wc.cbSize = sizeof(WNDCLASSEX);
+
 	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.hInstance = hInstance;
+
 	wc.lpfnWndProc = (WNDPROC)WinProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hInstance = hInstance;
 	wc.hIcon = (HICON)LoadImage(hInstance, WINDOW_ICON_PATH, IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
@@ -341,12 +160,14 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	if (!hWnd)
 	{
 		DWORD ErrCode = GetLastError();
-		DebugOut((wchar_t*)L"[ERROR] CreateWindow failed! ErrCode: %d\nAt: %s %d \n", ErrCode, _W(__FILE__), __LINE__);
+		DebugOut(L"[ERROR] CreateWindow failed! ErrCode: %d\nAt: %s %d \n", ErrCode, _W(__FILE__), __LINE__);
 		return 0;
 	}
 
 	ShowWindow(hWnd, nCmdShow);
 	UpdateWindow(hWnd);
+
+	SetDebugWindow(hWnd);
 
 	return hWnd;
 }
@@ -387,45 +208,18 @@ int Run()
 	return 1;
 }
 
-void Cleanup()
-{
-	// release the rendertarget
-	if (pRenderTargetView)
-	{
-		pRenderTargetView->Release();
-	}
-	// release the swapchain
-	if (pSwapChain)
-	{
-		pSwapChain->Release();
-	}
-	// release the D3D Device
-	if (pD3DDevice)
-	{
-		pD3DDevice->Release();
-	}
-
-	if (spriteObject)
-	{
-		spriteObject->Release();
-		spriteObject = NULL;
-	}
-
-	DebugOut((wchar_t*)L"[INFO] Cleanup Ok\n");
-}
-
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nCmdShow) {
-	hWnd = CreateGameWindow(hInstance, nCmdShow, WINDOW_WIDTH, WINDOW_HEIGHT);
+	HWND hWnd = CreateGameWindow(hInstance, nCmdShow, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-	if (hWnd == 0) return 0;
+	CGame* game = CGame::GetInstance();
+	game->Init(hWnd);
 
-	InitDirectX(hWnd);
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+
 
 	LoadResources();
 
 	Run();
-
-	Cleanup();
 
 	return 0;
 }
