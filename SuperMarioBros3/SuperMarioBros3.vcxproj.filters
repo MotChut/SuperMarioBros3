@@ -22,6 +22,9 @@
     <Filter Include="Game Framework\Texture">
       <UniqueIdentifier>{38c98c51-ec29-401e-8f78-3e5bc5201b58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Framework\GameObject">
+      <UniqueIdentifier>{e90f2c0f-033e-4a26-abbc-ef97683dd1a1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -33,6 +36,12 @@
     <ClCompile Include="Debug.cpp">
       <Filter>Game Framework\Debug</Filter>
     </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Game Framework\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Game Framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -42,6 +51,9 @@
       <Filter>Game Framework\Texture</Filter>
     </ClInclude>
     <ClInclude Include="GameObject.h">
+      <Filter>Game Framework\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
       <Filter>Game Framework</Filter>
     </ClInclude>
   </ItemGroup>
