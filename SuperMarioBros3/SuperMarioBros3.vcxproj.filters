@@ -28,6 +28,18 @@
     <Filter Include="Game Framework\Sprite">
       <UniqueIdentifier>{f8f13a18-2ecb-4acb-9922-ac4098cc854d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Framework\Animation">
+      <UniqueIdentifier>{cd8ace4c-431c-4e95-b4c9-2d6bd344ae69}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\Characters">
+      <UniqueIdentifier>{7dacd802-8573-42a5-ba39-a57c87d9ac0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\Characters\Mario">
+      <UniqueIdentifier>{239748de-73f2-48f2-b768-a6a7834a6029}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\Characters\Brick">
+      <UniqueIdentifier>{160f6e3b-f69c-4a97-b7bd-b4375bdcbf0a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -51,6 +63,21 @@
     <ClCompile Include="Sprite.cpp">
       <Filter>Game Framework\Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="Sprites.cpp">
+      <Filter>Game Framework\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="Animation.cpp">
+      <Filter>Game Framework\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Animations.cpp">
+      <Filter>Game Framework\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="Mario.cpp">
+      <Filter>Game Framework\Characters\Mario</Filter>
+    </ClCompile>
+    <ClCompile Include="Brick.cpp">
+      <Filter>Game Framework\Characters\Brick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -73,6 +100,21 @@
     </ClInclude>
     <ClInclude Include="Sprites.h">
       <Filter>Game Framework\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationFrame.h">
+      <Filter>Game Framework\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Game Framework\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Animations.h">
+      <Filter>Game Framework\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="Mario.h">
+      <Filter>Game Framework\Characters\Mario</Filter>
+    </ClInclude>
+    <ClInclude Include="Brick.h">
+      <Filter>Game Framework\Characters\Brick</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
