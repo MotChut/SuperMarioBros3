@@ -5,6 +5,8 @@
 
 #include <stdio.h> //VA_PRINT
 
+#include "Debug.h"
+
 
 //Window Structures
 #define WINDOW_CLASS_NAME L"GameWindow"
