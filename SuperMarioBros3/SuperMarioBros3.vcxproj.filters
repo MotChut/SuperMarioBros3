@@ -25,6 +25,9 @@
     <Filter Include="Game Framework\GameObject">
       <UniqueIdentifier>{e90f2c0f-033e-4a26-abbc-ef97683dd1a1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Framework\Sprite">
+      <UniqueIdentifier>{f8f13a18-2ecb-4acb-9922-ac4098cc854d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -42,6 +45,12 @@
     <ClCompile Include="Game.cpp">
       <Filter>Game Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Game Framework\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Game Framework\Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -55,6 +64,15 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>Game Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Game Framework\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Game Framework\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Sprites.h">
+      <Filter>Game Framework\Sprite</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
