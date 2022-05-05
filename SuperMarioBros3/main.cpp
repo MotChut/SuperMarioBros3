@@ -1,52 +1,56 @@
+/* =============================================================
+	INTRODUCTION TO GAME PROGRAMMING SE102
+	
+	SAMPLE 05 - SCENE MANAGER
+
+	This sample illustrates how to:
+
+		1/ Read scene (textures, sprites, animations and objects) from files 
+		2/ Handle multiple scenes in game
+
+	Key classes/functions:
+		CScene
+		CPlayScene		
+
+
+HOW TO INSTALL Microsoft.DXSDK.D3DX
+===================================
+1) Tools > NuGet package manager > Package Manager Console
+2) execute command :  Install-Package Microsoft.DXSDK.D3DX
+
+
+================================================================ */
+
 #include <windows.h>
+#include <d3d10.h>
+#include <d3dx10.h>
+#include <list>
 
 #include "debug.h"
 #include "Game.h"
 #include "GameObject.h"
 #include "Textures.h"
-
 #include "Animation.h"
 #include "Animations.h"
-#include "Sprite.h"
-#include "Sprites.h"
 
 #include "Mario.h"
 #include "Brick.h"
+#include "Goomba.h"
+#include "Coin.h"
+#include "Platform.h"
 
-#include "GameKeyEventHandler.h"
+#include "SampleKeyEventHandler.h"
 
+#include "AssetIDs.h"
 
-#define WINDOW_CLASS_NAME L"GameWindow"
-#define MAIN_WINDOW_TITLE L"Super Mario Bros 3"
+#define WINDOW_CLASS_NAME L"SampleWindow"
+#define MAIN_WINDOW_TITLE L"04 - Collision"
 #define WINDOW_ICON_PATH L"mario.ico"
 
-#define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255,0.0f)
+#define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
+
 #define SCREEN_WIDTH 320
 #define SCREEN_HEIGHT 240
-
-#define ID_TEX_MARIO 0
-#define ID_TEX_ENEMY 10
-#define ID_TEX_MISC 20
-#define ID_SPRITE_BRICK 20001
-
-#define TEXTURES_DIR L"Textures"
-#define TEXTURE_PATH_MARIO TEXTURES_DIR "\\mario.png"
-#define TEXTURE_PATH_MISC TEXTURES_DIR "\\misc.png"
-#define TEXTURE_PATH_ENEMIES TEXTURES_DIR "\\enemies.png"
-
-#define MARIO_START_X 200.0f
-#define MARIO_START_Y 10.0f
-#define MARIO_START_VX 0.1f
-
-#define BRICK_X 0.0f
-#define BRICK_Y GROUND_Y + 20.0f
-#define NUM_BRICKS 50
-
-CMario* mario = NULL;
-
-CSampleKeyHandler* keyHandler;
-
-vector<LPGAMEOBJECT> objects;
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -62,153 +66,17 @@ LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 /*
-	Load all game resources
-	In this example: load textures, sprites, animations and mario object
-*/
-void LoadResources()
-{
-	CTextures* textures = CTextures::GetInstance();
-
-	textures->Add(ID_TEX_MARIO, TEXTURE_PATH_MARIO);
-	textures->Add(ID_TEX_MISC, TEXTURE_PATH_MISC);
-
-	CSprites* sprites = CSprites::GetInstance();
-	CAnimations* animations = CAnimations::GetInstance();
-
-	LPTEXTURE texMario = textures->Get(ID_TEX_MARIO);
-
-	sprites->Add(10001, 246, 154, 260, 181, texMario);
-
-	sprites->Add(10002, 275, 154, 290, 181, texMario);
-	sprites->Add(10003, 304, 154, 321, 181, texMario);
-
-	sprites->Add(10011, 186, 154, 200, 181, texMario);
-
-	sprites->Add(10012, 155, 154, 170, 181, texMario);
-	sprites->Add(10013, 125, 154, 140, 181, texMario);
-
-	// RUNNING RIGHT 
-	sprites->Add(10021, 335, 154, 335 + 18, 154 + 26, texMario);
-	sprites->Add(10022, 363, 154, 363 + 18, 154 + 26, texMario);
-	sprites->Add(10023, 393, 154, 393 + 18, 154 + 26, texMario);
-
-	// RUNNING LEFT
-	sprites->Add(10031, 92, 154, 92 + 18, 154 + 26, texMario);
-	sprites->Add(10032, 66, 154, 66 + 18, 154 + 26, texMario);
-	sprites->Add(10033, 35, 154, 35 + 18, 154 + 26, texMario);
-
-	// JUMP WALK RIGHT & LEFT 
-	sprites->Add(10041, 395, 275, 395 + 16, 275 + 25, texMario);
-	sprites->Add(10042, 35, 275, 35 + 16, 275 + 25, texMario);
-
-	// JUMP RUN RIGHT & LEFT 
-	sprites->Add(10043, 395, 195, 395 + 18, 195 + 25, texMario);
-	sprites->Add(10044, 33, 195, 33 + 18, 195 + 25, texMario);
-
-	// SIT RIGHT/LEFT
-	sprites->Add(10051, 426, 239, 426 + 14, 239 + 17, texMario);
-	sprites->Add(10052, 5, 239, 5 + 14, 239 + 17, texMario);
-
-	// BRACING RIGHT/LEFT
-	sprites->Add(10061, 425, 154, 425 + 15, 154 + 27, texMario);
-	sprites->Add(10062, 5, 154, 5 + 15, 154 + 27, texMario);
-
-	LPANIMATION ani;
-
-	ani = new CAnimation(100);
-	ani->Add(10001);
-	animations->Add(ID_ANI_MARIO_IDLE_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10011);
-	animations->Add(ID_ANI_MARIO_IDLE_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10001);
-	ani->Add(10002);
-	ani->Add(10003);
-	animations->Add(ID_ANI_MARIO_WALKING_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10011);
-	ani->Add(10012);
-	ani->Add(10013);
-	animations->Add(ID_ANI_MARIO_WALKING_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10021);
-	ani->Add(10022);
-	ani->Add(10023);
-	animations->Add(ID_ANI_MARIO_RUNNING_RIGHT, ani);
-
-	ani = new CAnimation(50);	// Mario runs faster hence animation speed should be faster
-	ani->Add(10031);
-	ani->Add(10032);
-	ani->Add(10033);
-	animations->Add(ID_ANI_MARIO_RUNNING_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10041);
-	animations->Add(ID_ANI_MARIO_JUMP_WALK_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10042);
-	animations->Add(ID_ANI_MARIO_JUMP_WALK_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10043);
-	animations->Add(ID_ANI_MARIO_JUMP_RUN_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10044);
-	animations->Add(ID_ANI_MARIO_JUMP_RUN_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10051);
-	animations->Add(ID_ANI_MARIO_SIT_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10052);
-	animations->Add(ID_ANI_MARIO_SIT_LEFT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10061);
-	animations->Add(ID_ANI_MARIO_BRACE_RIGHT, ani);
-
-	ani = new CAnimation(100);
-	ani->Add(10062);
-	animations->Add(ID_ANI_MARIO_BRACE_LEFT, ani);
-
-	mario = new CMario(MARIO_START_X, MARIO_START_Y);
-	objects.push_back(mario);
-
-	// Brick objects 
-	LPTEXTURE texMisc = textures->Get(ID_TEX_MISC);
-	sprites->Add(ID_SPRITE_BRICK, 372, 153, 372 + 15, 153 + 15, texMisc);
-
-	ani = new CAnimation(100);
-	ani->Add(ID_SPRITE_BRICK);
-	animations->Add(ID_ANI_BRICK, ani);
-
-	for (int i = 0; i < NUM_BRICKS; i++)
-	{
-		CBrick* b = new CBrick(BRICK_X + i * BRICK_WIDTH, BRICK_Y);
-		objects.push_back(b);
-	}
-}
-
-/*
 	Update world status for this frame
 	dt: time period between beginning of last frame and beginning of this frame
 */
 void Update(DWORD dt)
 {
-	for (int i = 0; i < (int)objects.size(); i++)
-	{
-		objects[i]->Update(dt);
-	}
+	CGame::GetInstance()->GetCurrentScene()->Update(dt);
 }
 
+/*
+	Render a frame 
+*/
 void Render()
 {
 	CGame* g = CGame::GetInstance();
@@ -225,10 +93,7 @@ void Render()
 	FLOAT NewBlendFactor[4] = { 0,0,0,0 };
 	pD3DDevice->OMSetBlendState(g->GetAlphaBlending(), NewBlendFactor, 0xffffffff);
 
-	for (int i = 0; i < (int)objects.size(); i++)
-	{
-		objects[i]->Render();
-	}
+	CGame::GetInstance()->GetCurrentScene()->Render();
 
 	spriteHandler->End();
 	pSwapChain->Present(0, 0);
@@ -245,7 +110,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 	wc.lpfnWndProc = (WNDPROC)WinProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hIcon = (HICON)LoadImage(hInstance, WINDOW_ICON_PATH, IMAGE_ICON, 0, 0, LR_LOADFROMFILE);;
+	wc.hIcon = (HICON)LoadImage(hInstance, WINDOW_ICON_PATH, IMAGE_ICON, 0, 0, LR_LOADFROMFILE);
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH);
 	wc.lpszMenuName = NULL;
@@ -268,7 +133,7 @@ HWND CreateGameWindow(HINSTANCE hInstance, int nCmdShow, int ScreenWidth, int Sc
 			hInstance,
 			NULL);
 
-	if (!hWnd)
+	if (!hWnd) 
 	{
 		OutputDebugString(L"[ERROR] CreateWindow failed");
 		DWORD ErrCode = GetLastError();
@@ -286,7 +151,7 @@ int Run()
 	MSG msg;
 	int done = 0;
 	ULONGLONG frameStart = GetTickCount64();
-	ULONGLONG tickPerFrame = 1000 / MAX_FRAME_RATE;
+	DWORD tickPerFrame = 1000 / MAX_FRAME_RATE;
 
 	while (!done)
 	{
@@ -302,17 +167,20 @@ int Run()
 
 		// dt: the time between (beginning of last frame) and now
 		// this frame: the frame we are about to render
-		ULONGLONG dt = now - frameStart;
+		DWORD dt = (DWORD)(now - frameStart);
 
 		if (dt >= tickPerFrame)
 		{
 			frameStart = now;
-			Update((DWORD)dt);
-			CGame::GetInstance()->ProcessKeyboard();
+
+			CGame::GetInstance()->ProcessKeyboard();			
+			Update(dt);
 			Render();
+
+			CGame::GetInstance()->SwitchScene();
 		}
 		else
-			Sleep((DWORD)(tickPerFrame - dt));
+			Sleep(tickPerFrame - dt);	
 	}
 
 	return 1;
@@ -328,15 +196,15 @@ int WINAPI WinMain(
 
 	SetDebugWindow(hWnd);
 
-	CGame* game = CGame::GetInstance();
+	LPGAME game = CGame::GetInstance();
 	game->Init(hWnd, hInstance);
+	game->InitKeyboard();
 
-	keyHandler = new CSampleKeyHandler();
-	game->InitKeyboard(keyHandler);
 
-	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH * 2, SCREEN_HEIGHT * 2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
+	//IMPORTANT: this is the only place where a hardcoded file name is allowed ! 
+	game->Load(L"mario-sample.txt");  
 
-	LoadResources();
+	SetWindowPos(hWnd, 0, 0, 0, SCREEN_WIDTH*2, SCREEN_HEIGHT*2, SWP_NOMOVE | SWP_NOOWNERZORDER | SWP_NOZORDER);
 
 	Run();
 
