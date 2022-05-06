@@ -55,6 +55,15 @@
     <Filter Include="Game Framework\Utils">
       <UniqueIdentifier>{1085143f-5029-48a6-a4fb-48402c7eef57}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game Framework\TinyXML">
+      <UniqueIdentifier>{ddc349ce-5b01-433c-8c38-ecc2db33603e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\Map">
+      <UniqueIdentifier>{85536942-e84c-4d14-a603-f6726291e122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\Map\MapParser">
+      <UniqueIdentifier>{285defca-8461-4059-b5fd-96a615d0b652}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -119,6 +128,21 @@
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Game Framework\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="tinystr.cpp">
+      <Filter>Game Framework\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxml.cpp">
+      <Filter>Game Framework\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlerror.cpp">
+      <Filter>Game Framework\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="tinyxmlparser.cpp">
+      <Filter>Game Framework\TinyXML</Filter>
+    </ClCompile>
+    <ClCompile Include="MapParser.cpp">
+      <Filter>Game Framework\Map\MapParser</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -190,6 +214,15 @@
     </ClInclude>
     <ClInclude Include="Utils.h">
       <Filter>Game Framework\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="tinystr.h">
+      <Filter>Game Framework\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml.h">
+      <Filter>Game Framework\TinyXML</Filter>
+    </ClInclude>
+    <ClInclude Include="MapParser.h">
+      <Filter>Game Framework\Map\MapParser</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
