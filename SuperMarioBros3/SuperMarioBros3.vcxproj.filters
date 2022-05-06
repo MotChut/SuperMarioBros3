@@ -235,6 +235,7 @@
     <Text Include="brick.txt" />
     <Text Include="cloud.txt" />
     <Text Include="coin.txt" />
+    <Text Include="mario - Copy.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="mario.ico">
@@ -255,13 +256,13 @@
     <Image Include="Assets Resources\enemies.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Assets Resources\mario.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Assets Resources\misc.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Assets Resources\Small_Mario.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Assets Resources\mario.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
