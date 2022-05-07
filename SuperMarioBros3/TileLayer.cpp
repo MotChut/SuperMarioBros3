@@ -1,7 +1,6 @@
 #include "TileLayer.h"
 
-TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, TilesetList tilesets) {
-	m_TileSize = tilesize;
+TileLayer::TileLayer(int tilesize, int rowcount, int colcount, TileMap tilemap, TilesetList tilesets) : (m_TileSets (tilesize) {
 	m_RowCount = rowcount;
 	m_ColCount = colcount;
 	m_Tilemap = tilemap;
