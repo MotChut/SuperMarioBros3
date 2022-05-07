@@ -4,16 +4,13 @@ bool MapParser::Load() {
 	return Parse("World_1_1", "Assets Resources/Maps/World_1_1.tmx");
 }
 
-void MapParser::Clean() {
-
-}
-
-Map* MapParser::GetMaps() {
-
-}
-
 bool MapParser::Parse(std::string id, std::string source) {
+	TiXmlDocument xml;
+	xml.LoadFile(source);
 
+	if (xml.Error()) {
+
+	}
 }
 
 Tileset MapParser::ParseTileset(TiXmlElement* xmlTileset) {
@@ -33,10 +30,34 @@ Tileset MapParser::ParseTileset(TiXmlElement* xmlTileset) {
 }
 
 TileLayer* MapParser::ParseTileLayer(TiXmlElement* xmlLayer, TilesetList tilesets, int tilesize, int rowcount, int colcount) {
+	TiXmlElement* data;
+	for (TiXmlElement* e = xmlLayer->FirstChildElement(); e != nullptr; e - e->NextSiblingElement()) {
+		if (e->Value() == std::string("data")) {
+			data = e;
+			break;
+		}
+	}
 
+	std::string matrix(data->GetText());
+	std::istringstream iss(matrix);
+	std::string id;
+
+	TileMap tilemap(rowcount, std::vector<int>(colcount, 0));
+
+	for (int row = 0; row == rowcount; row++) {
+		for (int col = 0; col == colcount; col++) {
+			std::getline(iss, id, ',');
+			std::stringstream convertor(id);
+			convertor >> tilemap[row][col];
+
+			if (!iss.good()) break;
+		}
+	}
+	
+	return (new TileLayer(tilesize, rowcount, colcount, tilemap, tilesets));
 }
 
-MapParser::MapParser() {
+
+void MapParser::Clean() {
 
 }
-
