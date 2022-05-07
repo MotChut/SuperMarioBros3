@@ -4,6 +4,7 @@
 #include <sstream>
 #include "Map.h"
 #include "TileLayer.h"
+#include "Debug.h"
 #include "tinyxml.h"
 
 
@@ -13,7 +14,7 @@ public:
 	bool Load();
 	void Clean();
 
-	inline Map* GetMaps() { return m_MapDict; };
+	inline std::map<std::string, Map*> GetMaps() { return m_MapDict; };
 	inline static MapParser* GetInstance() { return s_Instance = (s_Instance != nullptr) ? s_Instance : new MapParser(); }
 
 private: 

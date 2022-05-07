@@ -6,11 +6,36 @@ bool MapParser::Load() {
 
 bool MapParser::Parse(std::string id, std::string source) {
 	TiXmlDocument xml;
-	xml.LoadFile(source);
+	xml.LoadFile(source.c_str());
 
 	if (xml.Error()) {
-
+		DebugOut(L"Fail to load map");
 	}
+
+	TiXmlElement* root = xml.RootElement();
+
+	int rowcount, colcount, tilesize = 0;
+
+	root->Attribute("width", &colcount);
+	root->Attribute("height", &rowcount);
+	root->Attribute("tilewidth", &tilesize);
+
+	TilesetList tilesets;
+	for (TiXmlElement* e = root->FirstChildElement(); e != nullptr; e - e->NextSiblingElement()) {
+		if (e->Value() == std::string("tileset")) {
+			tilesets.push_back(ParseTileset(e));
+		}
+	}
+
+	Map* gamemap = new Map();
+	for (TiXmlElement* e = root->FirstChildElement(); e != nullptr; e - e->NextSiblingElement()) {
+		TileLayer* tilelayer = ParseTileLayer(e, tilesets, tilesize, rowcount, colcount);
+		gamemap->GetMapLayers().push_back(tilelayer);
+	}
+
+	m_MapDict[id] = gamemap;
+	
+	return true;
 }
 
 Tileset MapParser::ParseTileset(TiXmlElement* xmlTileset) {
@@ -30,7 +55,7 @@ Tileset MapParser::ParseTileset(TiXmlElement* xmlTileset) {
 }
 
 TileLayer* MapParser::ParseTileLayer(TiXmlElement* xmlLayer, TilesetList tilesets, int tilesize, int rowcount, int colcount) {
-	TiXmlElement* data;
+	TiXmlElement* data = NULL;
 	for (TiXmlElement* e = xmlLayer->FirstChildElement(); e != nullptr; e - e->NextSiblingElement()) {
 		if (e->Value() == std::string("data")) {
 			data = e;
