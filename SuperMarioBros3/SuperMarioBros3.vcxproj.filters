@@ -58,11 +58,20 @@
     <Filter Include="Game Framework\TinyXML">
       <UniqueIdentifier>{ddc349ce-5b01-433c-8c38-ecc2db33603e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Framework\Map">
+    <Filter Include="Game Framework\MapHandler">
       <UniqueIdentifier>{85536942-e84c-4d14-a603-f6726291e122}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Framework\Map\MapParser">
+    <Filter Include="Game Framework\MapHandler\MapParser">
       <UniqueIdentifier>{285defca-8461-4059-b5fd-96a615d0b652}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\MapHandler\Layer">
+      <UniqueIdentifier>{062d4a05-55ef-4ca9-a9d2-dbcbedff706d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\MapHandler\Map">
+      <UniqueIdentifier>{75f8558d-cf36-4257-93cc-61ecb4892240}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game Framework\MapHandler\TileLayer">
+      <UniqueIdentifier>{62dbc17e-101a-47cb-85f9-d454c9c11af5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -142,7 +151,16 @@
       <Filter>Game Framework\TinyXML</Filter>
     </ClCompile>
     <ClCompile Include="MapParser.cpp">
-      <Filter>Game Framework\Map\MapParser</Filter>
+      <Filter>Game Framework\MapHandler\MapParser</Filter>
+    </ClCompile>
+    <ClCompile Include="Layer.cpp">
+      <Filter>Game Framework\MapHandler\Layer</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game Framework\MapHandler\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="TileLayer.cpp">
+      <Filter>Game Framework\MapHandler\TileLayer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -222,7 +240,16 @@
       <Filter>Game Framework\TinyXML</Filter>
     </ClInclude>
     <ClInclude Include="MapParser.h">
-      <Filter>Game Framework\Map\MapParser</Filter>
+      <Filter>Game Framework\MapHandler\MapParser</Filter>
+    </ClInclude>
+    <ClInclude Include="Layer.h">
+      <Filter>Game Framework\MapHandler\Layer</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game Framework\MapHandler\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="TileLayer.h">
+      <Filter>Game Framework\MapHandler\TileLayer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
