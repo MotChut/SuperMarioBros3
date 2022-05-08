@@ -123,6 +123,9 @@
     <ClCompile Include="Utils.cpp">
       <Filter>Game Framework\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="GameMap.cpp">
+      <Filter>Game Framework\MapHandler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -196,6 +199,9 @@
     </ClInclude>
     <ClInclude Include="Resources.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GameMap.h">
+      <Filter>Game Framework\MapHandler</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

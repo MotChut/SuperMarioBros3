@@ -4,18 +4,15 @@
 #include <d3dx10.h>
 #include <unordered_map>
 
+#include "Resources.h"
 using namespace std;
 
-#define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
 #include "Texture.h"
 #include "KeyEventHandler.h"
 #include "Scene.h"
 
-#define MAX_FRAME_RATE 100
-#define KEYBOARD_BUFFER_SIZE 1024
-#define KEYBOARD_STATE_SIZE 256
 
 
 
