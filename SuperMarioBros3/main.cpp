@@ -1,26 +1,3 @@
-/* =============================================================
-	INTRODUCTION TO GAME PROGRAMMING SE102
-	
-	SAMPLE 05 - SCENE MANAGER
-
-	This sample illustrates how to:
-
-		1/ Read scene (textures, sprites, animations and objects) from files 
-		2/ Handle multiple scenes in game
-
-	Key classes/functions:
-		CScene
-		CPlayScene		
-
-
-HOW TO INSTALL Microsoft.DXSDK.D3DX
-===================================
-1) Tools > NuGet package manager > Package Manager Console
-2) execute command :  Install-Package Microsoft.DXSDK.D3DX
-
-
-================================================================ */
-
 #include <windows.h>
 #include <d3d10.h>
 #include <d3dx10.h>
@@ -42,15 +19,7 @@ HOW TO INSTALL Microsoft.DXSDK.D3DX
 #include "SampleKeyEventHandler.h"
 
 #include "AssetIDs.h"
-
-#define WINDOW_CLASS_NAME L"MarioGame"
-#define MAIN_WINDOW_TITLE L"Super Mario Bros 3"
-#define WINDOW_ICON_PATH L"mario.ico"
-
-#define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
-
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 240
+#include "Resources.h"
 
 LRESULT CALLBACK WinProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {

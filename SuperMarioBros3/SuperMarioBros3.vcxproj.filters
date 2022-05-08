@@ -5,10 +5,6 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Game Framework">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -55,11 +51,12 @@
     <Filter Include="Game Framework\Utils">
       <UniqueIdentifier>{1085143f-5029-48a6-a4fb-48402c7eef57}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game Framework\TinyXML">
-      <UniqueIdentifier>{ddc349ce-5b01-433c-8c38-ecc2db33603e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game Framework\MapHandler">
       <UniqueIdentifier>{85536942-e84c-4d14-a603-f6726291e122}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -125,18 +122,6 @@
     </ClCompile>
     <ClCompile Include="Utils.cpp">
       <Filter>Game Framework\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="tinystr.cpp">
-      <Filter>Game Framework\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml.cpp">
-      <Filter>Game Framework\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxmlerror.cpp">
-      <Filter>Game Framework\TinyXML</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxmlparser.cpp">
-      <Filter>Game Framework\TinyXML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -209,11 +194,8 @@
     <ClInclude Include="Utils.h">
       <Filter>Game Framework\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="tinystr.h">
-      <Filter>Game Framework\TinyXML</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml.h">
-      <Filter>Game Framework\TinyXML</Filter>
+    <ClInclude Include="Resources.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -230,31 +212,31 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="mario.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="brick.ico">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\bbox.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\Big_Mario.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\brick.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\enemies.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\misc.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\Small_Mario.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
     <Image Include="Assets Resources\mario.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Assets Resources</Filter>
     </Image>
   </ItemGroup>
 </Project>
