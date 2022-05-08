@@ -13,7 +13,8 @@ private:
 
 public:
 	Tiles();
-	~Tiles();
+	~Tiles(); 
+
 	void AddTile(int left, int top, int height, int width);
 	void ClearTileset();
 	int GetWidth() { return tileWidth; };

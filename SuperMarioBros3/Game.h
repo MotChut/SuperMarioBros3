@@ -13,12 +13,6 @@ using namespace std;
 #include "KeyEventHandler.h"
 #include "Scene.h"
 
-
-
-
-/*
-	Our simple game framework
-*/
 class CGame
 {
 	static CGame* __instance;

@@ -1,14 +1,24 @@
 #pragma once
-#include "GameObject.h"
+#include <unordered_map>
+#include "Tiles.h"
 
 class GameMap
 {
+	int column;
+	int row;
+	int mapArr[300][300];
+	LPTILES tiles;
+	LPCWSTR filePath;
 public:
-	GameMap();
+	GameMap(LPCWSTR filePath);
 	~GameMap();
 
-	void LoadMap(std::string path, int sizeX, int sizeY);
-
-private:
-
+	void AddTiles(LPTILES tiles);
+	LPTILES GetTiles();
+	void LoadMap();
+	void DrawMap();
+	void ClearMap();
+	int GetColumn() { return this->column; };
 };
+typedef GameMap* LPMAP;
+

@@ -1,7 +1,12 @@
 #include "Tile.h"
 #include "game.h"
 
-Tile::Tile() {}
+Tile::Tile() {
+	left = 0;
+	top = 0;
+	height = 0;
+	width = 0;
+}
 
 Tile::Tile(int left, int top, int height, int width, LPTEXTURE texture) {
 	this->left = left;
