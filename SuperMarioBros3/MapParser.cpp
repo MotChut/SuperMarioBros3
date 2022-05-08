@@ -30,7 +30,7 @@ bool MapParser::Parse(std::string id, std::string source) {
 	Map* gamemap = new Map();
 	for (TiXmlElement* e = root->FirstChildElement(); e != nullptr; e - e->NextSiblingElement()) {
 		TileLayer* tilelayer = ParseTileLayer(e, tilesets, tilesize, rowcount, colcount);
-		gamemap->GetMapLayers().push_back(tilelayer);
+		gamemap->m_MapLayers.push_back(tilelayer);
 	}
 
 	m_MapDict[id] = gamemap;
