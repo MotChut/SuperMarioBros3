@@ -33,6 +33,9 @@ public:
 	virtual void Render();
 	virtual void Unload();
 
+	static void AddTile(int id, int x, int y);
+
+
 	LPGAMEOBJECT GetPlayer() { return player; }
 
 	void Clear();

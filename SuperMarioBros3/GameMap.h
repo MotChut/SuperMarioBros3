@@ -3,17 +3,12 @@
 
 class GameMap
 {
-public: 
+public:
 	GameMap();
 	~GameMap();
 
-	void LoadMap(int arr[][10]);
-	void DrawMap();
+	void LoadMap(std::string path, int sizeX, int sizeY);
 
 private:
-	RECT src, dest;
 
-	CGameObject* obj;
-
-	int map[10][10];
 };

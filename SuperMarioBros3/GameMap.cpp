@@ -1,48 +1,33 @@
 #include "GameMap.h"
 #include "Brick.h"
-
-int lvl1[10][10] = {
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
-};
+#include "PlayScene.h"
+#include <fstream>
 
 GameMap::GameMap() 
 { 
-	LoadMap(lvl1);
+	
 }
 
-void GameMap::LoadMap(int arr[10][10])
+GameMap::~GameMap()
 {
-	for (int row = 0; row < 10; row++)
-	{
-		for (int col = 0; col < 10; col++)
-		{
-			map[row][col] = arr[row][col];
-		}
-	}
+
 }
 
-void GameMap::DrawMap()
+void GameMap::LoadMap(std::string path, int sizeX, int sizeY)
 {
-	int posx, posy;
-	int size = 16;
+	char tile;
+	std::fstream mapFile;
+	mapFile.open(path);
 
-	for (int row = 0; row < 10; row++)
+	for (int y = 0; y < sizeY; y++)
 	{
-		for (int col = 0; col < 10; col++)
+		for (int x = 0; x < sizeX; x++)
 		{
-			posx = col * size;
-			posy = row * size;
-
-			obj = new CBrick(posx, posy);
+			mapFile.get(tile);
+			CPlayScene::AddTile(atoi(&tile), x * 16, y * 16);
+			mapFile.ignore();
 		}
 	}
+
+	mapFile.close();
 }

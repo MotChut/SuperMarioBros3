@@ -10,6 +10,8 @@
 #include "Coin.h"
 #include "Platform.h"
 
+#include "GameMap.h"
+
 #include "SampleKeyEventHandler.h"
 
 using namespace std;
@@ -243,7 +245,7 @@ void CPlayScene::Update(DWORD dt)
 	}
 
 	//Test Map
-
+	
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
@@ -324,4 +326,9 @@ void CPlayScene::PurgeDeletedObjects()
 	objects.erase(
 		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
+}
+
+void CPlayScene::AddTile(int id, int x, int y)
+{
+	
 }
