@@ -22,7 +22,7 @@ LPTILES GameMap::GetTiles() {
 
 void GameMap::LoadMap() {
 
-	DebugOut(L"[INFO] Start loading MAAPPPPPPPP resources from : %s \n", this->filePath);
+	DebugOut(L"Load map from: %s \n", this->filePath);
 
 	ifstream f;
 	f.open(this->filePath);
@@ -32,6 +32,7 @@ void GameMap::LoadMap() {
 			f >> this->mapArr[i][j];
 		}
 	}
+	f.close();
 }
 
 void GameMap::DrawMap() {
@@ -56,11 +57,13 @@ void GameMap::DrawMap() {
 
 	vector<LPTILE> tileset = tiles->GetTiles();
 
-	for (int i = startRow; i < endRow; i++) {
-		for (int j = startColumn; j < endColumn; j++) {
+	for (int i = 0; i < 300; i++) {
+		for (int j = 0; j < 290; j++) {
 			int index = this->mapArr[i][j];
-			if (index != 0) {
-				tileset[index - 1]->Draw((j * frameWidth), (i)*frameHeight);
+			if (index == 6) {
+				DebugOut(L"Load map from: %s \n", "6");
+
+				tileset[index]->Draw(j * frameWidth, i * frameHeight);
 			}
 		}
 	}

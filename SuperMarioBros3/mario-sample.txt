@@ -13,7 +13,8 @@ height	240
 
 # id	file 
 [TEXTURES]
--100	Assets Resources\bbox.png
-0	Assets Resources\mario.png
-10	Assets Resources\enemies.png
-20	Assets Resources\misc.png
+-100	Resources\bbox.png
+0	Resources\mario.png
+10	Resources\enemies.png
+20	Resources\misc.png
+30 Resources\Maps\World_1_1.png

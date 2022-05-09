@@ -4,11 +4,11 @@
 
 class GameMap
 {
-	int column;
-	int row;
-	int mapArr[300][300];
-	LPTILES tiles;
-	LPCWSTR filePath;
+	int column = 0;
+	int row = 0;
+	int mapArr[300][300] = {};
+	LPTILES tiles = NULL;
+	LPCWSTR filePath = NULL;
 public:
 	GameMap(LPCWSTR filePath);
 	~GameMap();

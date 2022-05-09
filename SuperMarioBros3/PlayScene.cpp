@@ -10,7 +10,9 @@
 #include "Coin.h"
 #include "Platform.h"
 
-#include "GameMap.h"
+#include "GameMaps.h"
+
+#include "Resources.h"
 
 #include "SampleKeyEventHandler.h"
 
@@ -27,6 +29,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 #define SCENE_SECTION_UNKNOWN -1
 #define SCENE_SECTION_ASSETS	1
 #define SCENE_SECTION_OBJECTS	2
+#define SCENE_MAP_OBJECTS 3
 
 #define ASSETS_SECTION_UNKNOWN -1
 #define ASSETS_SECTION_SPRITES 1
@@ -163,6 +166,30 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	objects.push_back(obj);
 }
 
+void CPlayScene::_ParseSection_MAPS(string line) {
+	// Read file
+	DebugOut(L"Loading Map: %d\n", line);
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 4) return; // Skip line without enough infomation.
+
+	this->id = atoi(tokens[0].c_str());
+	wstring mapPath = ToWSTR(tokens[1]);
+	wstring configPath = ToWSTR(tokens[2]);
+	wstring tilesetPath = ToWSTR(tokens[3]);
+
+	GameMaps* maps = GameMaps::GetInstance();
+	maps->AddMap(1, mapPath.c_str());
+
+	Tiles* tileset = new Tiles();
+	tileset->LoadTileset(configPath.c_str(), tilesetPath.c_str());
+
+	maps->GetMap(1)->AddTiles(tileset);
+	maps->LoadMap(1);
+	maps->RenderMap(1);
+}
+
+
 void CPlayScene::LoadAssets(LPCWSTR assetFile)
 {
 	DebugOut(L"[INFO] Start loading assets from : %s \n", assetFile);
@@ -198,9 +225,11 @@ void CPlayScene::LoadAssets(LPCWSTR assetFile)
 	DebugOut(L"[INFO] Done loading assets from %s\n", assetFile);
 }
 
+//Note from Kiet: This function will read the txt file that contains all of the information for each section
 void CPlayScene::Load()
 {
 	DebugOut(L"[INFO] Start loading scene from : %s \n", sceneFilePath);
+	
 
 	ifstream f;
 	f.open(sceneFilePath);
@@ -216,6 +245,7 @@ void CPlayScene::Load()
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
 		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
+		if (line == "[MAPS]") { section = SCENE_MAP_OBJECTS; continue; }
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -225,6 +255,7 @@ void CPlayScene::Load()
 		{ 
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
 			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
+			case SCENE_MAP_OBJECTS: _ParseSection_MAPS(line); break;
 		}
 	}
 

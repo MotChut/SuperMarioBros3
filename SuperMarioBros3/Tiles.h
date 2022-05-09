@@ -16,6 +16,7 @@ public:
 	~Tiles(); 
 
 	void AddTile(int left, int top, int height, int width);
+	void LoadTileset(LPCWSTR config, LPCWSTR tileset);
 	void ClearTileset();
 	int GetWidth() { return tileWidth; };
 	int GetHeight() { return tileHeight; };

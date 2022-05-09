@@ -1,0 +1,2 @@
+[Map]
+1	Resources\Maps\World_1_1_BackLayer	Resources\Maps\TilesetConfig_1_1.txt	Resources\Maps\World_1_1.png	

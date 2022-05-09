@@ -211,15 +211,15 @@
     <Text Include="scene02.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="Assets Resources\bbox.png" />
-    <Image Include="Assets Resources\Big_Mario.png" />
-    <Image Include="Assets Resources\brick.png" />
-    <Image Include="Assets Resources\enemies.png" />
-    <Image Include="Assets Resources\mario.png" />
-    <Image Include="Assets Resources\misc.png" />
-    <Image Include="Assets Resources\Small_Mario.png" />
-    <Image Include="brick.ico" />
-    <Image Include="mario.ico" />
+    <Image Include="Resources\bbox.png" />
+    <Image Include="Resources\Big_Mario.png" />
+    <Image Include="Resources\brick.png" />
+    <Image Include="Resources\enemies.png" />
+    <Image Include="Resources\mario - Copy.png" />
+    <Image Include="Resources\mario.png" />
+    <Image Include="Resources\mario2.png" />
+    <Image Include="Resources\misc.png" />
+    <Image Include="Resources\Small_Mario.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

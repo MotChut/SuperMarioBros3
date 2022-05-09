@@ -54,10 +54,6 @@
     <Filter Include="Game Framework\MapHandler">
       <UniqueIdentifier>{85536942-e84c-4d14-a603-f6726291e122}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assets Resources">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
     <Filter Include="Game Framework\MapHandler\GameMap">
       <UniqueIdentifier>{9e23c9ed-1142-4cf0-8268-761325b84938}</UniqueIdentifier>
     </Filter>
@@ -69,6 +65,10 @@
     </Filter>
     <Filter Include="Game Framework\MapHandler\Tiles">
       <UniqueIdentifier>{c6e4b9e7-087c-491b-bce8-170475058d1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -247,32 +247,32 @@
     <Text Include="mario - Copy.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="mario.ico">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\bbox.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="brick.ico">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\Big_Mario.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\bbox.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\brick.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\Big_Mario.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\enemies.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\brick.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\mario - Copy.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\enemies.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\mario.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\misc.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\mario2.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\Small_Mario.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\misc.png">
+      <Filter>Resources</Filter>
     </Image>
-    <Image Include="Assets Resources\mario.png">
-      <Filter>Assets Resources</Filter>
+    <Image Include="Resources\Small_Mario.png">
+      <Filter>Resources</Filter>
     </Image>
   </ItemGroup>
 </Project>
