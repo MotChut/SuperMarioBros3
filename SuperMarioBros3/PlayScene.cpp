@@ -82,7 +82,7 @@ void CPlayScene::_ParseSection_ANIMATIONS(string line)
 	LPANIMATION ani = new CAnimation();
 
 	int ani_id = atoi(tokens[0].c_str());
-	for (int i = 1; i < tokens.size(); i += 2)	// why i+=2 ?  sprite_id | frame_time  
+	for (int i = 1; i < signed(tokens.size()); i += 2)	// why i+=2 ?  sprite_id | frame_time  
 	{
 		int sprite_id = atoi(tokens[i].c_str());
 		int frame_time = atoi(tokens[i+1].c_str());
@@ -168,7 +168,6 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 void CPlayScene::_ParseSection_MAPS(string line) {
 	// Read file
-	DebugOut(L"Loading Map: %d\n", line);
 	vector<string> tokens = split(line);
 
 	if (tokens.size() < 4) return; // Skip line without enough infomation.
@@ -179,14 +178,14 @@ void CPlayScene::_ParseSection_MAPS(string line) {
 	wstring tilesetPath = ToWSTR(tokens[3]);
 
 	GameMaps* maps = GameMaps::GetInstance();
-	maps->AddMap(1, mapPath.c_str());
+	maps->AddMap(this->id, mapPath.c_str());
 
 	Tiles* tileset = new Tiles();
 	tileset->LoadTileset(configPath.c_str(), tilesetPath.c_str());
 
-	maps->GetMap(1)->AddTiles(tileset);
-	maps->LoadMap(1);
-	maps->RenderMap(1);
+	maps->GetMap(this->id)->AddTiles(tileset);
+	maps->LoadMap(this->id);
+	maps->RenderMap(this->id);
 }
 
 
@@ -244,8 +243,8 @@ void CPlayScene::Load()
 
 		if (line[0] == '#') continue;	// skip comment lines	
 		if (line == "[ASSETS]") { section = SCENE_SECTION_ASSETS; continue; };
-		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line == "[MAPS]") { section = SCENE_MAP_OBJECTS; continue; }
+		if (line == "[OBJECTS]") { section = SCENE_SECTION_OBJECTS; continue; };
 		if (line[0] == '[') { section = SCENE_SECTION_UNKNOWN; continue; }	
 
 		//
@@ -303,7 +302,7 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < signed(objects.size()); i++)
 		objects[i]->Render();
 }
 
@@ -328,7 +327,7 @@ void CPlayScene::Clear()
 */
 void CPlayScene::Unload()
 {
-	for (int i = 0; i < objects.size(); i++)
+	for (int i = 0; i < signed(objects.size()); i++)
 		delete objects[i];
 
 	objects.clear();

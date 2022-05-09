@@ -5,6 +5,7 @@
 #include "Tile.h"
 #include "Game.h"
 #include "Resources.h"
+#include<string>  
 
 GameMap::GameMap(LPCWSTR filePath) {
 	this->filePath = filePath;
@@ -26,7 +27,9 @@ void GameMap::LoadMap() {
 
 	ifstream f;
 	f.open(this->filePath);
+	DebugOut(L"[INFO] NUMBERS!!! : %s \n", this->filePath);
 	f >> this->row >> this->column;
+	
 	for (int i = 0; i < this->row; i++) {
 		for (int j = 0; j < this->column; j++) {
 			f >> this->mapArr[i][j];
@@ -36,34 +39,17 @@ void GameMap::LoadMap() {
 }
 
 void GameMap::DrawMap() {
-	CGame* game = CGame::GetInstance();
-
-	float cam_x, cam_y;
-	game->GetCamPos(cam_x, cam_y);
-
-
-	int screenHeight = SCREEN_WIDTH;
-	int screenWidth = SCREEN_HEIGHT;
-
 	int frameWidth = tiles->GetWidth();
 	int frameHeight = tiles->GetHeight();
 
-	int startRow = cam_y / frameHeight;
-	int endRow = (cam_y + screenHeight) / frameHeight + 1;
-
-	int startColumn = cam_x / frameWidth;
-
-	int endColumn = (cam_x + screenWidth) / frameWidth + 1;
-
+	
 	vector<LPTILE> tileset = tiles->GetTiles();
 
-	for (int i = 0; i < 300; i++) {
-		for (int j = 0; j < 290; j++) {
+	for (int i = 0; i < this->row; i++) {
+		for (int j = 0; j < this->column; j++) {
 			int index = this->mapArr[i][j];
-			if (index == 6) {
-				DebugOut(L"Load map from: %s \n", "6");
-
-				tileset[index]->Draw(j * frameWidth, i * frameHeight);
+			if (index != -1) {
+				tileset[index]->Draw((float) j * frameWidth, (float) i * frameHeight);
 			}
 		}
 	}

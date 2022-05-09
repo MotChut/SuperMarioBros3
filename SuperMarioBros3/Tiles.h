@@ -8,7 +8,7 @@ private:
 	int tileHeight;
 	int tileWidth;
 	static Tiles* __instance;
-
+	LPTEXTURE texture;
 	vector<LPTILE> tiles;
 
 public:

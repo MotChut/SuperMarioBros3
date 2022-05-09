@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Debug.h"
 Tile::Tile() {
+	texture = NULL;
 	left = 0;
 	top = 0;
 	height = 0;
@@ -20,7 +21,6 @@ Tile::~Tile() {}
 
 void Tile::Draw(float x, float y) {
 	CGame* game = CGame::GetInstance();
-	DebugOut(L"[INFO] Start loading assets from : %s \n", "a");
 	game->Draw(x, y, texture, left, top, left + this->width, top + this->height);
 }
 
