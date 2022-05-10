@@ -27,7 +27,7 @@ void GameMap::LoadMap() {
 
 	ifstream f;
 	f.open(this->filePath);
-	DebugOut(L"[INFO] NUMBERS!!! : %s \n", this->filePath);
+
 	f >> this->row >> this->column;
 	
 	for (int i = 0; i < this->row; i++) {

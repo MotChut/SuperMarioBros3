@@ -189,6 +189,8 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha, int s
 		sprite.TexSize.x = 1.0f;
 		sprite.TexSize.y = 1.0f;
 
+		//DebugOut(L"Draw from: %i %i \n", tex->getWidth(), tex->getHeight());
+
 		if (spriteWidth==0) spriteWidth = tex->getWidth();
 		if (spriteHeight==0) spriteHeight = tex->getHeight();
 	}
@@ -228,7 +230,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha, int s
 
 	// Setting the sprite’s position and size
 	sprite.matWorld = (matScaling * matTranslation);
-
+	
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 

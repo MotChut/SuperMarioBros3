@@ -4,15 +4,16 @@
 #include "Mario.h"
 #include "Game.h"
 #include "PlayScene.h"
-#include "Debug.h"
 
 class Camera
 {
-	float cam_x = .0f;
-	float cam_y = .0f;
-	float cam_x_speed = 0.09f;
-	float CAM_X_END_SCENE = .0f;
 	static Camera* __instance;
+
+	float cam_x = 0.0f;
+	float cam_y = 0.0f;
+	float cam_x_speed = 0.09f;
+	float CAM_X_END_SCENE = 0.0f;
+	
 	bool canChangeCamY = false;
 	bool isAutoMovingCamera = false;
 	DWORD timeStartMoving = 0;

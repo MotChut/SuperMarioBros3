@@ -357,8 +357,3 @@ void CPlayScene::PurgeDeletedObjects()
 		std::remove_if(objects.begin(), objects.end(), CPlayScene::IsGameObjectDeleted),
 		objects.end());
 }
-
-void CPlayScene::AddTile(int id, int x, int y)
-{
-	
-}

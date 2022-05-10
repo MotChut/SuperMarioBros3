@@ -146,6 +146,7 @@
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Animations.cpp" />
     <ClCompile Include="Brick.cpp" />
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Debug.cpp" />

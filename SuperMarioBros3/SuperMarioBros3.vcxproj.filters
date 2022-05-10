@@ -150,6 +150,9 @@
     <ClCompile Include="GameMaps.cpp">
       <Filter>Game Framework\MapHandler\GameMaps</Filter>
     </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>Game Framework\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
