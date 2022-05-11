@@ -14,7 +14,7 @@ Goomba.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 10 = Tiles
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO

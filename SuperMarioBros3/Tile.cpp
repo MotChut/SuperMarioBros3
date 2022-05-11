@@ -21,6 +21,12 @@ Tile::~Tile() {}
 
 void Tile::Draw(float x, float y) {
 	CGame* game = CGame::GetInstance();
+	/*RECT rect;
+	rect.left = left;
+	rect.top = top;
+	rect.right = left + this->width;
+	rect.bottom = top + this->height;
+	game->Draw(x, y, texture, &rect, 1.0f, this->width, this->height);*/
 	game->Draw(x, y, texture, left, top, left + this->width, top + this->height);
 }
 

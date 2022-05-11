@@ -18,6 +18,8 @@
 
 using namespace std;
 
+GameMaps* maps = GameMaps::GetInstance();
+
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
@@ -121,6 +123,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
+	//case OBJECT_TYPE_TILES: obj = new Tile(x, y); break;
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
@@ -177,15 +180,16 @@ void CPlayScene::_ParseSection_MAPS(string line) {
 	wstring configPath = ToWSTR(tokens[2]);
 	wstring tilesetPath = ToWSTR(tokens[3]);
 
-	GameMaps* maps = GameMaps::GetInstance();
 	maps->AddMap(this->id, mapPath.c_str());
 
 	Tiles* tileset = new Tiles();
 	tileset->LoadTileset(configPath.c_str(), tilesetPath.c_str());
-
+	
 	maps->GetMap(this->id)->AddTiles(tileset);
+	//if (maps->GetMap(this->id)->GetTiles() == NULL)
+	
 	maps->LoadMap(this->id);
-	maps->RenderMap(this->id);
+	//maps->RenderMap(this->id);
 }
 
 
@@ -253,8 +257,8 @@ void CPlayScene::Load()
 		switch (section)
 		{ 
 			case SCENE_SECTION_ASSETS: _ParseSection_ASSETS(line); break;
-			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 			case SCENE_MAP_OBJECTS: _ParseSection_MAPS(line); break;
+			case SCENE_SECTION_OBJECTS: _ParseSection_OBJECTS(line); break;
 		}
 	}
 
@@ -302,6 +306,9 @@ void CPlayScene::Update(DWORD dt)
 
 void CPlayScene::Render()
 {
+	//DebugOut(L"[INFO] FUCKKKKKKKKKKKKKKKKKKKK : %i \n", this->id);
+	maps->RenderMap(1);
+
 	for (int i = 0; i < signed(objects.size()); i++)
 		objects[i]->Render();
 }

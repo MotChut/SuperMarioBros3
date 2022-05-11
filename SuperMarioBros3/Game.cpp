@@ -230,7 +230,7 @@ void CGame::Draw(float x, float y, LPTEXTURE tex, RECT* rect, float alpha, int s
 
 	// Setting the sprite’s position and size
 	sprite.matWorld = (matScaling * matTranslation);
-	
+
 	spriteObject->DrawSpritesImmediate(&sprite, 1, 0, 0);
 }
 
