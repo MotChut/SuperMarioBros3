@@ -45,7 +45,7 @@ void GameMap::DrawMap() {
 	CGame* game = CGame::GetInstance();
 	//CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	game->GetCamPos(cam_x, cam_y);
-
+	DebugOut(L"Load map from: %f %f %i\n", cam_x, cam_y, (int) cam_x % 16);
 	int screenHeight = SCREEN_HEIGHT;
 	int screenWidth = SCREEN_WIDTH;
 
@@ -70,7 +70,7 @@ void GameMap::DrawMap() {
 			int index = this->mapArr[i][j];
 			//DebugOut(L"Load map from: %i %i %i %i %i \n", startRow, endRow, startColumn, endColumn, index);
 			if (index != -1) {
-				tileset[index]->Draw((float) y * frameWidth, (float) x * frameHeight);
+				tileset[index]->Draw((float)y * frameWidth - (int)cam_x % 16, (float)x* frameHeight);
 				//tileset[index]->Draw(j, i);
 			}
 			y++;

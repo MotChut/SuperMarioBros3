@@ -27,6 +27,7 @@ void Tile::Draw(float x, float y) {
 	rect.right = left + this->width;
 	rect.bottom = top + this->height;
 	game->Draw(x, y, texture, &rect, 1.0f, this->width, this->height);*/
+	//DebugOut(L"Draw map from: %f %f \n", x, y);
 	game->Draw(x, y, texture, left, top, left + this->width, top + this->height);
 }
 

@@ -18,7 +18,7 @@
 
 using namespace std;
 
-GameMaps* maps = GameMaps::GetInstance();
+int countflag = 0;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
@@ -180,6 +180,7 @@ void CPlayScene::_ParseSection_MAPS(string line) {
 	wstring configPath = ToWSTR(tokens[2]);
 	wstring tilesetPath = ToWSTR(tokens[3]);
 
+	GameMaps* maps = GameMaps::GetInstance();
 	maps->AddMap(this->id, mapPath.c_str());
 
 	Tiles* tileset = new Tiles();
@@ -189,6 +190,7 @@ void CPlayScene::_ParseSection_MAPS(string line) {
 	//if (maps->GetMap(this->id)->GetTiles() == NULL)
 	
 	maps->LoadMap(this->id);
+
 	//maps->RenderMap(this->id);
 }
 
@@ -295,7 +297,6 @@ void CPlayScene::Update(DWORD dt)
 	
 	
 	CGame *game = CGame::GetInstance();
-	game->GetCamPos(kx, ky);
 
 	cx -= game->GetBackBufferWidth() / 2;
 	//cy = cy - game->GetBackBufferHeight() / 2  - 64;
@@ -310,8 +311,9 @@ void CPlayScene::Update(DWORD dt)
 }
 
 void CPlayScene::Render()
-{
-	maps->RenderMap(1);
+{	
+	GameMaps* maps = GameMaps::GetInstance();
+	maps->RenderMap(this->id);
 
 	for (int i = 0; i < signed(objects.size()); i++)
 		objects[i]->Render();

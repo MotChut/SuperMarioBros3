@@ -14,7 +14,7 @@ Goomba.txt
 
 [OBJECTS]
 # type	x	y	extra_settings per object type
-# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas, 10 = Tiles
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
@@ -41,8 +41,11 @@ Goomba.txt
 
 #Platform
 5	-16	400	16	16	1	60000	60000	60000
+
 5	-16	416	16	16	40	60000	60000	60000
 5	624	400	16	16	29	60000	60000	60000
+5	624	416	16	16	29	60000	60000	60000
+5	1152	416	16	16	21	60000	60000	60000
 
 
 #Portal 
