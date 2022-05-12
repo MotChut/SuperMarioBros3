@@ -59,7 +59,7 @@ void GameMap::DrawMap() {
 
 	int endColumn = (cam_x + screenWidth) / frameWidth + 1;
 
-	DebugOut(L"Load map from: %i %i %i %i \n", startRow, endRow, startColumn, endColumn);
+	//DebugOut(L"Load map from: %i %i %i %i \n", startRow, endRow, startColumn, endColumn);
 
 	vector<LPTILE> tileset = tiles->GetTiles();
 

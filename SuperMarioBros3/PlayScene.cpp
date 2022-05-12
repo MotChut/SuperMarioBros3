@@ -290,25 +290,27 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// Update camera to follow mario
-	float cx, cy;
+	float cx, cy, kx, ky;
 	player->GetPosition(cx, cy);
-
+	
+	
 	CGame *game = CGame::GetInstance();
+	game->GetCamPos(kx, ky);
+
 	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
-
+	//cy = cy - game->GetBackBufferHeight() / 2  - 64;
+	//DebugOut(L"[INFO] CX: %f \n", cx);
 	if (cx < 0) cx = 0;
-	if (cy < 0) cy = 0;
+	//if (cy < 0) cy = 0;
 	//if (cx > maps->GetMap(this->id)->GetColumn() * Tile_Width) cx = maps->GetMap(this->id)->GetColumn() * Tile_Width;
-
-	CGame::GetInstance()->SetCamPos(cx, cy /*cy*/);
+	
+	CGame::GetInstance()->SetCamPos(cx, 240 /*cy*/);
 
 	PurgeDeletedObjects();
 }
 
 void CPlayScene::Render()
 {
-	//DebugOut(L"[INFO] FUCKKKKKKKKKKKKKKKKKKKK : %i \n", this->id);
 	maps->RenderMap(1);
 
 	for (int i = 0; i < signed(objects.size()); i++)
