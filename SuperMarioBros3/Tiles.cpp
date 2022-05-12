@@ -10,7 +10,7 @@
 Tiles::Tiles() {
 	this->texture = NULL;
 	this->tileHeight = Tile_Height;
-	this->tileWidth = Tile_Weight;
+	this->tileWidth = Tile_Width;
 };
 
 Tiles::~Tiles() {};
@@ -116,7 +116,7 @@ void Tiles::LoadTileset(LPCWSTR config, LPCWSTR tileset) {
 	
 	for (int i = 0; i < row; i++) {
 		for (int j = 0; j < col; j++) {
-			DebugOut(L"[INFO] %i %i %i %i\n", j * this->tileWidth, i * this->tileHeight, this->tileHeight, this->tileWidth);
+			//DebugOut(L"[INFO] %i %i %i %i\n", j * this->tileWidth, i * this->tileHeight, this->tileHeight, this->tileWidth);
 			AddTile(j * this->tileWidth, i * this->tileHeight, this->tileHeight-1, this->tileWidth-1);
 		}
 	}

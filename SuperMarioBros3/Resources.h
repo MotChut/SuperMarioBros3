@@ -6,8 +6,8 @@
 
 #define BACKGROUND_COLOR D3DXCOLOR(200.0f/255, 200.0f/255, 255.0f/255, 0.0f)
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 288
+#define SCREEN_HEIGHT 240
 
 
 
@@ -21,7 +21,7 @@
 
 //Tilesets
 #define Tile_Height 16
-#define Tile_Weight 16
+#define Tile_Width 16
 
 //Maps
 #define Map_1_1 L"Assets Resources\Maps\World_1_1_BackLayer.txt"

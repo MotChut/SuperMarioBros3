@@ -298,8 +298,10 @@ void CPlayScene::Update(DWORD dt)
 	cy -= game->GetBackBufferHeight() / 2;
 
 	if (cx < 0) cx = 0;
+	if (cy < 0) cy = 0;
+	//if (cx > maps->GetMap(this->id)->GetColumn() * Tile_Width) cx = maps->GetMap(this->id)->GetColumn() * Tile_Width;
 
-	CGame::GetInstance()->SetCamPos(cx, 0.0f /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, cy /*cy*/);
 
 	PurgeDeletedObjects();
 }

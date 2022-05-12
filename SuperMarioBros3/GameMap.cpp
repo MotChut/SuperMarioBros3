@@ -59,17 +59,24 @@ void GameMap::DrawMap() {
 
 	int endColumn = (cam_x + screenWidth) / frameWidth + 1;
 
-	DebugOut(L"Load map from: %i %i %i %i  \n", startRow, endRow, startColumn, endColumn);
+	DebugOut(L"Load map from: %i %i %i %i \n", startRow, endRow, startColumn, endColumn);
 
 	vector<LPTILE> tileset = tiles->GetTiles();
+
+	int x = 0, y = 0;
 
 	for (int i = startRow; i < endRow; i++) {
 		for (int j = startColumn; j < endColumn; j++) {
 			int index = this->mapArr[i][j];
+			//DebugOut(L"Load map from: %i %i %i %i %i \n", startRow, endRow, startColumn, endColumn, index);
 			if (index != -1) {
-				tileset[index]->Draw((float) j * frameWidth, (float) i * frameHeight);
+				tileset[index]->Draw((float) y * frameWidth, (float) x * frameHeight);
+				//tileset[index]->Draw(j, i);
 			}
+			y++;
 		}
+		x++;
+		y = 0;
 	}
 }
 void GameMap::ClearMap()
