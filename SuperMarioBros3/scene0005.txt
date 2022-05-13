@@ -20,6 +20,9 @@ Goomba.txt
 # MARIO
 0	240	10
 
+# GOOMBA
+#2	320	10
+
 # GHOSTBLOCK
 #5	160	384
 
