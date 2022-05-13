@@ -55,3 +55,17 @@ void CPlatform::GetBoundingBox(float& l, float& t, float& r, float& b)
 	r = l + this->cellWidth * this->length;
 	b = t + this->cellHeight;
 }
+
+void CPlatform::SetState(int st)
+{
+	state = st;
+}
+
+int CPlatform::IsBlocking()
+{
+	if (state == PLATFORM_PASSABLE)
+		return 0;
+	else
+		return 1;
+}
+

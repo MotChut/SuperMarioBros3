@@ -43,9 +43,7 @@ void GameMap::DrawMap() {
 	float cam_x, cam_y;
 	
 	CGame* game = CGame::GetInstance();
-	//CGame::GetInstance()->GetCamPos(cam_x, cam_y);
 	game->GetCamPos(cam_x, cam_y);
-	DebugOut(L"Load map from: %f %f %i\n", cam_x, cam_y, (int) cam_x % 16);
 	int screenHeight = SCREEN_HEIGHT;
 	int screenWidth = SCREEN_WIDTH;
 

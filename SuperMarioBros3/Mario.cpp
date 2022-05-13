@@ -7,7 +7,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
-#include "GhostBlock.h"
+#include "Platform.h"
 
 #include "Collision.h"
 
@@ -38,6 +38,9 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CPlatform*>(e->obj) && dynamic_cast<CPlatform*>(e->obj)->getType() == 1)
+		OnCollisionWithPlatform(e);
+
 	if (e->ny != 0 && e->obj->IsBlocking())
 	{
 		vy = 0;
@@ -55,8 +58,6 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
-	else if (dynamic_cast<CGhostBlock*>(e->obj))
-		OnCollisionWithGhostBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -105,18 +106,18 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 
-void CMario::OnCollisionWithGhostBlock(LPCOLLISIONEVENT e)
+void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
-	CGhostBlock* ghostblock = dynamic_cast<CGhostBlock*>(e->obj);
+	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 
 	if (e->ny < 0)
 	{
 		y -= 4;
-		ghostblock->SetState(-1);
+		platform->SetState(-1);
 	}
 	else
 	{
-		ghostblock->SetState(GHOSTBLOCK_PASSABLE);
+		platform->SetState(PLATFORM_PASSABLE);
 	}
 }
 //
