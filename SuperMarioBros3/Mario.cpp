@@ -112,7 +112,7 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 
 	if (e->ny < 0)
 	{
-		y -= 4;
+		y -= 8;
 		platform->SetState(-1);
 	}
 	else

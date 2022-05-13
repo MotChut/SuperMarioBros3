@@ -153,9 +153,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Game Framework\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="GhostBlock.cpp">
-      <Filter>Source Files\Characters &amp; Objects</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -244,9 +241,6 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Game Framework\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="GhostBlock.h">
-      <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
