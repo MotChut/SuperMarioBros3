@@ -154,6 +154,7 @@
     <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GameMaps.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GhostBlock.cpp" />
     <ClCompile Include="Goomba.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="GameMap.h" />
     <ClInclude Include="GameMaps.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GhostBlock.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Mario.h" />

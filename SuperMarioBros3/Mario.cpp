@@ -7,6 +7,7 @@
 #include "Goomba.h"
 #include "Coin.h"
 #include "Portal.h"
+#include "GhostBlock.h"
 
 #include "Collision.h"
 
@@ -54,6 +55,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CGhostBlock*>(e->obj))
+		OnCollisionWithGhostBlock(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -102,6 +105,20 @@ void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
 }
 
+void CMario::OnCollisionWithGhostBlock(LPCOLLISIONEVENT e)
+{
+	CGhostBlock* ghostblock = dynamic_cast<CGhostBlock*>(e->obj);
+
+	if (e->ny < 0)
+	{
+		y -= 4;
+		ghostblock->SetState(-1);
+	}
+	else
+	{
+		ghostblock->SetState(GHOSTBLOCK_PASSABLE);
+	}
+}
 //
 // Get animation ID for small Mario
 //
