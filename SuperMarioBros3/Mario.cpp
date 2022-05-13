@@ -39,7 +39,7 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CPlatform*>(e->obj) && dynamic_cast<CPlatform*>(e->obj)->getType() == 1)
+	if (dynamic_cast<CPlatform*>(e->obj) && dynamic_cast<CPlatform*>(e->obj)->getType() != 0)
 		OnCollisionWithPlatform(e);
 
 	if (e->ny != 0 && e->obj->IsBlocking())
@@ -111,14 +111,23 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 {
 	CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 
-	if (e->ny < 0)
+	switch (platform->getType()) 
 	{
-		y -= 8;
-		platform->SetState(-1);
-	}
-	else
-	{
-		platform->SetState(PLATFORM_PASSABLE);
+	case 1:
+		if (e->ny < 0)
+		{
+			y -= 10;
+			platform->SetState(-1);
+		}
+		else
+		{
+			platform->SetState(PLATFORM_PASSABLE);
+		}
+		break;
+	case 2:
+		DebugOut(L">>> Mario DIE >>> \n");
+		SetState(MARIO_STATE_DIE);
+		break;
 	}
 }
 //
@@ -162,18 +171,18 @@ int CMario::GetAniIdSmall()
 			{
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
-				else if (ax == MARIO_ACCEL_RUN_X)
+				else if (ax == MARIO_ACCEL_RUN_X && vx == maxVx)
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
-				else if (ax == MARIO_ACCEL_WALK_X)
+				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
 					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
 			}
 			else // vx < 0
 			{
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
-				else if (ax == -MARIO_ACCEL_RUN_X)
+				else if (ax == -MARIO_ACCEL_RUN_X && abs(vx) == abs(maxVx))
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X)
+				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx) 
 					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
 			}
 
