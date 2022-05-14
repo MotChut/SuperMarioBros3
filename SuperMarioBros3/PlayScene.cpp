@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Coin.h"
 #include "Platform.h"
+#include "QuestionBlock.h"
 
 #include "GameMaps.h"
 
@@ -123,11 +124,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
-	//case OBJECT_TYPE_TILES: obj = new Tile(x, y); break;
+	
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	case OBJECT_TYPE_COIN: obj = new CCoin(x, y); break;
-
+	case OBJECT_TYPE_COIN: obj = new CCoin(x, y);
+	case OBJECT_TYPE_QUESTIONBLOCK: obj = new CQuestionBlock(x, y); break;
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -287,6 +288,8 @@ void CPlayScene::Update(DWORD dt)
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
+		/*if (dynamic_cast<CPlatform*>(objects[i]))
+			DebugOut(L"This is coin!!!!!!!!!!!!!!!!!!!! \n");*/
 		objects[i]->Update(dt, &coObjects);
 	}
 
@@ -294,7 +297,7 @@ void CPlayScene::Update(DWORD dt)
 	if (player == NULL) return; 
 
 	// Update camera to follow mario
-	float cx, cy, kx, ky;
+	float cx, cy;
 	player->GetPosition(cx, cy);
 	
 	

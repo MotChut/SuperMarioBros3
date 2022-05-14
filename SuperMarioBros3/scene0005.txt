@@ -5,6 +5,7 @@ coin.txt
 cloud.txt
 brick.txt
 Goomba.txt
+QuestionBlock.txt
 #
 
 [MAPS]
@@ -27,19 +28,11 @@ Goomba.txt
 #5	160	384
 
 #COIN
-4	100	120
-4	120	120
-4	140	120
-4	160	120
-4	180	120
+4	100	384
 
-
-4	100	100
-4	120	100
-4	140	100
-4	160	100
-4	180	100
-
+#QUESTION BLOCK
+6	176	352	0
+6	192	352	0
 
 
 #Platform
