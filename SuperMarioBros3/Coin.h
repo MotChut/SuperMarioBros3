@@ -10,20 +10,21 @@
 #define COIN_BBOX_WIDTH 10
 #define COIN_BBOX_HEIGHT 16
 #define COIN_GRAVITY	0.002f
-#define COIN_SPEED	0.004f
-#define COIN_MAX_HEIGHT	0.08f
+#define COIN_SPEED	4
+#define COIN_MAX_S	64
 
 class CCoin : public CGameObject {
 protected: 
 	float ay = COIN_GRAVITY;
+	float s = 0;
 
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	virtual void OnNoCollision(DWORD dt);
+	//virtual void OnNoCollision(DWORD dt);
 	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	virtual int IsCollidable() { return 1; };
 public:
-	CCoin(float x, float y) : CGameObject(x, y) { state = COIN_STATE_NORMAL; }
+	CCoin(float x, float y, int state = COIN_STATE_NORMAL) : CGameObject(x, y) { this->state = state; }
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

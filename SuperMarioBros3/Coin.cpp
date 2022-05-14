@@ -3,20 +3,32 @@
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
-
 	if (state == COIN_STATE_NORMAL + 2)
-		y += vy;
+	{
+		y -= COIN_SPEED;
+		s -= COIN_SPEED;
+		if (abs(s) >= (float)COIN_MAX_S) {
+			state = COIN_STATE_NORMAL + 3;
+			s = 0;
+		}
+	}
+	else if (state == COIN_STATE_NORMAL + 3)
+	{
+		y += COIN_SPEED;
+		s += COIN_SPEED;
+		if (abs(s) >= (float)COIN_MAX_S * 0.75)
+			this->Delete();
+	}
 	
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-void CCoin::OnNoCollision(DWORD dt)
-{
-	//DebugOut(L"This is coin!!!!!!!!!!!!!!!!!!!! \n");
-	y += vy * dt;
-}
+//void CCoin::OnNoCollision(DWORD dt)
+//{
+//	//DebugOut(L"This is coin!!!!!!!!!!!!!!!!!!!! \n");
+//	y += 2;
+//}
 
 //void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
 //{
@@ -28,7 +40,7 @@ void CCoin::Render()
 	CAnimations* animations = CAnimations::GetInstance();
 	if (state == COIN_STATE_NORMAL)
 		animations->Get(ID_ANI_COIN)->Render(x, y);
-	else if (state == COIN_STATE_NORMAL + 1)
+	else 
 		animations->Get(ID_ANI_COIN + 1)->Render(x, y);
 
 	//RenderBoundingBox();
@@ -41,4 +53,3 @@ void CCoin::GetBoundingBox(float& l, float& t, float& r, float& b)
 	r = l + COIN_BBOX_WIDTH;
 	b = t + COIN_BBOX_HEIGHT;
 }
-

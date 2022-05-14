@@ -7,7 +7,7 @@
 #define ID_ANI_QUESTIONBLOCK 100000
 #define ID_ANI_QUESTIONBLOCK_STOP 100001
 
-#define STATE_QUESTIONBLOCK_ACTIVE	1
+#define STATE_QUESTIONBLOCK_ACTIVE	1 // 0: no item
 
 #define QUESTIONBLOCK_WIDTH 16
 #define QUESTIONBLOCK_BBOX_WIDTH 16
@@ -15,7 +15,7 @@
 
 class CQuestionBlock : public CGameObject {
 public:
-	CQuestionBlock(float x, float y, int state = STATE_QUESTIONBLOCK_ACTIVE) : CGameObject(x, y) {}
+	CQuestionBlock(float x, float y, int state = STATE_QUESTIONBLOCK_ACTIVE) : CGameObject(x, y) { this->state = state; }
 	void Render();
 	void Update(DWORD dt) {}
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

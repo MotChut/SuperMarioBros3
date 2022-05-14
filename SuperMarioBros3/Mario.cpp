@@ -8,6 +8,7 @@
 #include "Coin.h"
 #include "Portal.h"
 #include "Platform.h"
+#include "QuestionBlock.h"
 
 #include "Collision.h"
 
@@ -62,6 +63,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQuestionBlock(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
@@ -104,16 +107,27 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	CCoin* objcoin = dynamic_cast<CCoin*>(e->obj);
-
-	if (objcoin->GetState() == COIN_STATE_NORMAL)
+	//CCoin* objcoin = dynamic_cast<CCoin*>(e->obj);
+	if (e->obj->GetState() == COIN_STATE_NORMAL)
 	{
-		objcoin->Delete();
-		coin++;
+		e->obj->Delete();
 	}
-	else if (objcoin->GetState() == COIN_STATE_NORMAL + 1)
+	else if (e->obj->GetState() == COIN_STATE_NORMAL + 1 && e->ny > 0)
 	{
+		e->obj->SetState(COIN_STATE_NORMAL + 2);
+	}
+}
 
+void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
+{
+	CQuestionBlock* qblock = dynamic_cast <CQuestionBlock*> (e->obj);
+
+	if (qblock->GetState() == STATE_QUESTIONBLOCK_ACTIVE && e->ny > 0)
+	{
+		//float qblockx, qblocky;
+		//qblock->GetPosition(qblockx, qblocky);
+		//qblock->SetPosition(qblockx, qblocky - 2);
+		qblock->SetState(0);
 	}
 }
 
