@@ -116,6 +116,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	{
 		e->obj->SetState(COIN_STATE_NORMAL + 2);
 	}
+	coin++;
 }
 
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
@@ -124,9 +125,11 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 
 	if (qblock->GetState() == STATE_QUESTIONBLOCK_ACTIVE && e->ny > 0)
 	{
-		//float qblockx, qblocky;
-		//qblock->GetPosition(qblockx, qblocky);
-		//qblock->SetPosition(qblockx, qblocky - 2);
+		float qblockx, qblocky;
+		qblock->GetPosition(qblockx, qblocky);
+		qblock->SetPosition(qblockx, qblocky - 2);
+		
+		qblock->SetPosition(qblockx, qblocky - 2);
 		qblock->SetState(0);
 	}
 }

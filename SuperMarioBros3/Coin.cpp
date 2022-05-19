@@ -24,17 +24,6 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-//void CCoin::OnNoCollision(DWORD dt)
-//{
-//	//DebugOut(L"This is coin!!!!!!!!!!!!!!!!!!!! \n");
-//	y += 2;
-//}
-
-//void CCoin::OnCollisionWith(LPCOLLISIONEVENT e)
-//{
-//
-//}
-
 void CCoin::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();

@@ -17,4 +17,4 @@ height	240
 0	Resources\mario.png
 10	Resources\enemies.png
 20	Resources\Maps\World_1_1.png
-30  Resources\Maps\World_1_1.png
+#30  Resources\Maps\World_1_1.png

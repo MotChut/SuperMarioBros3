@@ -50,12 +50,12 @@ void GameMap::DrawMap() {
 	int frameWidth = tiles->GetWidth();
 	int frameHeight = tiles->GetHeight();
 
-	int startRow = cam_y / frameHeight;
-	int endRow = (cam_y + screenHeight) / frameHeight + 1;
+	int startRow = (int)cam_y / frameHeight;
+	int endRow = (int)(cam_y + screenHeight) / frameHeight + 1;
 
-	int startColumn = cam_x / frameWidth;
+	int startColumn = (int)cam_x / frameWidth;
 
-	int endColumn = (cam_x + screenWidth) / frameWidth + 1;
+	int endColumn = (int)(cam_x + screenWidth) / frameWidth + 1;
 
 	//DebugOut(L"Load map from: %i %i %i %i \n", startRow, endRow, startColumn, endColumn);
 

@@ -22,9 +22,3 @@
 //Tilesets
 #define Tile_Height 16
 #define Tile_Width 16
-
-//Maps
-#define Map_1_1 L"Assets Resources\Maps\World_1_1_BackLayer.txt"
-//#define Tileset_1_1 L"Assets Resources\Maps\Map_1_1.txt"
-#define TilesetConfig_1_1 L"Assets Resources\Maps\TilesetConfig_1_1.txt"
-#define Tileset_1_1 L"Assets Resources\Maps\World_1_1.png"

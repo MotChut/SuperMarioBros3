@@ -195,11 +195,9 @@ void CPlayScene::_ParseSection_MAPS(string line) {
 	tileset->LoadTileset(configPath.c_str(), tilesetPath.c_str());
 	
 	maps->GetMap(this->id)->AddTiles(tileset);
-	//if (maps->GetMap(this->id)->GetTiles() == NULL)
 	
 	maps->LoadMap(this->id);
 
-	//maps->RenderMap(this->id);
 }
 
 
