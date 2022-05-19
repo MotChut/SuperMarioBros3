@@ -19,7 +19,7 @@
 
 using namespace std;
 
-int countflag = 0;
+//int countflag = 0;
 
 CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
@@ -313,7 +313,7 @@ void CPlayScene::Update(DWORD dt)
 	//if (cy < 0) cy = 0;
 	//if (cx > maps->GetMap(this->id)->GetColumn() * Tile_Width) cx = maps->GetMap(this->id)->GetColumn() * Tile_Width;
 	
-	CGame::GetInstance()->SetCamPos(cx, 240 /*cy*/);
+	CGame::GetInstance()->SetCamPos(cx, Cam_Y_Middle /*cy*/);
 
 	PurgeDeletedObjects();
 }

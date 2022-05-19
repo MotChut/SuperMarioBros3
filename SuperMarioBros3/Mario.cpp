@@ -21,10 +21,10 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
 	// Stop Mario leaving the left-edge of the screen
-	if (x <= 8)
+	if (x <= Left_Edge)
 	{
 		vx = 0;
-		x += 1;
+		x += Left_Push;
 	}
 
 	// reset untouchable timer if untouchable time has passed
@@ -149,7 +149,7 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 	case 1:
 		if (e->ny < 0)
 		{
-			y -= 10;
+			y -= Push_Up_Platform;
 			platform->SetState(-1);
 		}
 		else

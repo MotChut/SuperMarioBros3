@@ -22,3 +22,11 @@
 //Tilesets
 #define Tile_Height 16
 #define Tile_Width 16
+
+#define Push_Up_Platform	10
+
+//Camera
+#define Cam_Y_Middle	240
+
+#define Left_Edge	8
+#define Left_Push	1
