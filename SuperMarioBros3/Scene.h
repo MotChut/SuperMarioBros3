@@ -1,6 +1,7 @@
 #pragma once
 
 #include "KeyEventHandler.h"
+#include "Collision.h"
 
 /*
 *  Abstract class for a game scene
@@ -20,6 +21,7 @@ public:
 	virtual void Unload() = 0;
 	virtual void Update(DWORD dt) = 0;
 	virtual void Render() = 0; 
+	virtual void AddNewObject(LPGAMEOBJECT o) = 0;
 };
 typedef CScene * LPSCENE;
 

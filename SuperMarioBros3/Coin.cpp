@@ -1,23 +1,23 @@
 #include "Coin.h"
 #include "Debug.h"
 
+void CCoin::OnNoCollision(DWORD dt)
+{
+	y -= vy;
+}
+
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	if (state == COIN_STATE_NORMAL + 2)
+	vy += ay * dt;
+
+	if (this->flyalbe && coin_type == 1) 
 	{
-		y -= COIN_SPEED;
-		s -= COIN_SPEED;
-		if (abs(s) >= (float)COIN_MAX_S) {
-			state = COIN_STATE_NORMAL + 3;
-			s = 0;
+		if (vy > COIN_MAX_SPEED) {	
+			ay = -COIN_SPEED;
 		}
-	}
-	else if (state == COIN_STATE_NORMAL + 3)
-	{
-		y += COIN_SPEED;
-		s += COIN_SPEED;
-		if (abs(s) >= (float)COIN_MAX_S * 0.75)
+		else if (vy < -COIN_MAX_SPEED) {
 			this->Delete();
+		}
 	}
 	
 	CGameObject::Update(dt, coObjects);
@@ -27,7 +27,7 @@ void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 void CCoin::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (state == COIN_STATE_NORMAL)
+	if (this->coin_type == 0)
 		animations->Get(ID_ANI_COIN)->Render(x, y);
 	else 
 		animations->Get(ID_ANI_COIN + 1)->Render(x, y);

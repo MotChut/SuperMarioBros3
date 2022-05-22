@@ -12,7 +12,7 @@
 
 class CQuestionBlock : public CGameObject {
 	float base_y;
-	int block_type;				// 0: coin, 1: mushroom
+	int block_type;				// 0: coin, 1: mushroom, 2: tail, 3: mush/tail
 	bool hasItem = true;
 public:
 	CQuestionBlock(float x, float y, int type = 0) : CGameObject(x, y) { this->block_type = type; this->base_y = y; }
@@ -22,6 +22,7 @@ public:
 
 	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	//virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
-	virtual void SetHasItem(bool state) { this->hasItem = state; }
-	virtual bool HasItem() { return this->hasItem; }
+	void SetHasItem(bool state) { this->hasItem = state; }
+	bool HasItem() { return this->hasItem; }
+	int GetBlockType() { return this->block_type; }
 };

@@ -11,6 +11,7 @@
 #include "QuestionBlock.h"
 
 #include "Collision.h"
+#include "PlayScene.h"
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
@@ -107,16 +108,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
-	//CCoin* objcoin = dynamic_cast<CCoin*>(e->obj);
-	if (e->obj->GetState() == COIN_STATE_NORMAL)
+	CCoin* objcoin = dynamic_cast<CCoin*>(e->obj);
+	if (objcoin->GetCoinType() == 0)
 	{
-		e->obj->Delete();
+		objcoin->Delete();
+		coin++;
 	}
-	else if (e->obj->GetState() == COIN_STATE_NORMAL + 1 && e->ny > 0)
-	{
-		e->obj->SetState(COIN_STATE_NORMAL + 2);
-	}
-	coin++;
 }
 
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
@@ -125,11 +122,26 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 	
 	if (e->ny > 0 && qblock->HasItem())
 	{
-		qblock->SetHasItem(false);
-		float qblock_x, qblock_y;
+		if (qblock->GetBlockType() == 0)		// Coin
+		{
+			qblock->SetHasItem(false);
+			float qblock_x, qblock_y;
+			qblock->GetPosition(qblock_x, qblock_y);
 
-		qblock->GetPosition(qblock_x, qblock_y);
-		qblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+			CCoin* newcoin = new CCoin(qblock_x, qblock_y - COIN_WIDTH, 1);
+			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+			
+			thisscene->AddNewObject(newcoin);
+
+			newcoin->SetFlyable(true);
+			qblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+
+			coin++;
+		}
+		else if (qblock->GetBlockType() == 1)		//Mushroom
+		{
+
+		}
 	}
 
 	//qblock->SetState(STATE_QUESTIONBLOCK_DISABLE);

@@ -5,27 +5,25 @@
 #include "Animations.h"
 
 #define ID_ANI_COIN 11000
-#define COIN_STATE_NORMAL	-1	// -1: normal, 0: in the block, 1: up, 2: down
+
 #define	COIN_WIDTH 16
 #define COIN_BBOX_WIDTH 16
 #define COIN_BBOX_HEIGHT 16
-#define COIN_SPEED	4
-#define COIN_MAX_S	64
+#define COIN_SPEED	0.03f
+#define COIN_MAX_SPEED	5
+
 
 class CCoin : public CGameObject {
-protected: 
-	float s = 0;
-
-	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
-	//virtual void OnNoCollision(DWORD dt);
-	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-
-	virtual int IsCollidable() { return 1; };
+	int coin_type = 0;			// 0: normal, 1: in question block
+	float ay = COIN_SPEED;
+	bool flyalbe = false;
 public:
-	CCoin(float x, float y, int state = COIN_STATE_NORMAL) : CGameObject(x, y) { this->state = state; }
-	void Render();
-	void Update(DWORD dt) {}
-	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	int IsBlocking() { return 0; }
-	void SetState(int st) { this->state = st; }
+	CCoin(float x, float y, int type = 0) : CGameObject(x, y) { this->coin_type = type; this->vy = 0; }
+	virtual void Render();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
+	virtual void OnNoCollision(DWORD dt);
+	virtual int GetCoinType() { return this->coin_type; }
+	virtual void SetFlyable(bool state) { this->flyalbe = state; }
+	virtual int IsBlocking() { return 0; }
 };
