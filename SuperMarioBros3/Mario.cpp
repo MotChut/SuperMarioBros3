@@ -140,7 +140,19 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 		}
 		else if (qblock->GetBlockType() == 1)		//Mushroom
 		{
+			qblock->SetHasItem(false);
+			float qblock_x, qblock_y;
+			qblock->GetPosition(qblock_x, qblock_y);
 
+			//CCoin* newcoin = new CCoin(qblock_x, qblock_y - COIN_WIDTH, 1);
+			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+
+			//thisscene->AddNewObject(newcoin);
+
+			//newcoin->SetFlyable(true);
+			qblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+
+			coin++;
 		}
 	}
 

@@ -206,7 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="brick.txt" />
-    <Text Include="cloud.txt" />
+    <Text Include="platform.txt" />
     <Text Include="coin.txt" />
     <Text Include="goomba.txt" />
     <Text Include="mario - Copy.txt" />

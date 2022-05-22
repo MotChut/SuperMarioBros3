@@ -263,7 +263,7 @@
     <Text Include="mario.txt" />
     <Text Include="goomba.txt" />
     <Text Include="brick.txt" />
-    <Text Include="cloud.txt" />
+    <Text Include="platform.txt" />
     <Text Include="coin.txt" />
     <Text Include="mario - Copy.txt" />
     <Text Include="QuestionBlock.txt" />
