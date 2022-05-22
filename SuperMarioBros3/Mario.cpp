@@ -122,16 +122,17 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 {
 	CQuestionBlock* qblock = dynamic_cast <CQuestionBlock*> (e->obj);
-
-	if (qblock->GetState() == STATE_QUESTIONBLOCK_ACTIVE && e->ny > 0)
+	
+	if (e->ny > 0 && qblock->HasItem())
 	{
-		float qblockx, qblocky;
-		qblock->GetPosition(qblockx, qblocky);
-		qblock->SetPosition(qblockx, qblocky - 2);
-		
-		qblock->SetPosition(qblockx, qblocky - 2);
-		qblock->SetState(0);
+		qblock->SetHasItem(false);
+		float qblock_x, qblock_y;
+
+		qblock->GetPosition(qblock_x, qblock_y);
+		qblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
 	}
+
+	//qblock->SetState(STATE_QUESTIONBLOCK_DISABLE);
 }
 
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)

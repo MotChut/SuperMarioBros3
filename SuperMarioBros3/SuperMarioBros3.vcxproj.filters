@@ -156,6 +156,9 @@
     <ClCompile Include="QuestionBlock.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Mushroom.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -246,6 +249,9 @@
       <Filter>Game Framework\Camera</Filter>
     </ClInclude>
     <ClInclude Include="QuestionBlock.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Mushroom.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
   </ItemGroup>

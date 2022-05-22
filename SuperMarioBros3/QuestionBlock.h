@@ -1,24 +1,27 @@
 #pragma once
 
 #include "GameObject.h"
-#include "Animation.h"
-#include "Animations.h"
 
 #define ID_ANI_QUESTIONBLOCK 100000
 #define ID_ANI_QUESTIONBLOCK_STOP 100001
-
-#define STATE_QUESTIONBLOCK_ACTIVE	1 // 0: no item
-
+#define QUESTIONBLOCK_OFFSET	8
+#define QUESTIONBLOCK_GRAVITY	0.005
 #define QUESTIONBLOCK_WIDTH 16
 #define QUESTIONBLOCK_BBOX_WIDTH 16
 #define QUESTIONBLOCK_BBOX_HEIGHT 16
 
 class CQuestionBlock : public CGameObject {
+	float base_y;
+	int block_type;				// 0: coin, 1: mushroom
+	bool hasItem = true;
 public:
-	CQuestionBlock(float x, float y, int state = STATE_QUESTIONBLOCK_ACTIVE) : CGameObject(x, y) { this->state = state; }
-	void Render();
-	void Update(DWORD dt) {}
-	void GetBoundingBox(float& l, float& t, float& r, float& b);
-	
-	virtual void SetState(int st);
+	CQuestionBlock(float x, float y, int type = 0) : CGameObject(x, y) { this->block_type = type; this->base_y = y; }
+	virtual void Render();
+	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
+	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
+
+	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	//virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
+	virtual void SetHasItem(bool state) { this->hasItem = state; }
+	virtual bool HasItem() { return this->hasItem; }
 };

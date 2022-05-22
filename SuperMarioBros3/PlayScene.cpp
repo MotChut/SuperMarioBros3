@@ -133,7 +133,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		obj = new CCoin(x, y, coinstate); 
 		break;
 	}
-	case OBJECT_TYPE_QUESTIONBLOCK: obj = new CQuestionBlock(x, y); break;
+	case OBJECT_TYPE_QUESTIONBLOCK: 
+	{
+		int block_type = (int)atoi(tokens[3].c_str());
+		obj = new CQuestionBlock(x, y, block_type); 
+		break;
+	}
 	case OBJECT_TYPE_PLATFORM:
 	{
 
@@ -286,13 +291,11 @@ void CPlayScene::Update(DWORD dt)
 		coObjects.push_back(objects[i]);
 	}
 
-	//Test Map
-	
 
 	for (size_t i = 0; i < objects.size(); i++)
 	{
-		/*if (dynamic_cast<CPlatform*>(objects[i]))
-			DebugOut(L"This is coin!!!!!!!!!!!!!!!!!!!! \n");*/
+		/*if (dynamic_cast<CQuestionBlock*>(objects[i]))
+			DebugOut(L"This is block!!!!!!!!!!!!!!!!!!!! \n");*/
 		objects[i]->Update(dt, &coObjects);
 	}
 
