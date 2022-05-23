@@ -267,6 +267,7 @@
     <Text Include="coin.txt" />
     <Text Include="mario - Copy.txt" />
     <Text Include="QuestionBlock.txt" />
+    <Text Include="Mushroom.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

@@ -206,6 +206,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="brick.txt" />
+    <Text Include="Mushroom.txt" />
     <Text Include="platform.txt" />
     <Text Include="coin.txt" />
     <Text Include="goomba.txt" />

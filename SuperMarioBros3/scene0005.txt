@@ -6,6 +6,7 @@ platform.txt
 brick.txt
 Goomba.txt
 QuestionBlock.txt
+Mushroom.txt
 #
 
 [MAPS]
@@ -24,15 +25,6 @@ QuestionBlock.txt
 # GOOMBA
 #2	890	300
 
-
-#COIN
-#4	192	352	1
-#4	176	352	1
-#4	224	304	1
-
-#4	416	320	1
-#4	704	352	1
-#4	1456	368	1
 
 #QUESTION BLOCK
 6	176	352	0
