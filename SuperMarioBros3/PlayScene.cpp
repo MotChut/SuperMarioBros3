@@ -198,11 +198,12 @@ void CPlayScene::_ParseSection_MAPS(string line) {
 
 	this->id = atoi(tokens[0].c_str());
 	wstring mapPath = ToWSTR(tokens[1]);
-	wstring configPath = ToWSTR(tokens[2]);
-	wstring tilesetPath = ToWSTR(tokens[3]);
+	wstring frontmapPath = ToWSTR(tokens[2]);
+	wstring configPath = ToWSTR(tokens[3]);
+	wstring tilesetPath = ToWSTR(tokens[4]);
 
 	GameMaps* maps = GameMaps::GetInstance();
-	maps->AddMap(this->id, mapPath.c_str());
+	maps->AddMap(this->id, mapPath.c_str(), frontmapPath.c_str());
 
 	Tiles* tileset = new Tiles();
 	tileset->LoadTileset(configPath.c_str(), tilesetPath.c_str());

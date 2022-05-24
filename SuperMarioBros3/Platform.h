@@ -13,7 +13,7 @@ protected:
 	float cellWidth;
 	float cellHeight;
 	int spriteIdBegin, spriteIdMiddle, spriteIdEnd;
-	int type;
+	int type;		// 0: transparent block, 1: top collision, 2: death platform
 
 public: 
 	CPlatform(float x, float y,

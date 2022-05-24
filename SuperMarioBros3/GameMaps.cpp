@@ -11,8 +11,8 @@ GameMaps::GameMaps() {};
 
 GameMaps::~GameMaps() {};
 
-void GameMaps::AddMap(int id, LPCWSTR filePath) {
-	LPMAP map = new GameMap(filePath);
+void GameMaps::AddMap(int id, LPCWSTR filePath, LPCWSTR frontfilePath) {
+	LPMAP map = new GameMap(filePath, frontfilePath);
 	maps[id] = map;
 }
 

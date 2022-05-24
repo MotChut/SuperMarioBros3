@@ -8,8 +8,9 @@
 #include "PlayScene.h"
 
 
-GameMap::GameMap(LPCWSTR filePath) {
+GameMap::GameMap(LPCWSTR filePath, LPCWSTR frontfilePath) {
 	this->filePath = filePath;
+	this->frontfilePath = frontfilePath;
 }
 
 GameMap::~GameMap() {};
@@ -37,6 +38,16 @@ void GameMap::LoadMap() {
 		}
 	}
 	f.close();
+
+	//Load front map
+	f.open(this->frontfilePath);
+
+	for (int i = 0; i < this->row; i++) {
+		for (int j = 0; j < this->column; j++) {
+			f >> this->frontmapArr[i][j];
+		}
+	}
+	f.close();
 }
 
 void GameMap::DrawMap() {
@@ -57,8 +68,6 @@ void GameMap::DrawMap() {
 
 	int endColumn = (int)(cam_x + screenWidth) / frameWidth + 1;
 
-	//DebugOut(L"Load map from: %i %i %i %i \n", startRow, endRow, startColumn, endColumn);
-
 	vector<LPTILE> tileset = tiles->GetTiles();
 
 	int x = 0, y = 0;
@@ -66,10 +75,13 @@ void GameMap::DrawMap() {
 	for (int i = startRow; i < endRow; i++) {
 		for (int j = startColumn; j < endColumn; j++) {
 			int index = this->mapArr[i][j];
-			//DebugOut(L"Load map from: %i %i %i %i %i \n", startRow, endRow, startColumn, endColumn, index);
 			if (index != -1) {
-				tileset[index]->Draw((float)y * frameWidth - (int)cam_x % 16, (float)x* frameHeight);
-				//tileset[index]->Draw(j, i);
+				tileset[index]->Draw((float)y * frameWidth - (int)cam_x % Tile_Width, (float)x* frameHeight);
+			}
+
+			index = this->frontmapArr[i][j];
+			if (index != -1) {
+				tileset[index]->Draw((float)y * frameWidth - (int)cam_x % Tile_Width, (float)x * frameHeight);
 			}
 			y++;
 		}

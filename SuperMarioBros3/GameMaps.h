@@ -10,7 +10,7 @@ public:
 	GameMaps();
 	~GameMaps();
 
-	void AddMap(int id, LPCWSTR filePath);
+	void AddMap(int id, LPCWSTR filePath, LPCWSTR frontfilePath);
 	LPMAP GetMap(int id);
 	void LoadMap(int id);
 	void RenderMap(int id);
