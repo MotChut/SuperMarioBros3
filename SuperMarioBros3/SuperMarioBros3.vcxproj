@@ -155,6 +155,7 @@
     <ClCompile Include="GameMaps.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Mario.cpp" />
     <ClCompile Include="Mushroom.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
     <ClInclude Include="KeyEventHandler.h" />
+    <ClInclude Include="Koopa.h" />
     <ClInclude Include="Mario.h" />
     <ClInclude Include="Mushroom.h" />
     <ClInclude Include="Platform.h" />
@@ -206,6 +208,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="brick.txt" />
+    <Text Include="Koopa.txt" />
     <Text Include="Mushroom.txt" />
     <Text Include="platform.txt" />
     <Text Include="coin.txt" />

@@ -63,7 +63,7 @@ void CPlatform::SetState(int st)
 
 int CPlatform::IsBlocking()
 {
-	if (state == PLATFORM_PASSABLE)
+	if (state == PLATFORM_PASSABLE || type == 2)
 		return 0;
 	else
 		return 1;

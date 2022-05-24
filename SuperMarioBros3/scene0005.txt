@@ -7,6 +7,7 @@ brick.txt
 Goomba.txt
 QuestionBlock.txt
 Mushroom.txt
+Koopa.txt
 #
 
 [MAPS]
@@ -23,8 +24,10 @@ Mushroom.txt
 0	400	300
 
 # GOOMBA
-#2	890	300
+2	800	300
 
+# KOOPA
+3	500	300	2
 
 #QUESTION BLOCK
 6	176	352	0

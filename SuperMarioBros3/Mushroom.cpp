@@ -27,6 +27,8 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
 
+		if (platform->getType() == 2) return;
+
 		if (e->ny < 0)
 		{
 			y -= Push_Up_Platform;
