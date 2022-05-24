@@ -9,6 +9,7 @@
 #include "Portal.h"
 #include "Platform.h"
 #include "QuestionBlock.h"
+#include "Mushroom.h"
 
 #include "Collision.h"
 #include "PlayScene.h"
@@ -68,6 +69,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBlock(e);
 	else if (dynamic_cast<CCoin*>(e->obj))
 		OnCollisionWithCoin(e);
+	else if (dynamic_cast<CMushroom*>(e->obj))
+		OnCollisionWithMushroom(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -116,6 +119,19 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario:: OnCollisionWithMushroom(LPCOLLISIONEVENT e)
+{
+	CMushroom* objmushroom = dynamic_cast<CMushroom*>(e->obj);
+
+	if (level == MARIO_LEVEL_SMALL)
+	{
+		y = y - Push_Up_Platform * 2;
+		level = MARIO_LEVEL_BIG;
+	}
+
+	objmushroom->Delete();
+}
+
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 {
 	CQuestionBlock* qblock = dynamic_cast <CQuestionBlock*> (e->obj);
@@ -130,7 +146,7 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 
 			CCoin* newcoin = new CCoin(qblock_x, qblock_y - COIN_WIDTH, 1);
 			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
-			
+
 			thisscene->AddNewObject(newcoin);
 
 			newcoin->SetFlyable(true);
@@ -144,15 +160,18 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 			float qblock_x, qblock_y;
 			qblock->GetPosition(qblock_x, qblock_y);
 
-			//CCoin* newcoin = new CCoin(qblock_x, qblock_y - COIN_WIDTH, 1);
 			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+			CQuestionBlock* newquestionblock = new CQuestionBlock(qblock_x, qblock_y);
 
-			//thisscene->AddNewObject(newcoin);
+			qblock->Delete();
+			newquestionblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+			
 
-			//newcoin->SetFlyable(true);
-			qblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+			CMushroom* newmushroom = new CMushroom(qblock_x, qblock_y - 32);
+			newquestionblock->SetHasItem(false);
 
-			coin++;
+			thisscene->AddNewObject(newmushroom);
+			thisscene->AddNewObject(newquestionblock);
 		}
 	}
 

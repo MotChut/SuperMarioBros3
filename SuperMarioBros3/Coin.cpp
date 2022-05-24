@@ -8,14 +8,14 @@ void CCoin::OnNoCollision(DWORD dt)
 
 void CCoin::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	vy += ay * dt;
+	s_y += vy;
 
 	if (this->flyalbe && coin_type == 1) 
 	{
-		if (vy > COIN_MAX_SPEED) {	
-			ay = -COIN_SPEED;
+		if (s_y > COIN_MAX_DISTANCE) {	
+			vy = -vy;
 		}
-		else if (vy < -COIN_MAX_SPEED) {
+		else if (s_y < 0) {
 			this->Delete();
 		}
 	}

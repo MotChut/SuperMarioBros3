@@ -20,7 +20,7 @@ Mushroom.txt
 # See OBJECT_TYPE constants in AssetIDs.h
 
 # MARIO
-0	900	300
+0	400	300
 
 # GOOMBA
 #2	890	300

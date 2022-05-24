@@ -23,7 +23,7 @@
 #define Tile_Height 16
 #define Tile_Width 16
 
-#define Push_Up_Platform	10
+#define Push_Up_Platform	8.0f
 
 //Camera
 #define Cam_Y_Middle	240

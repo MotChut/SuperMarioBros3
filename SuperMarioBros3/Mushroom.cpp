@@ -23,8 +23,18 @@ void CMushroom::OnNoCollision(DWORD dt)
 
 void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CPlatform*>(e->obj))
+	{
+		CPlatform* platform = dynamic_cast<CPlatform*>(e->obj);
+
+		if (e->ny < 0)
+		{
+			y -= Push_Up_Platform;
+			platform->SetState(-1);
+		}
+	}
+
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CMushroom*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -38,6 +48,8 @@ void CMushroom::OnCollisionWith(LPCOLLISIONEVENT e)
 
 void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
+	this->vy = MUSHROOM_GRAVITY;
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
