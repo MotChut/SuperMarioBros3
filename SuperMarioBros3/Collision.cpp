@@ -1,6 +1,6 @@
 #include "Collision.h"
 #include "GameObject.h"
-
+#include "Koopa.h"
 #include "debug.h"
 
 #define BLOCK_PUSH_FACTOR 0.4f
@@ -148,7 +148,7 @@ LPCOLLISIONEVENT CCollision::SweptAABB(LPGAMEOBJECT objSrc, DWORD dt, LPGAMEOBJE
 		sl, st, sr, sb,
 		t, nx, ny
 	);
-
+	
 	CCollisionEvent* e = new CCollisionEvent(t, nx, ny, dx, dy, objDest, objSrc);
 	return e;
 }
@@ -346,7 +346,7 @@ void CCollision::Process(LPGAMEOBJECT objSrc, DWORD dt, vector<LPGAMEOBJECT>* co
 		LPCOLLISIONEVENT e = coEvents[i];
 		if (e->isDeleted) continue;
 		if (e->obj->IsBlocking()) continue;  // blocking collisions were handled already, skip them
-
+		
 		objSrc->OnCollisionWith(e);			
 	}
 

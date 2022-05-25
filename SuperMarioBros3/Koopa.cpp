@@ -12,10 +12,18 @@ CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING)
+	if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING
+		|| state == KOOPA_SHELL_TIMEOUT || state == KOOPA_SHELL_AWAKE)
 	{
 		left = x - KOOPA_BBOX_WIDTH / 2;
 		top = y - KOOPA_BBOX_HEIGHT_SHELL / 2;
+		right = left + KOOPA_BBOX_WIDTH;
+		bottom = top + KOOPA_BBOX_HEIGHT_SHELL;
+	}
+	else if (state == KOOPA_STATE_CARRIED)
+	{
+		left = x - KOOPA_BBOX_WIDTH / 4;
+		top = y - KOOPA_BBOX_HEIGHT_SHELL / 4;
 		right = left + KOOPA_BBOX_WIDTH;
 		bottom = top + KOOPA_BBOX_HEIGHT_SHELL;
 	}
@@ -54,10 +62,24 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if ((state == KOOPA_STATE_SHELL) && (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT))
+	if (state == KOOPA_STATE_AWAKE)
 	{
-		//isDeleted = true;
-		//return;
+		if (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT)
+		{
+			minusY_flag = true;
+			y = y - (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_SHELL) / 2;
+			SetState(KOOPA_STATE_WALKING);
+			this->ay = KOOPA_GRAVITY;
+			shell_start = -1;
+		}
+	}
+
+	if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL + 1)
+	{
+		if (GetTickCount64() - shell_start > KOOPA_SHELL_AWAKE)
+		{
+			state = KOOPA_STATE_AWAKE;
+		}
 	}
 
 	if (state != KOOPA_STATE_SHELL && state != KOOPA_STATE_SHELL_MOVING)
@@ -66,7 +88,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			state = KOOPA_STATE_WALKING + 1;
 		else if (vx < 0)
 			state = KOOPA_STATE_WALKING;
-	}
+	}		
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -89,8 +111,10 @@ void CKoopa::Render()
 	}
 	else if (type == 2 || type == 3)
 	{
-		if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING)
+		if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING || state == KOOPA_STATE_CARRIED)
 			aniId = ID_ANI_KOOPA_RED_SHELL;
+		else if (state == KOOPA_STATE_AWAKE)
+			aniId = ID_ANI_KOOPA_RED_SHELL_AWAKE;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
@@ -113,11 +137,17 @@ void CKoopa::SetState(int state)
 		vy = 0;
 		ay = 0;
 		break;
+	case KOOPA_STATE_AWAKE:
+		shell_start = GetTickCount64();
+		break;
 	case KOOPA_STATE_SHELL_MOVING:
 		vx = -KOOPA_SHELL_MOVING_SPEED * dir;
 		break;
 	case KOOPA_STATE_WALKING:
 		vx = -KOOPA_WALKING_SPEED;
+		break;
+	case KOOPA_STATE_WALKING + 1:
+		vx = KOOPA_WALKING_SPEED;
 		break;
 	}
 }

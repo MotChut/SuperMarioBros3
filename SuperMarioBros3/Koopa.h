@@ -10,20 +10,23 @@
 #define KOOPA_BBOX_HEIGHT 24
 #define KOOPA_BBOX_HEIGHT_SHELL 14
 
-#define KOOPA_SHELL_TIMEOUT 500
+#define KOOPA_SHELL_AWAKE	9000
+#define KOOPA_SHELL_TIMEOUT 10000
 
 #define KOOPA_STATE_WALKING 100		// 100: left, 101: right
 
 #define KOOPA_STATE_SHELL 200		// 200: green, 201: red
 #define KOOPA_STATE_SHELL_MOVING	300
+#define KOOPA_STATE_AWAKE	400
+#define KOOPA_STATE_CARRIED	500
 
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_LEFT 93100
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT 93200
 										
 #define ID_ANI_KOOPA_RED_SHELL	93300
+#define ID_ANI_KOOPA_RED_SHELL_AWAKE	93400
 
 
-#define ID_ANI_KOOPA_SHELL_WAKE 90030
 
 class CKoopa : public CGameObject
 {
@@ -51,6 +54,6 @@ public:
 	CKoopa(float x, float y, int type = 0);
 	virtual void SetState(int state);
 	virtual int GetType() { return type; }
-	virtual void GetPos(float& x, float& y) { x = this->x; y = this->y; }
 	virtual void SetDir(int dir) { this->dir = dir; }
+	virtual void SetVx(float vx) { this->vx = vx; }
 };

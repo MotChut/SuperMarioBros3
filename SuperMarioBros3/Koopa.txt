@@ -12,6 +12,9 @@
 #RED_SHELL
 93301	147	253	162	268	10
 
+#RED_SHELL_AWAKE
+93401	168	253	185	268	10
+
 # ani_id	sprite1_id	time1	sprite2_id	time2	...
 [ANIMATIONS]
 # Normal Red Koopa
@@ -21,3 +24,6 @@
 
 # Red Shell
 93300	93301	100
+
+# Red shell awake
+93400	93401	100

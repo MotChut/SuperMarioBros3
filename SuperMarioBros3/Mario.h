@@ -36,6 +36,9 @@
 #define MARIO_STATE_KICK_RIGHT	700
 #define MARIO_STATE_KICK_LEFT	800
 
+#define MARIO_STATE_CARRY_RIGHT	900
+#define MARIO_STATE_CARRY_LEFT	1000
+
 
 #pragma region ANIMATION_ID
 
@@ -84,6 +87,8 @@
 #define ID_ANI_MARIO_SMALL_KICK_RIGHT	1701
 #define ID_ANI_MARIO_SMALL_KICK_LEFT	1700
 
+#define ID_ANI_MARIO_SMALL_CARRY_RIGHT_IDLE	1802
+#define ID_ANI_MARIO_SMALL_CARRY_LEFT_IDLE	1803
 #define ID_ANI_MARIO_SMALL_CARRY_RIGHT	1801
 #define ID_ANI_MARIO_SMALL_CARRY_LEFT	1800
 
@@ -117,12 +122,18 @@ class CMario : public CGameObject
 	float ay;				// acceleration on y 
 
 	int level; 
+
 	int untouchable; 
 	int kickable;
+
 	ULONGLONG untouchable_start;
 	ULONGLONG kickable_start;
 	BOOLEAN isOnPlatform;
+
 	int coin; 
+
+	// Actions
+	bool isCarrying = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -169,6 +180,7 @@ public:
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartKickable() { kickable = 1; kickable_start = GetTickCount64(); }
-
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
+	bool GetCarryingState() { return isCarrying; }
+	void SetCarryingState(bool state) { isCarrying = state; }
 };

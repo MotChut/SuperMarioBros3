@@ -128,12 +128,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		// Red Koopa
 		if (koopa->GetType() == 2)
 		{
-			if (koopa->GetState() != KOOPA_STATE_SHELL)
+			if (koopa->GetState() != KOOPA_STATE_SHELL)				// When Koopa is in turtle form
 			{
 				koopa->SetState(KOOPA_STATE_SHELL);
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
-			else if (koopa->GetState() == KOOPA_STATE_SHELL)
+			else if (koopa->GetState() == KOOPA_STATE_SHELL)		// When Koopa is in shell form
 			{
 				float koox = 0, kooy = 0;
 				koopa->GetPosition(koox, kooy);
@@ -146,7 +146,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 				koopa->SetState(KOOPA_STATE_SHELL_MOVING);
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
 			}
-			else if (koopa->GetState() == KOOPA_STATE_SHELL_MOVING)
+			else if (koopa->GetState() == KOOPA_STATE_SHELL_MOVING)	// When Koopa is in shell form and moving
 			{
 				koopa->SetState(KOOPA_STATE_SHELL);
 				vy = -MARIO_JUMP_DEFLECT_SPEED;
@@ -155,22 +155,38 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	else // Collide X with Koopa
 	{
-		if (koopa->GetState() == KOOPA_STATE_SHELL || koopa->GetState() == KOOPA_STATE_SHELL + 1)
+		DebugOut(L"%f \n", ax);
+		if (koopa->GetState() == KOOPA_STATE_SHELL || koopa->GetState() == KOOPA_STATE_SHELL + 1 || koopa->GetState() == KOOPA_STATE_CARRIED)
 		{
-			StartKickable();
+			if (abs(ax) == abs(MARIO_ACCEL_WALK_X))
+			{
+				StartKickable();
 
-			if (e->nx < 0)
-				koopa->SetDir(-1);
-			else
-				koopa->SetDir(1);
-			
-			koopa->SetState(KOOPA_STATE_SHELL_MOVING);
+				if (e->nx < 0)
+					koopa->SetDir(-1);
+				else
+					koopa->SetDir(1);
+
+				koopa->SetState(KOOPA_STATE_SHELL_MOVING);
+			}
+			else if (ax == MARIO_ACCEL_RUN_X)
+			{
+				isCarrying = true;
+				koopa->SetState(KOOPA_STATE_CARRIED);
+				koopa->SetPosition(x + 11.0f, y - 4.0f);
+			}
+			else if (ax == -MARIO_ACCEL_RUN_X)
+			{
+				isCarrying = true;
+				koopa->SetState(KOOPA_STATE_CARRIED);
+				koopa->SetPosition(x - 11.0f, y - 4.0f);
+			}
 		}
 
 		if (untouchable == 0)
 		{
 			if (koopa->GetState() != KOOPA_STATE_SHELL && koopa->GetState() != KOOPA_STATE_SHELL + 1 
-				&& kickable != 1)
+				&& kickable != 1 && koopa->GetState() != KOOPA_STATE_CARRIED)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -319,13 +335,23 @@ int CMario::GetAniIdSmall()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
-				else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+				if (isCarrying == false)
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
+					else aniId = ID_ANI_MARIO_SMALL_IDLE_LEFT;
+				}
+				else
+				{
+					if (nx > 0) aniId = ID_ANI_MARIO_SMALL_CARRY_RIGHT_IDLE;
+					else aniId = ID_ANI_MARIO_SMALL_CARRY_LEFT_IDLE;
+				}
 			}
 			else if (vx > 0)
 			{
 				if (ax < 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X && isCarrying == true)
+					aniId = ID_ANI_MARIO_SMALL_CARRY_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X && vx == maxVx)
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
@@ -341,6 +367,8 @@ int CMario::GetAniIdSmall()
 			{
 				if (ax > 0)
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X && isCarrying == true)
+					aniId = ID_ANI_MARIO_SMALL_CARRY_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X && abs(vx) == abs(maxVx))
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx)

@@ -41,6 +41,10 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	CMario* mario = (CMario*)((LPPLAYSCENE)CGame::GetInstance()->GetCurrentScene())->GetPlayer();
 	switch (KeyCode)
 	{
+	case DIK_A:
+		if (mario->GetCarryingState() == true)
+			mario->SetCarryingState(false);
+		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_RELEASE_JUMP);
 		break;
@@ -69,6 +73,6 @@ void CSampleKeyHandler::KeyState(BYTE *states)
 		else
 			mario->SetState(MARIO_STATE_WALKING_LEFT);
 	}
-	else
+	else 
 		mario->SetState(MARIO_STATE_IDLE);
 }

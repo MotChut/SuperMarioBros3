@@ -18,8 +18,6 @@ Koopa.txt
 # type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
 # See OBJECT_TYPE constants in AssetIDs.h
 
-# MARIO
-0	600	300
 
 # GOOMBA
 2	800	300
@@ -27,6 +25,10 @@ Koopa.txt
 
 # KOOPA
 3	500	350	2
+
+
+# MARIO
+0	600	300
 
 #QUESTION BLOCK
 6	176	352	0
