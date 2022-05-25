@@ -37,6 +37,12 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		untouchable = 0;
 	}
 
+	if (GetTickCount64() - kickable_start > MARIO_KICKABLE_TIME)
+	{
+		kickable_start = 0;
+		kickable = 0;
+	}
+
 	isOnPlatform = false;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -151,23 +157,20 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	{
 		if (koopa->GetState() == KOOPA_STATE_SHELL || koopa->GetState() == KOOPA_STATE_SHELL + 1)
 		{
+			StartKickable();
+
 			if (e->nx < 0)
-			{
-				state = MARIO_STATE_KICK_RIGHT;
 				koopa->SetDir(-1);
-			}
 			else
-			{
-				state = MARIO_STATE_KICK_LEFT;
 				koopa->SetDir(1);
-			}
+			
 			koopa->SetState(KOOPA_STATE_SHELL_MOVING);
 		}
 
 		if (untouchable == 0)
 		{
 			if (koopa->GetState() != KOOPA_STATE_SHELL && koopa->GetState() != KOOPA_STATE_SHELL + 1 
-				&& state != MARIO_STATE_KICK_LEFT && state != MARIO_STATE_KICK_RIGHT)
+				&& kickable != 1)
 			{
 				if (level > MARIO_LEVEL_SMALL)
 				{
@@ -327,7 +330,7 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
 				{
-					if (state == MARIO_STATE_KICK_RIGHT)
+					if (kickable == 1)
 						aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
 					else
 						aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
@@ -340,8 +343,13 @@ int CMario::GetAniIdSmall()
 					aniId = ID_ANI_MARIO_SMALL_BRACE_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X && abs(vx) == abs(maxVx))
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_LEFT;
-				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx) 
-					aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx)
+				{
+					if (kickable == 1)
+						aniId = ID_ANI_MARIO_SMALL_KICK_LEFT;
+					else 
+						aniId = ID_ANI_MARIO_SMALL_WALKING_LEFT;
+				}
 			}
 
 	if (aniId == -1) aniId = ID_ANI_MARIO_SMALL_IDLE_RIGHT;
@@ -425,7 +433,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
 	//DebugOutTitle(L"Coins: %d", coin);
 }
@@ -455,6 +463,7 @@ void CMario::SetState(int state)
 			ax = -MARIO_ACCEL_RUN_X;
 		nx = -1;
 		break;
+	
 	case MARIO_STATE_WALKING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_WALKING_SPEED;

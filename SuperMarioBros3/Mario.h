@@ -81,14 +81,15 @@
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_RIGHT 1600
 #define ID_ANI_MARIO_SMALL_JUMP_RUN_LEFT 1601
 
-#define ID_ANI_MARIO_SMALL_KICK_RIGHT	1700
-#define ID_ANI_MARIO_SMALL_KICK_LEFT	1701
+#define ID_ANI_MARIO_SMALL_KICK_RIGHT	1701
+#define ID_ANI_MARIO_SMALL_KICK_LEFT	1700
+
+#define ID_ANI_MARIO_SMALL_CARRY_RIGHT	1801
+#define ID_ANI_MARIO_SMALL_CARRY_LEFT	1800
 
 #pragma endregion
 
 #define GROUND_Y 160.0f
-
-
 
 
 #define	MARIO_LEVEL_SMALL	1
@@ -106,6 +107,7 @@
 
 
 #define MARIO_UNTOUCHABLE_TIME 2500
+#define MARIO_KICKABLE_TIME 100
 
 class CMario : public CGameObject
 {
@@ -116,7 +118,9 @@ class CMario : public CGameObject
 
 	int level; 
 	int untouchable; 
+	int kickable;
 	ULONGLONG untouchable_start;
+	ULONGLONG kickable_start;
 	BOOLEAN isOnPlatform;
 	int coin; 
 
@@ -143,6 +147,8 @@ public:
 		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
+		kickable = 0;
+		kickable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -162,6 +168,7 @@ public:
 
 	void SetLevel(int l);
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
+	void StartKickable() { kickable = 1; kickable_start = GetTickCount64(); }
 
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 };

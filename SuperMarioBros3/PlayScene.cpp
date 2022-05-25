@@ -114,6 +114,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_KOOPAS:
+	{
+		int koopaType = (int)atoi(tokens[3].c_str());
+
+		obj = new CKoopa(x, y, koopaType);
+		break;
+	}
 	case OBJECT_TYPE_MARIO:
 		if (player!=NULL) 
 		{
@@ -127,13 +134,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		break;
 	
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
-	case OBJECT_TYPE_KOOPAS: 
-	{
-		int koopaType = (int)atoi(tokens[3].c_str());
-
-		obj = new CKoopa(x, y, koopaType);
-		break;
-	}
+	
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	//case OBJECT_TYPE_COIN: 
 	//{
