@@ -12,7 +12,7 @@ CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
 
 void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom)
 {
-	if (state == KOOPA_STATE_SHELL)
+	if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING)
 	{
 		left = x - KOOPA_BBOX_WIDTH / 2;
 		top = y - KOOPA_BBOX_HEIGHT_SHELL / 2;
@@ -56,14 +56,17 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if ((state == KOOPA_STATE_SHELL) && (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT))
 	{
-		isDeleted = true;
-		return;
+		//isDeleted = true;
+		//return;
 	}
 
-	if (vx > 0)
-		state = KOOPA_STATE_WALKING + 1;
-	else if (vx < 0)
-		state = KOOPA_STATE_WALKING;
+	if (state != KOOPA_STATE_SHELL && state != KOOPA_STATE_SHELL_MOVING)
+	{
+		if (vx > 0)
+			state = KOOPA_STATE_WALKING + 1;
+		else if (vx < 0)
+			state = KOOPA_STATE_WALKING;
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -80,17 +83,18 @@ void CKoopa::Render()
 		aniId = ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT;
 
 
-	if (state == KOOPA_STATE_SHELL) 
+	if (type == 0 || type == 1) 
 	{
 		//aniId = ID_ANI_KOOPA_RED_SHELL;
 	}
-	else if (state == KOOPA_STATE_SHELL + 1)
+	else if (type == 2 || type == 3)
 	{
-		aniId = ID_ANI_KOOPA_RED_SHELL;
+		if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING)
+			aniId = ID_ANI_KOOPA_RED_SHELL;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	//RenderBoundingBox();
+	RenderBoundingBox();
 }
 
 void CKoopa::SetState(int state)
@@ -99,12 +103,18 @@ void CKoopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_STATE_SHELL:
-	case KOOPA_STATE_SHELL + 1:
 		shell_start = GetTickCount64();
-		y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_SHELL) / 2;
+		if (minusY_flag == true)
+		{
+			y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_SHELL) / 2;
+			minusY_flag = false;
+		}
 		vx = 0;
 		vy = 0;
 		ay = 0;
+		break;
+	case KOOPA_STATE_SHELL_MOVING:
+		vx = -KOOPA_SHELL_MOVING_SPEED * dir;
 		break;
 	case KOOPA_STATE_WALKING:
 		vx = -KOOPA_WALKING_SPEED;

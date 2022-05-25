@@ -3,6 +3,7 @@
 
 #define KOOPA_GRAVITY 0.002f
 #define KOOPA_WALKING_SPEED 0.04f
+#define KOOPA_SHELL_MOVING_SPEED	0.2f
 
 
 #define KOOPA_BBOX_WIDTH 16
@@ -14,11 +15,14 @@
 #define KOOPA_STATE_WALKING 100		// 100: left, 101: right
 
 #define KOOPA_STATE_SHELL 200		// 200: green, 201: red
+#define KOOPA_STATE_SHELL_MOVING	300
 
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_LEFT 93100
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT 93200
 										
 #define ID_ANI_KOOPA_RED_SHELL	93300
+
+
 #define ID_ANI_KOOPA_SHELL_WAKE 90030
 
 class CKoopa : public CGameObject
@@ -27,6 +31,8 @@ protected:
 	float ax;
 	float ay;
 	int type;		// 0: green normal, 1: green fly, 2: red normal, 3: red fly
+	bool minusY_flag = true;
+	int dir = 1;	// 1: left, -1: right
 
 	ULONGLONG shell_start;
 
@@ -39,8 +45,12 @@ protected:
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	
 
 public:
 	CKoopa(float x, float y, int type = 0);
 	virtual void SetState(int state);
+	virtual int GetType() { return type; }
+	virtual void GetPos(float& x, float& y) { x = this->x; y = this->y; }
+	virtual void SetDir(int dir) { this->dir = dir; }
 };

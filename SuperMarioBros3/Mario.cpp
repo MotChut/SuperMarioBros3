@@ -115,33 +115,70 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-
+	
 	// Jump on top >> Koopa turns into shell and Mario deflects a bit 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() != KOOPA_STATE_SHELL + 1)
+		// Red Koopa
+		if (koopa->GetType() == 2)
 		{
-			koopa->SetState(KOOPA_STATE_SHELL + 1);
-			vy = -MARIO_JUMP_DEFLECT_SPEED;
-		}
-		else if (koopa->GetState() == KOOPA_STATE_SHELL + 1)
-		{
+			if (koopa->GetState() != KOOPA_STATE_SHELL)
+			{
+				koopa->SetState(KOOPA_STATE_SHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+			else if (koopa->GetState() == KOOPA_STATE_SHELL)
+			{
+				float koox = 0, kooy = 0;
+				koopa->GetPosition(koox, kooy);
 
+				if (this->x < koox)
+					koopa->SetDir(-1);
+				else
+					koopa->SetDir(1);
+
+				koopa->SetState(KOOPA_STATE_SHELL_MOVING);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
+			else if (koopa->GetState() == KOOPA_STATE_SHELL_MOVING)
+			{
+				koopa->SetState(KOOPA_STATE_SHELL);
+				vy = -MARIO_JUMP_DEFLECT_SPEED;
+			}
 		}
 	}
-	else // Hit by Koopa
+	else // Collide X with Koopa
 	{
-		if (untouchable == 0)
+		if (koopa->GetState() == KOOPA_STATE_SHELL || koopa->GetState() == KOOPA_STATE_SHELL + 1)
 		{
-			if (level > MARIO_LEVEL_SMALL)
+			if (e->nx < 0)
 			{
-				level = MARIO_LEVEL_SMALL;
-				StartUntouchable();
+				state = MARIO_STATE_KICK_RIGHT;
+				koopa->SetDir(-1);
 			}
 			else
 			{
-				DebugOut(L">>> Mario DIE >>> \n");
-				SetState(MARIO_STATE_DIE);
+				state = MARIO_STATE_KICK_LEFT;
+				koopa->SetDir(1);
+			}
+			koopa->SetState(KOOPA_STATE_SHELL_MOVING);
+		}
+
+		if (untouchable == 0)
+		{
+			if (koopa->GetState() != KOOPA_STATE_SHELL && koopa->GetState() != KOOPA_STATE_SHELL + 1 
+				&& state != MARIO_STATE_KICK_LEFT && state != MARIO_STATE_KICK_RIGHT)
+			{
+				if (level > MARIO_LEVEL_SMALL)
+				{
+					level = MARIO_LEVEL_SMALL;
+					StartUntouchable();
+				}
+				else
+				{
+					DebugOut(L">>> Mario DIE >>> \n");
+					SetState(MARIO_STATE_DIE);
+				}
 			}
 		}
 	}
@@ -289,7 +326,13 @@ int CMario::GetAniIdSmall()
 				else if (ax == MARIO_ACCEL_RUN_X && vx == maxVx)
 					aniId = ID_ANI_MARIO_SMALL_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
-					aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+				{
+					if (state == MARIO_STATE_KICK_RIGHT)
+						aniId = ID_ANI_MARIO_SMALL_KICK_RIGHT;
+					else
+						aniId = ID_ANI_MARIO_SMALL_WALKING_RIGHT;
+				}
+				
 			}
 			else // vx < 0
 			{
