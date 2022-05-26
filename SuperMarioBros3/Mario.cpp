@@ -22,9 +22,6 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
 
-	if (vx > 0) dir = 1;
-	else if (vx < 0) dir = -1;
-
 	// Stop Mario leaving the left-edge of the screen
 	if (x <= Left_Edge)
 	{
@@ -127,6 +124,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
 	float koox, kooy;
 	koopa->GetPosition(koox, kooy);
+	DebugOut(L"1: %f \n", kooy);
 	// Jump on top >> Koopa turns into shell and Mario deflects a bit 
 	if (e->ny < 0)
 	{
@@ -169,13 +167,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 			else if (abs(ax) == abs(MARIO_ACCEL_WALK_X))
 			{
-				if (isCarrying == false) 
-				{
-					float koox, kooy;
-					koopa->GetPosition(koox, kooy);
-					koopa->SetPosition(koox, kooy + 4.0f);
-				}
-
 				StartKickable();
 
 				if (e->nx < 0)
@@ -481,10 +472,6 @@ void CMario::SetState(int state)
 		if (isCarrying == true)
 		{
 			isCarrying = false;
-			if (dir == -1)
-				ax = -MARIO_ACCEL_WALK_X;
-			else
-				ax = MARIO_ACCEL_WALK_X;
 		}
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:

@@ -3,6 +3,7 @@
 
 #include "Animation.h"
 #include "Animations.h"
+#include "Koopa.h"
 
 #include "debug.h"
 

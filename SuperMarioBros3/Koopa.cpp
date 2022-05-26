@@ -62,6 +62,31 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
+	if (state == KOOPA_STATE_CARRIED)
+	{
+		LPGAMEOBJECT player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
+		float pvx, pvy, px, py;
+		player->GetSpeed(pvx, pvy);
+		player->GetPosition(px, py);
+
+		if (pvx > 0)
+		{
+			if (x < px)
+				x += 28;
+			x = x + pvx * dt;
+			y = py - 4.0f;
+		}
+		else if (pvx < 0)
+		{
+			if (x > px)
+				x -= 28;
+			x = x + pvx * dt;
+			y = py - 4.0f;
+		}
+		else 
+			y = py - 4.0f;
+	}
+
 	if (state == KOOPA_STATE_AWAKE)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT)
@@ -91,27 +116,6 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		else if (vx < 0)
 			state = KOOPA_STATE_WALKING;
 	}		
-
-	if (state == KOOPA_STATE_CARRIED)
-	{
-		LPGAMEOBJECT player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
-		float pvx, pvy, px, py;
-		player->GetSpeed(pvx, pvy);
-		player->GetPosition(px, py);
-
-		if (pvx > 0)
-		{
-			x = px + 14.0f;
-			y = py - 4.0f;
-		}
-		else if (pvx < 0)
-		{
-			x = px - 14.0f;
-			y = py - 4.0f;
-		}
-		else if (pvy != 0)
-			y = py - 4.0f;
-	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -166,6 +170,7 @@ void CKoopa::SetState(int state)
 		shell_start = GetTickCount64();
 		break;
 	case KOOPA_STATE_SHELL_MOVING:
+		ay = KOOPA_GRAVITY;
 		vx = -KOOPA_SHELL_MOVING_SPEED * dir;
 		break;
 	case KOOPA_STATE_WALKING:
