@@ -17,11 +17,13 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
-	//DebugOut(L"%f %f \n", vx, ax);
 	vy += ay * dt;
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx)) vx = maxVx;
+
+	if (vx > 0) dir = 1;
+	else if (vx < 0) dir = -1;
 
 	// Stop Mario leaving the left-edge of the screen
 	if (x <= Left_Edge)
@@ -29,6 +31,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vx = 0;
 		x += Left_Push;
 	}
+
+	//DebugOut(L"Player: %f", vx);
 
 	// reset untouchable timer if untouchable time has passed
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
@@ -121,7 +125,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
-	
+	float koox, kooy;
+	koopa->GetPosition(koox, kooy);
 	// Jump on top >> Koopa turns into shell and Mario deflects a bit 
 	if (e->ny < 0)
 	{
@@ -135,7 +140,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			}
 			else if (koopa->GetState() == KOOPA_STATE_SHELL)		// When Koopa is in shell form
 			{
-				float koox = 0, kooy = 0;
+				float koox, kooy;
 				koopa->GetPosition(koox, kooy);
 
 				if (this->x < koox)
@@ -155,11 +160,22 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 	else // Collide X with Koopa
 	{
-		DebugOut(L"%f \n", ax);
 		if (koopa->GetState() == KOOPA_STATE_SHELL || koopa->GetState() == KOOPA_STATE_SHELL + 1 || koopa->GetState() == KOOPA_STATE_CARRIED)
 		{
-			if (abs(ax) == abs(MARIO_ACCEL_WALK_X))
+			if (abs(ax) == abs(MARIO_ACCEL_RUN_X))
 			{
+				isCarrying = true;
+				koopa->SetState(KOOPA_STATE_CARRIED);
+			}
+			else if (abs(ax) == abs(MARIO_ACCEL_WALK_X))
+			{
+				if (isCarrying == false) 
+				{
+					float koox, kooy;
+					koopa->GetPosition(koox, kooy);
+					koopa->SetPosition(koox, kooy + 4.0f);
+				}
+
 				StartKickable();
 
 				if (e->nx < 0)
@@ -168,18 +184,6 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 					koopa->SetDir(1);
 
 				koopa->SetState(KOOPA_STATE_SHELL_MOVING);
-			}
-			else if (ax == MARIO_ACCEL_RUN_X)
-			{
-				isCarrying = true;
-				koopa->SetState(KOOPA_STATE_CARRIED);
-				koopa->SetPosition(x + 11.0f, y - 4.0f);
-			}
-			else if (ax == -MARIO_ACCEL_RUN_X)
-			{
-				isCarrying = true;
-				koopa->SetState(KOOPA_STATE_CARRIED);
-				koopa->SetPosition(x - 11.0f, y - 4.0f);
 			}
 		}
 
@@ -473,6 +477,16 @@ void CMario::SetState(int state)
 
 	switch (state)
 	{
+	case MARIO_STATE_CARRY_RELEASE:
+		if (isCarrying == true)
+		{
+			isCarrying = false;
+			if (dir == -1)
+				ax = -MARIO_ACCEL_WALK_X;
+			else
+				ax = MARIO_ACCEL_WALK_X;
+		}
+		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
 		maxVx = MARIO_RUNNING_SPEED;

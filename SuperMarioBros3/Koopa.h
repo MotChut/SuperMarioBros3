@@ -49,11 +49,9 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	
-
 public:
 	CKoopa(float x, float y, int type = 0);
 	virtual void SetState(int state);
 	virtual int GetType() { return type; }
 	virtual void SetDir(int dir) { this->dir = dir; }
-	virtual void SetVx(float vx) { this->vx = vx; }
 };

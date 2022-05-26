@@ -42,8 +42,7 @@ void CSampleKeyHandler::OnKeyUp(int KeyCode)
 	switch (KeyCode)
 	{
 	case DIK_A:
-		if (mario->GetCarryingState() == true)
-			mario->SetCarryingState(false);
+		mario->SetState(MARIO_STATE_CARRY_RELEASE);
 		break;
 	case DIK_S:
 		mario->SetState(MARIO_STATE_RELEASE_JUMP);

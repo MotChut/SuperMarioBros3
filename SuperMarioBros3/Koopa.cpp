@@ -1,4 +1,5 @@
 #include "Koopa.h"
+#include "Game.h"
 #include "Debug.h"
 
 CKoopa::CKoopa(float x, float y, int type) :CGameObject(x, y)
@@ -22,8 +23,8 @@ void CKoopa::GetBoundingBox(float& left, float& top, float& right, float& bottom
 	}
 	else if (state == KOOPA_STATE_CARRIED)
 	{
-		left = x - KOOPA_BBOX_WIDTH / 4;
-		top = y - KOOPA_BBOX_HEIGHT_SHELL / 4;
+		left = x - KOOPA_BBOX_WIDTH / 2;
+		top = y - KOOPA_BBOX_HEIGHT_SHELL / 2;
 		right = left + KOOPA_BBOX_WIDTH;
 		bottom = top + KOOPA_BBOX_HEIGHT_SHELL;
 	}
@@ -45,7 +46,6 @@ void CKoopa::OnNoCollision(DWORD dt)
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (!e->obj->IsBlocking()) return;
-	if (dynamic_cast<CKoopa*>(e->obj)) return;
 
 	if (e->ny != 0)
 	{
@@ -73,22 +73,45 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			shell_start = -1;
 		}
 	}
-
-	if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL + 1)
+	else if (state == KOOPA_STATE_SHELL_MOVING)
+	{
+		shell_start = -1;
+	}
+	else if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL + 1)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_AWAKE)
 		{
 			state = KOOPA_STATE_AWAKE;
 		}
 	}
-
-	if (state != KOOPA_STATE_SHELL && state != KOOPA_STATE_SHELL_MOVING)
+	else if (state != KOOPA_STATE_SHELL && state != KOOPA_STATE_SHELL_MOVING)
 	{
 		if (vx > 0)
 			state = KOOPA_STATE_WALKING + 1;
 		else if (vx < 0)
 			state = KOOPA_STATE_WALKING;
 	}		
+
+	if (state == KOOPA_STATE_CARRIED)
+	{
+		LPGAMEOBJECT player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
+		float pvx, pvy, px, py;
+		player->GetSpeed(pvx, pvy);
+		player->GetPosition(px, py);
+
+		if (pvx > 0)
+		{
+			x = px + 14.0f;
+			y = py - 4.0f;
+		}
+		else if (pvx < 0)
+		{
+			x = px - 14.0f;
+			y = py - 4.0f;
+		}
+		else if (pvy != 0)
+			y = py - 4.0f;
+	}
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
@@ -127,15 +150,17 @@ void CKoopa::SetState(int state)
 	switch (state)
 	{
 	case KOOPA_STATE_SHELL:
+		vx = 0;
+		vy = 0;
+		ay = 0;
 		shell_start = GetTickCount64();
+		y -= 0.67f;
+		DebugOut(L"1: %f \n", y);
 		if (minusY_flag == true)
 		{
 			y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_SHELL) / 2;
 			minusY_flag = false;
 		}
-		vx = 0;
-		vy = 0;
-		ay = 0;
 		break;
 	case KOOPA_STATE_AWAKE:
 		shell_start = GetTickCount64();

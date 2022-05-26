@@ -8,6 +8,7 @@
 
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.3f
+#define MARIO_CARRY_SPEED	0.2f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0002f
@@ -36,8 +37,7 @@
 #define MARIO_STATE_KICK_RIGHT	700
 #define MARIO_STATE_KICK_LEFT	800
 
-#define MARIO_STATE_CARRY_RIGHT	900
-#define MARIO_STATE_CARRY_LEFT	1000
+#define MARIO_STATE_CARRY_RELEASE	900
 
 
 #pragma region ANIMATION_ID
@@ -123,6 +123,7 @@ class CMario : public CGameObject
 
 	int level; 
 
+	int dir = 1;			// -1: left, 1: right
 	int untouchable; 
 	int kickable;
 
@@ -182,5 +183,4 @@ public:
 	void StartKickable() { kickable = 1; kickable_start = GetTickCount64(); }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	bool GetCarryingState() { return isCarrying; }
-	void SetCarryingState(bool state) { isCarrying = state; }
 };
