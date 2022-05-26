@@ -29,6 +29,26 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		x += Left_Push;
 	}
 
+	if (shell != NULL && shell->GetState() == KOOPA_STATE_CARRIED)
+	{
+		if (vx > 0)
+		{
+			shell->SetPosition(x + 16.0f, y - 1.0f);
+			shell->SetDir(-1);
+		}
+		else if (vx < 0)
+		{
+			shell->SetPosition(x - 16.0f, y - 1.0f);
+			shell->SetDir(1);
+		}
+		else
+		{
+			float koox, kooy;
+			shell->GetPosition(koox, kooy);
+			shell->SetPosition(koox, y - 1.0f);
+		}
+	}
+
 	//DebugOut(L"Player: %f", vx);
 
 	// reset untouchable timer if untouchable time has passed
@@ -122,6 +142,7 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 {
 	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+	shell = koopa;
 	float koox, kooy;
 	koopa->GetPosition(koox, kooy);
 	DebugOut(L"1: %f \n", kooy);
@@ -472,6 +493,7 @@ void CMario::SetState(int state)
 		if (isCarrying == true)
 		{
 			isCarrying = false;
+			shell->SetState(KOOPA_STATE_SHELL_MOVING);
 		}
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:

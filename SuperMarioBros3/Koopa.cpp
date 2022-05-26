@@ -64,30 +64,27 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	if (state == KOOPA_STATE_CARRIED)
 	{
-		LPGAMEOBJECT player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
+		
+		/*LPGAMEOBJECT player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
 		float pvx, pvy, px, py;
 		player->GetSpeed(pvx, pvy);
 		player->GetPosition(px, py);
 
-		if (pvx > 0)
+		if (pvx > 0.0f)
 		{
-			if (x < px)
-				x += 28;
-			x = x + pvx * dt;
-			y = py - 4.0f;
+			x = px + 16.0f;
+			y = py - 1.0f;
 		}
-		else if (pvx < 0)
+		else if (pvx < 0.0f)
 		{
-			if (x > px)
-				x -= 28;
-			x = x + pvx * dt;
-			y = py - 4.0f;
+			x = px - 16.0f;
+			y = py - 1.0f;
 		}
-		else 
-			y = py - 4.0f;
+		else
+			y = py - 1.0f;*/
 	}
 
-	if (state == KOOPA_STATE_AWAKE)
+	else if (state == KOOPA_STATE_AWAKE)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT)
 		{

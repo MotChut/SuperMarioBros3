@@ -132,6 +132,7 @@ class CMario : public CGameObject
 	ULONGLONG kickable_start;
 	BOOLEAN isOnPlatform;
 
+	CKoopa* shell = NULL;
 	int coin; 
 
 	// Actions
