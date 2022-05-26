@@ -281,6 +281,7 @@
     <Text Include="QuestionBlock.txt" />
     <Text Include="Mushroom.txt" />
     <Text Include="Koopa.txt" />
+    <Text Include="Leaf.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

@@ -211,6 +211,7 @@
   <ItemGroup>
     <Text Include="brick.txt" />
     <Text Include="Koopa.txt" />
+    <Text Include="Leaf.txt" />
     <Text Include="Mushroom.txt" />
     <Text Include="platform.txt" />
     <Text Include="coin.txt" />

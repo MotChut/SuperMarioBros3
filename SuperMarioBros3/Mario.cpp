@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "QuestionBlock.h"
 #include "Mushroom.h"
+#include "Leaf.h"
 
 #include "Collision.h"
 #include "PlayScene.h"
@@ -20,13 +21,23 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (abs(vx) > abs(maxVx)) vx = maxVx;
+	if (abs(vx) > abs(maxVx))	vx = maxVx;
 
 	// Stop Mario leaving the left-edge of the screen
 	if (x <= Left_Edge)
 	{
 		vx = 0;
 		x += Left_Push;
+	} 
+	else if (x >= Right_Edge - 32)
+	{
+		vx = 0;
+		x -= Left_Push;
+	}
+	else if (y <= Top_Edge)
+	{
+		vy = 0;
+		y += Left_Push;
 	}
 
 	if (shell != NULL && shell->GetState() == KOOPA_STATE_CARRIED)
@@ -101,6 +112,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithCoin(e);
 	else if (dynamic_cast<CMushroom*>(e->obj))
 		OnCollisionWithMushroom(e);
+	else if (dynamic_cast<CLeaf*>(e->obj))
+		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
 }
@@ -145,7 +158,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	shell = koopa;
 	float koox, kooy;
 	koopa->GetPosition(koox, kooy);
-	DebugOut(L"1: %f \n", kooy);
+	
 	// Jump on top >> Koopa turns into shell and Mario deflects a bit 
 	if (e->ny < 0)
 	{
@@ -242,6 +255,20 @@ void CMario:: OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	objmushroom->Delete();
 }
 
+void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
+{
+	CLeaf* objleaf = dynamic_cast<CLeaf*>(e->obj);
+
+	if (level == MARIO_LEVEL_BIG)
+	{
+		DebugOut(L"Fuck");
+		y = y - Push_Up_Platform * 2;
+		level = MARIO_LEVEL_TAIL;
+	}
+
+	objleaf->Delete();
+}
+
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 {
 	CQuestionBlock* qblock = dynamic_cast <CQuestionBlock*> (e->obj);
@@ -281,6 +308,25 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 			newquestionblock->SetHasItem(false);
 
 			thisscene->AddNewObject(newmushroom);
+			thisscene->AddNewObject(newquestionblock);
+		}
+		else if (qblock->GetBlockType() == 2)		//Leaf
+		{
+			qblock->SetHasItem(false);
+			float qblock_x, qblock_y;
+			qblock->GetPosition(qblock_x, qblock_y);
+
+			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+			CQuestionBlock* newquestionblock = new CQuestionBlock(qblock_x, qblock_y);
+
+			qblock->Delete();
+			newquestionblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+
+
+			CLeaf* newleaf = new CLeaf(qblock_x + 16, qblock_y - 32);
+			newquestionblock->SetHasItem(false);
+
+			thisscene->AddNewObject(newleaf);
 			thisscene->AddNewObject(newquestionblock);
 		}
 	}
@@ -463,6 +509,71 @@ int CMario::GetAniIdBig()
 	return aniId;
 }
 
+int CMario::GetAniIdTail()
+{
+	int aniId = -1;
+	if (!isOnPlatform)
+	{
+		if (state == MARIO_STATE_FLY)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_TAIL_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_JUMP_RUN_LEFT;
+		}
+		else if (abs(ax) == MARIO_ACCEL_RUN_X)
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_TAIL_JUMP_RUN_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_JUMP_RUN_LEFT;
+		}
+		else
+		{
+			if (nx >= 0)
+				aniId = ID_ANI_TAIL_JUMP_WALK_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_JUMP_WALK_LEFT;
+		}
+	}
+	else
+		if (isSitting)
+		{
+			if (nx > 0)
+				aniId = ID_ANI_TAIL_SIT_RIGHT;
+			else
+				aniId = ID_ANI_TAIL_SIT_LEFT;
+		}
+		else
+			if (vx == 0)
+			{
+				if (nx > 0) aniId = ID_ANI_TAIL_IDLE_RIGHT;
+				else aniId = ID_ANI_TAIL_IDLE_LEFT;
+			}
+			else if (vx > 0)
+			{
+				if (ax < 0)
+					aniId = ID_ANI_TAIL_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X && vx == maxVx)
+					aniId = ID_ANI_TAIL_RUNNING_RIGHT;
+				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
+					aniId = ID_ANI_TAIL_WALKING_RIGHT;
+			}
+			else // vx < 0
+			{
+				if (ax > 0)
+					aniId = ID_ANI_TAIL_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X && abs(vx) == abs(maxVx))
+					aniId = ID_ANI_TAIL_RUNNING_LEFT;
+				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx)
+					aniId = ID_ANI_TAIL_WALKING_LEFT;
+			}
+
+	if (aniId == -1) aniId = ID_ANI_TAIL_IDLE_RIGHT;
+
+	return aniId;
+}
+
 void CMario::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
@@ -474,6 +585,8 @@ void CMario::Render()
 		aniId = GetAniIdBig();
 	else if (level == MARIO_LEVEL_SMALL)
 		aniId = GetAniIdSmall();
+	else if (level == MARIO_LEVEL_TAIL)
+		aniId = GetAniIdTail();
 
 	animations->Get(aniId)->Render(x, y);
 
@@ -527,6 +640,16 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 		break;
+	case MARIO_STATE_FLY:
+		if (isOnPlatform)
+			vy = -MARIO_JUMP_SPEED_Y;
+		else if (abs(vx) == abs(MARIO_RUNNING_SPEED) || isFlying == true)
+		{
+			vy = -MARIO_JUMP_SPEED_Y;
+			isFlying = true;
+		}
+		//vx = MARIO_RUNNING_SPEED;
+		break;
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
 		if (isOnPlatform)
@@ -578,7 +701,7 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (level==MARIO_LEVEL_BIG)
+	if (level==MARIO_LEVEL_BIG || level == MARIO_LEVEL_TAIL)
 	{
 		if (isSitting)
 		{
@@ -595,7 +718,7 @@ void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom
 			bottom = top + MARIO_BIG_BBOX_HEIGHT;
 		}
 	}
-	else
+	else if (level == MARIO_LEVEL_SMALL)
 	{
 		left = x - MARIO_SMALL_BBOX_WIDTH/2;
 		top = y - MARIO_SMALL_BBOX_HEIGHT/2;

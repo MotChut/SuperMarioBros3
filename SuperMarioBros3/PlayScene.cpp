@@ -316,17 +316,18 @@ void CPlayScene::Update(DWORD dt)
 	float cx, cy;
 	player->GetPosition(cx, cy);
 	
-	
 	CGame *game = CGame::GetInstance();
 
 	cx -= game->GetBackBufferWidth() / 2;
-	//cy = cy - game->GetBackBufferHeight() / 2  - 64;
-	//DebugOut(L"[INFO] CX: %f \n", cx);
-	if (cx < 0) cx = 0;
-	//if (cy < 0) cy = 0;
-	//if (cx > maps->GetMap(this->id)->GetColumn() * Tile_Width) cx = maps->GetMap(this->id)->GetColumn() * Tile_Width;
+	cy -= game->GetBackBufferHeight() / 2;
 	
-	CGame::GetInstance()->SetCamPos(cx, Cam_Y_Middle /*cy*/);
+	if (cx < 0) cx = 0;
+	else if (cx > Right_Edge - SCREEN_WIDTH) cx = Right_Edge - SCREEN_WIDTH;
+	
+	if (cy < 72) cy = 0;
+	else  cy = Cam_Y_Middle;
+	
+	CGame::GetInstance()->SetCamPos(cx, cy /*cy*/);
 
 	PurgeDeletedObjects();
 }

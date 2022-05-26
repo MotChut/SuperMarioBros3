@@ -29,4 +29,6 @@
 #define Cam_Y_Middle	240
 
 #define Left_Edge	8
+#define Right_Edge	2816
+#define Top_Edge	SCREEN_HEIGHT / 6
 #define Left_Push	1

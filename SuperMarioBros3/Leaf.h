@@ -7,11 +7,10 @@
 #define	LEAF_WIDTH 16
 #define LEAF_BBOX_WIDTH 16
 #define LEAF_BBOX_HEIGHT 14
+#define LEAF_GRAVITY 0.03f
 
-#define LEAF_SPEED	0.02f
-#define LEAF_GRAVITY 0.02f
-
-class CLeaf : public CGameObject {
+class CLeaf : public CGameObject
+{
 public:
 	CLeaf(float x, float y);
 	virtual void Render();
@@ -19,7 +18,4 @@ public:
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 	virtual int IsBlocking() { return 0; }
 	virtual int IsCollidable() { return 1; };
-	virtual void OnNoCollision(DWORD dt);
-
-	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 };

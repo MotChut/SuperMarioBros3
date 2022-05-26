@@ -40,9 +40,14 @@
 
 #define MARIO_STATE_CARRY_RELEASE	900
 
+#define MARIO_STATE_FLY	1000
+
+#define MARIO_STATE_LANDING_RIGHT	1200
+#define MARIO_STATE_LANDING_LEFT	1300
+
 
 #pragma region ANIMATION_ID
-
+// BIG MARIO
 #define ID_ANI_MARIO_IDLE_RIGHT 400
 #define ID_ANI_MARIO_IDLE_LEFT 401
 
@@ -65,6 +70,28 @@
 #define ID_ANI_MARIO_BRACE_LEFT 1001
 
 #define ID_ANI_MARIO_DIE 999
+
+// TAIL MARIO
+#define ID_ANI_TAIL_IDLE_RIGHT 20000
+#define ID_ANI_TAIL_IDLE_LEFT 20001
+
+#define ID_ANI_TAIL_WALKING_RIGHT 21000
+#define ID_ANI_TAIL_WALKING_LEFT 21001
+
+#define ID_ANI_TAIL_RUNNING_RIGHT 22000
+#define ID_ANI_TAIL_RUNNING_LEFT 22001
+
+#define ID_ANI_TAIL_JUMP_WALK_RIGHT 23000
+#define ID_ANI_TAIL_JUMP_WALK_LEFT 23001
+
+#define ID_ANI_TAIL_JUMP_RUN_RIGHT 24000
+#define ID_ANI_TAIL_JUMP_RUN_LEFT 24001
+
+#define ID_ANI_TAIL_SIT_RIGHT 25000
+#define ID_ANI_TAIL_SIT_LEFT 25001
+
+#define ID_ANI_TAIL_BRACE_RIGHT 26000
+#define ID_ANI_TAIL_BRACE_LEFT 26001
 
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
@@ -100,6 +127,7 @@
 
 #define	MARIO_LEVEL_SMALL	1
 #define	MARIO_LEVEL_BIG		2
+#define MARIO_LEVEL_TAIL	3
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
@@ -137,18 +165,21 @@ class CMario : public CGameObject
 
 	// Actions
 	bool isCarrying = false;
+	bool isFlying = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	void OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e);
 	void OnCollisionWithCoin(LPCOLLISIONEVENT e);
 	void OnCollisionWithMushroom(LPCOLLISIONEVENT e);
+	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
 
 
 	int GetAniIdBig();
 	int GetAniIdSmall();
+	int GetAniIdTail();
 
 public:
 	CMario(float x, float y) : CGameObject(x, y)
@@ -158,7 +189,7 @@ public:
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 
-		level = MARIO_LEVEL_SMALL;
+		level = MARIO_LEVEL_TAIL;
 		untouchable = 0;
 		untouchable_start = -1;
 		kickable = 0;
@@ -181,6 +212,7 @@ public:
 	void OnCollisionWith(LPCOLLISIONEVENT e);
 
 	void SetLevel(int l);
+	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartKickable() { kickable = 1; kickable_start = GetTickCount64(); }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
