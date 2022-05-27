@@ -62,29 +62,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (state == KOOPA_STATE_CARRIED)
-	{
-		
-		/*LPGAMEOBJECT player = CGame::GetInstance()->GetCurrentScene()->GetPlayer();
-		float pvx, pvy, px, py;
-		player->GetSpeed(pvx, pvy);
-		player->GetPosition(px, py);
-
-		if (pvx > 0.0f)
-		{
-			x = px + 16.0f;
-			y = py - 1.0f;
-		}
-		else if (pvx < 0.0f)
-		{
-			x = px - 16.0f;
-			y = py - 1.0f;
-		}
-		else
-			y = py - 1.0f;*/
-	}
-
-	else if (state == KOOPA_STATE_AWAKE)
+	if (state == KOOPA_STATE_AWAKE)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT)
 		{
@@ -94,10 +72,6 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			this->ay = KOOPA_GRAVITY;
 			shell_start = -1;
 		}
-	}
-	else if (state == KOOPA_STATE_SHELL_MOVING)
-	{
-		shell_start = -1;
 	}
 	else if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL + 1)
 	{
@@ -135,8 +109,10 @@ void CKoopa::Render()
 	}
 	else if (type == 2 || type == 3)
 	{
-		if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL_MOVING || state == KOOPA_STATE_CARRIED)
+		if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_CARRIED)
 			aniId = ID_ANI_KOOPA_RED_SHELL;
+		else if (state == KOOPA_STATE_SHELL_MOVING)
+			aniId = ID_ANI_KOOPA_RED_SHELL_MOVING;
 		else if (state == KOOPA_STATE_AWAKE)
 			aniId = ID_ANI_KOOPA_RED_SHELL_AWAKE;
 	}
@@ -155,8 +131,6 @@ void CKoopa::SetState(int state)
 		vy = 0;
 		ay = 0;
 		shell_start = GetTickCount64();
-		y -= 0.67f;
-		DebugOut(L"1: %f \n", y);
 		if (minusY_flag == true)
 		{
 			y += (KOOPA_BBOX_HEIGHT - KOOPA_BBOX_HEIGHT_SHELL) / 2;

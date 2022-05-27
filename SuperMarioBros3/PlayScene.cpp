@@ -324,7 +324,7 @@ void CPlayScene::Update(DWORD dt)
 	if (cx < 0) cx = 0;
 	else if (cx > Right_Edge - SCREEN_WIDTH) cx = Right_Edge - SCREEN_WIDTH;
 	
-	if (cy < 72) cy = 0;
+	if (cy < 72) cy = 64;
 	else  cy = Cam_Y_Middle;
 	
 	CGame::GetInstance()->SetCamPos(cx, cy /*cy*/);

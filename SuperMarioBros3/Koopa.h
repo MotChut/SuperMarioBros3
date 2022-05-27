@@ -26,6 +26,10 @@
 #define ID_ANI_KOOPA_RED_SHELL	93300
 #define ID_ANI_KOOPA_RED_SHELL_AWAKE	93400
 
+#define ID_ANI_KOOPA_RED_SHELL_MOVING	93500
+
+#define ID_ANI_KOOP_RED_SHELL_FLIPPED	93600
+
 
 
 class CKoopa : public CGameObject
@@ -36,6 +40,7 @@ protected:
 	int type;		// 0: green normal, 1: green fly, 2: red normal, 3: red fly
 	bool minusY_flag = true;
 	int dir = 1;	// 1: left, -1: right
+	bool isFlipped = false;
 
 	ULONGLONG shell_start;
 
@@ -54,4 +59,5 @@ public:
 	virtual void SetState(int state);
 	virtual int GetType() { return type; }
 	virtual void SetDir(int dir) { this->dir = dir; }
+	virtual bool GetStateFlipped() { return isFlipped; }
 };

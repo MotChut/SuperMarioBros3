@@ -18,12 +18,13 @@
 
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
+	// Update velocity
 	vy += ay * dt;
 	vx += ax * dt;
 
 	if (abs(vx) > abs(maxVx))	vx = maxVx;
-
-	// Stop Mario leaving the left-edge of the screen
+	//DebugOut(L"%f %i %i\n", vx, isFlying, isOnPlatform);
+	// Stop Mario leaving the map
 	if (x <= Left_Edge)
 	{
 		vx = 0;
@@ -39,7 +40,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		vy = 0;
 		y += Left_Push;
 	}
+	
+	// Flying State
+	if (GetTickCount64() - flyable_start > MARIO_P_TIME)
+	{
+		isFlying = false;
+		flyable_start = -1;
+	}
 
+	// Carry Shell 
 	if (shell != NULL && shell->GetState() == KOOPA_STATE_CARRIED)
 	{
 		if (vx > 0)
@@ -60,15 +69,15 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 		}
 	}
 
-	//DebugOut(L"Player: %f", vx);
 
-	// reset untouchable timer if untouchable time has passed
+	// Untouchable when received attack
 	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
 	{
 		untouchable_start = 0;
 		untouchable = 0;
 	}
 
+	// Kick Shell
 	if (GetTickCount64() - kickable_start > MARIO_KICKABLE_TIME)
 	{
 		kickable_start = 0;
@@ -76,6 +85,7 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	isOnPlatform = false;
+	ay = MARIO_GRAVITY;
 
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -137,7 +147,12 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 		{
 			if (goomba->GetState() != GOOMBA_STATE_DIE)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level == MARIO_LEVEL_TAIL)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level == MARIO_LEVEL_BIG)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
@@ -261,7 +276,6 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 
 	if (level == MARIO_LEVEL_BIG)
 	{
-		DebugOut(L"Fuck");
 		y = y - Push_Up_Platform * 2;
 		level = MARIO_LEVEL_TAIL;
 	}
@@ -514,19 +528,19 @@ int CMario::GetAniIdTail()
 	int aniId = -1;
 	if (!isOnPlatform)
 	{
-		if (state == MARIO_STATE_FLY)
+		if (isFlying)
 		{
 			if (nx >= 0)
 				aniId = ID_ANI_TAIL_JUMP_RUN_RIGHT;
 			else
 				aniId = ID_ANI_TAIL_JUMP_RUN_LEFT;
 		}
-		else if (abs(ax) == MARIO_ACCEL_RUN_X)
+		else if (abs(ax) == MARIO_ACCEL_RUN_X || vx != 0.0f)
 		{
 			if (nx >= 0)
-				aniId = ID_ANI_TAIL_JUMP_RUN_RIGHT;
+				aniId = ID_ANI_TAIL_LANDING_RIGHT;
 			else
-				aniId = ID_ANI_TAIL_JUMP_RUN_LEFT;
+				aniId = ID_ANI_TAIL_LANDING_LEFT;
 		}
 		else
 		{
@@ -605,26 +619,46 @@ void CMario::SetState(int state)
 	case MARIO_STATE_CARRY_RELEASE:
 		if (isCarrying == true)
 		{
-			isCarrying = false;
+			isCarrying = false;			
 			shell->SetState(KOOPA_STATE_SHELL_MOVING);
 		}
 		break;
 	case MARIO_STATE_RUNNING_RIGHT:
 		if (isSitting) break;
-		maxVx = MARIO_RUNNING_SPEED;
+
+		if (isFlying && !isOnPlatform)
+			maxVx = MARIO_FLY_SPEED;
+		else if (isCarrying)
+			maxVx = MARIO_CARRY_SPEED;
+		else if (isOnPlatform)
+			maxVx = MARIO_RUNNING_SPEED;
+
 		if (vx < 0)
 			ax = MARIO_ACCEL_RUN_X * 3;
-		else
+		else if (isFlying == true && !isOnPlatform)
+			ax = MARIO_ACCEL_FLY_X;
+		else if (isOnPlatform)
 			ax = MARIO_ACCEL_RUN_X;
+		
 		nx = 1;
 		break;
 	case MARIO_STATE_RUNNING_LEFT:
 		if (isSitting) break;
-		maxVx = -MARIO_RUNNING_SPEED;
+
+		if (isFlying && !isOnPlatform)
+			maxVx = -MARIO_FLY_SPEED;
+		else if (isCarrying)
+			maxVx = -MARIO_CARRY_SPEED;
+		else if (isOnPlatform)
+			maxVx = -MARIO_RUNNING_SPEED;
+
 		if (vx > 0)
 			ax = -MARIO_ACCEL_RUN_X * 3;
-		else
+		else if (isFlying == true && !isOnPlatform)
+			ax = -MARIO_ACCEL_FLY_X;
+		else if (isOnPlatform)
 			ax = -MARIO_ACCEL_RUN_X;
+		
 		nx = -1;
 		break;
 	
@@ -640,21 +674,23 @@ void CMario::SetState(int state)
 		ax = -MARIO_ACCEL_WALK_X;
 		nx = -1;
 		break;
+	case MARIO_STATE_LANDING:
+		DebugOut(L"A \n");
+		vy = -MARIO_LANDING_SPEED;
+		break;
 	case MARIO_STATE_FLY:
-		if (isOnPlatform)
-			vy = -MARIO_JUMP_SPEED_Y;
-		else if (abs(vx) == abs(MARIO_RUNNING_SPEED) || isFlying == true)
-		{
-			vy = -MARIO_JUMP_SPEED_Y;
-			isFlying = true;
-		}
-		//vx = MARIO_RUNNING_SPEED;
+		if (isFlying) vy = -MARIO_JUMP_SPEED_Y;
 		break;
 	case MARIO_STATE_JUMP:
 		if (isSitting) break;
 		if (isOnPlatform)
 		{
-			if (abs(this->vx) == MARIO_RUNNING_SPEED)
+			if (abs(vx) == abs(MARIO_RUNNING_SPEED) && level == MARIO_LEVEL_TAIL)
+			{
+				StartFlying();
+				vy = -MARIO_JUMP_SPEED_Y;
+			}
+			else if (abs(this->vx) == MARIO_RUNNING_SPEED)
 				vy = -MARIO_JUMP_RUN_SPEED_Y;
 			else
 				vy = -MARIO_JUMP_SPEED_Y;

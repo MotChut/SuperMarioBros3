@@ -10,9 +10,12 @@
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.3f
 #define MARIO_CARRY_SPEED	0.2f
+#define MARIO_FLY_SPEED	0.12f
+#define MARIO_LANDING_SPEED	0.01f
 
 #define MARIO_ACCEL_WALK_X	0.0005f
 #define MARIO_ACCEL_RUN_X	0.0002f
+#define MARIO_ACCEL_FLY_X	0.0003f
 
 #define MARIO_JUMP_SPEED_Y		0.5f
 #define MARIO_JUMP_RUN_SPEED_Y	0.6f
@@ -42,8 +45,7 @@
 
 #define MARIO_STATE_FLY	1000
 
-#define MARIO_STATE_LANDING_RIGHT	1200
-#define MARIO_STATE_LANDING_LEFT	1300
+#define MARIO_STATE_LANDING	1100
 
 
 #pragma region ANIMATION_ID
@@ -69,6 +71,14 @@
 #define ID_ANI_MARIO_BRACE_RIGHT 1000
 #define ID_ANI_MARIO_BRACE_LEFT 1001
 
+#define ID_ANI_MARIO_KICK_RIGHT	40000
+#define ID_ANI_MARIO_KICK_LEFT	40001
+
+#define ID_ANI_MARIO_CARRY_RIGHT_IDLE	41000
+#define ID_ANI_MARIO_CARRY_LEFT_IDLE	41001
+#define ID_ANI_MARIO_CARRY_RIGHT	42000
+#define ID_ANI_MARIO_CARRY_LEFT	42001
+
 #define ID_ANI_MARIO_DIE 999
 
 // TAIL MARIO
@@ -92,6 +102,9 @@
 
 #define ID_ANI_TAIL_BRACE_RIGHT 26000
 #define ID_ANI_TAIL_BRACE_LEFT 26001
+
+#define ID_ANI_TAIL_LANDING_RIGHT	27000
+#define ID_ANI_TAIL_LANDING_LEFT	27001
 
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
@@ -142,6 +155,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICKABLE_TIME 100
+#define MARIO_P_TIME	4000
 
 class CMario : public CGameObject
 {
@@ -158,6 +172,7 @@ class CMario : public CGameObject
 
 	ULONGLONG untouchable_start;
 	ULONGLONG kickable_start;
+	ULONGLONG flyable_start;
 	BOOLEAN isOnPlatform;
 
 	CKoopa* shell = NULL;
@@ -194,6 +209,7 @@ public:
 		untouchable_start = -1;
 		kickable = 0;
 		kickable_start = -1;
+		flyable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -215,6 +231,9 @@ public:
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartKickable() { kickable = 1; kickable_start = GetTickCount64(); }
+	void StartFlying() { isFlying = true; flyable_start = GetTickCount64(); }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	bool GetCarryingState() { return isCarrying; }
+	bool GetFlyingState() { return isFlying; }
+	BOOLEAN GetIsOnPlatform() { return isOnPlatform; }
 };
