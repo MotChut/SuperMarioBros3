@@ -583,26 +583,48 @@ int CMario::GetAniIdTail()
 		else
 			if (vx == 0)
 			{
-				if (nx > 0) aniId = ID_ANI_TAIL_IDLE_RIGHT;
-				else aniId = ID_ANI_TAIL_IDLE_LEFT;
+				if (isCarrying == false)
+				{
+					if (nx > 0) aniId = ID_ANI_TAIL_IDLE_RIGHT;
+					else aniId = ID_ANI_TAIL_IDLE_LEFT;
+				}
+				else
+				{
+					if (nx > 0) aniId = ID_ANI_TAIL_CARRY_RIGHT_IDLE;
+					else aniId = ID_ANI_TAIL_CARRY_LEFT_IDLE;
+				}
 			}
 			else if (vx > 0)
 			{
 				if (ax < 0)
 					aniId = ID_ANI_TAIL_BRACE_RIGHT;
+				else if (ax == MARIO_ACCEL_RUN_X && isCarrying == true)
+					aniId = ID_ANI_TAIL_CARRY_RIGHT;
 				else if (ax == MARIO_ACCEL_RUN_X && vx == maxVx)
 					aniId = ID_ANI_TAIL_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
-					aniId = ID_ANI_TAIL_WALKING_RIGHT;
+				{
+					if (kickable == true)
+						aniId = ID_ANI_TAIL_KICK_RIGHT;
+					else
+						aniId = ID_ANI_TAIL_WALKING_RIGHT;
+				}
 			}
 			else // vx < 0
 			{
 				if (ax > 0)
 					aniId = ID_ANI_TAIL_BRACE_LEFT;
+				else if (ax == -MARIO_ACCEL_RUN_X && isCarrying == true)
+					aniId = ID_ANI_TAIL_CARRY_LEFT;
 				else if (ax == -MARIO_ACCEL_RUN_X && abs(vx) == abs(maxVx))
 					aniId = ID_ANI_TAIL_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx)
-					aniId = ID_ANI_TAIL_WALKING_LEFT;
+				{
+					if (kickable == true)
+						aniId = ID_ANI_TAIL_KICK_LEFT;
+					else 
+						aniId = ID_ANI_TAIL_WALKING_LEFT;
+				}
 			}
 
 	if (aniId == -1) aniId = ID_ANI_TAIL_IDLE_RIGHT;
