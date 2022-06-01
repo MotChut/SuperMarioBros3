@@ -49,6 +49,8 @@ void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 	}
 
 	// Carry Shell 
+	if (shell!= NULL && shell->GetState() == KOOPA_STATE_AWAKE)
+		isCarrying = false;
 	if (shell != NULL && shell->GetState() == KOOPA_STATE_CARRIED)
 	{
 		if (vx > 0)

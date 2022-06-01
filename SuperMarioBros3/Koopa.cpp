@@ -95,7 +95,7 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			shell_start = -1;
 		}
 	}
-	else if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL + 1)
+	else if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_SHELL + 1 || state == KOOPA_STATE_CARRIED)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_AWAKE)
 		{
