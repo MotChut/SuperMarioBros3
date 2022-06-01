@@ -136,12 +136,12 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
 	
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
-	//case OBJECT_TYPE_COIN: 
-	//{
-	//	/*int cointype = (int)atoi(tokens[3].c_str());
-	//	obj = new CCoin(x, y, cointype);
-	//	break;*/
-	//}
+	case OBJECT_TYPE_COIN: 
+	{
+		int cointype = (int)atoi(tokens[3].c_str());
+		obj = new CCoin(x, y, cointype);
+		break;
+	}
 	case OBJECT_TYPE_QUESTIONBLOCK: 
 	{
 		int block_type = (int)atoi(tokens[3].c_str());
@@ -319,12 +319,12 @@ void CPlayScene::Update(DWORD dt)
 	CGame *game = CGame::GetInstance();
 
 	cx -= game->GetBackBufferWidth() / 2;
-	cy -= game->GetBackBufferHeight() / 2;
 	
 	if (cx < 0) cx = 0;
 	else if (cx > Right_Edge - SCREEN_WIDTH) cx = Right_Edge - SCREEN_WIDTH;
 	
-	if (cy < 72) cy = 64;
+	if (cy < Cam_Y_Middle) cy = Cam_Y_Top;
+	else if (cy > Cam_Y_Top && cy < Cam_Y_Middle) cy -= game->GetBackBufferHeight() / 2;
 	else  cy = Cam_Y_Middle;
 	
 	CGame::GetInstance()->SetCamPos(cx, cy /*cy*/);

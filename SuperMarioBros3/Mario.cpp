@@ -232,7 +232,12 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 			if (koopa->GetState() != KOOPA_STATE_SHELL && koopa->GetState() != KOOPA_STATE_SHELL + 1 
 				&& kickable != 1 && koopa->GetState() != KOOPA_STATE_CARRIED)
 			{
-				if (level > MARIO_LEVEL_SMALL)
+				if (level == MARIO_LEVEL_TAIL)
+				{
+					level = MARIO_LEVEL_BIG;
+					StartUntouchable();
+				}
+				else if (level == MARIO_LEVEL_BIG)
 				{
 					level = MARIO_LEVEL_SMALL;
 					StartUntouchable();
@@ -604,7 +609,7 @@ int CMario::GetAniIdTail()
 					aniId = ID_ANI_TAIL_RUNNING_RIGHT;
 				else if (ax == MARIO_ACCEL_WALK_X || vx != maxVx)
 				{
-					if (kickable == true)
+					if (kickable)
 						aniId = ID_ANI_TAIL_KICK_RIGHT;
 					else
 						aniId = ID_ANI_TAIL_WALKING_RIGHT;
@@ -620,7 +625,7 @@ int CMario::GetAniIdTail()
 					aniId = ID_ANI_TAIL_RUNNING_LEFT;
 				else if (ax == -MARIO_ACCEL_WALK_X || vx != -maxVx)
 				{
-					if (kickable == true)
+					if (kickable)
 						aniId = ID_ANI_TAIL_KICK_LEFT;
 					else 
 						aniId = ID_ANI_TAIL_WALKING_LEFT;

@@ -28,7 +28,7 @@
 
 #define ID_ANI_KOOPA_RED_SHELL_MOVING	93500
 
-#define ID_ANI_KOOP_RED_SHELL_FLIPPED	93600
+#define ID_ANI_KOOPA_RED_SHELL_FLIPPED	93600
 
 
 
@@ -48,11 +48,17 @@ protected:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void Render();
 
-	virtual int IsCollidable() { return 1; };
+	virtual int IsCollidable() 
+	{ 
+		if (isFlipped)
+			return 0;
+		return 1; 
+	};
 	virtual int IsBlocking() { return 0; }
 	virtual void OnNoCollision(DWORD dt);
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	
 public:
 	CKoopa(float x, float y, int type = 0);

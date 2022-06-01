@@ -19,7 +19,12 @@ class CCoin : public CGameObject {
 	
 	bool flyalbe = false;
 public:
-	CCoin(float x, float y, int type = 0) : CGameObject(x, y) { this->coin_type = type; this->vy = COIN_SPEED; }
+	CCoin(float x, float y, int type = 0) : CGameObject(x, y) 
+	{ 
+		this->coin_type = type; 
+		if (coin_type == 1)
+			this->vy = COIN_SPEED; 
+	}
 	virtual void Render();
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);

@@ -1,4 +1,5 @@
 #include "Koopa.h"
+#include "Goomba.h"
 #include "Game.h"
 #include "Debug.h"
 
@@ -45,6 +46,9 @@ void CKoopa::OnNoCollision(DWORD dt)
 
 void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
+	if (dynamic_cast<CGoomba*>(e->obj))
+		OnCollisionWithGoomba(e);
+
 	if (!e->obj->IsBlocking()) return;
 
 	if (e->ny != 0)
@@ -54,6 +58,24 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (e->nx != 0)
 	{
 		vx = -vx;
+	}
+}
+
+void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
+{
+	CGoomba* goomba = dynamic_cast<CGoomba*>(e->obj);
+
+	if (goomba->GetState() != GOOMBA_STATE_FLIPPED && (state == KOOPA_STATE_SHELL_MOVING || state == KOOPA_STATE_CARRIED))
+	{
+		if (state == KOOPA_STATE_CARRIED)
+		{
+			isFlipped = true;
+			state = KOOPA_STATE_SHELL;
+		}
+		vx = 0;
+		ax = 0;
+		ay = KOOPA_GRAVITY;
+		goomba->SetState(GOOMBA_STATE_FLIPPED);
 	}
 }
 
@@ -103,6 +125,7 @@ void CKoopa::Render()
 		aniId = ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT;
 
 
+	//SHELL
 	if (type == 0 || type == 1) 
 	{
 		//aniId = ID_ANI_KOOPA_RED_SHELL;
@@ -115,6 +138,8 @@ void CKoopa::Render()
 			aniId = ID_ANI_KOOPA_RED_SHELL_MOVING;
 		else if (state == KOOPA_STATE_AWAKE)
 			aniId = ID_ANI_KOOPA_RED_SHELL_AWAKE;
+	
+		if (isFlipped)	aniId = ID_ANI_KOOPA_RED_SHELL_FLIPPED;
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
