@@ -1,7 +1,8 @@
 #pragma once
 #include "GameObject.h"
 
-#define KOOPA_GRAVITY 0.002f
+#define KOOPA_GRAVITY 0.0005f
+#define KOOPA_JUMP_SPEED	0.3f
 #define KOOPA_WALKING_SPEED 0.04f
 #define KOOPA_SHELL_MOVING_SPEED	0.2f
 
@@ -33,6 +34,10 @@
 
 #define ID_ANI_KOOPA_GREEN_SHELL_FLIPPED	91600
 
+//Fly Green
+#define ID_ANI_KOOPA_FLY_GREEN_WALKING_LEFT 92100
+#define ID_ANI_KOOPA_FLY_GREEN_WALKING_RIGHT 92200
+
 //Normal Red
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_LEFT 93100
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT 93200
@@ -56,6 +61,7 @@ protected:
 	bool isFlipped = false;
 
 	ULONGLONG shell_start;
+	BOOLEAN isOnPlatform = false;
 
 	virtual void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
@@ -78,6 +84,7 @@ public:
 	CKoopa(float x, float y, int type = 0);
 	virtual void SetState(int state);
 	virtual int GetType() { return type; }
+	virtual void SetType(int level) { type = level; }
 	virtual void SetDir(int dir) { this->dir = dir; }
 	virtual bool GetStateFlipped() { return isFlipped; }
 	virtual void SetStateFlipped(bool state) { isFlipped = state; }

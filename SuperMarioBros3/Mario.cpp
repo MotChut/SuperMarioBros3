@@ -179,7 +179,17 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	// Jump on top >> Koopa turns into shell and Mario deflects a bit 
 	if (e->ny < 0)
 	{
-		if (koopa->GetState() != KOOPA_STATE_SHELL)				// When Koopa is in turtle form
+		if (koopa->GetType() == 1)
+		{
+			koopa->SetType(0);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopa->GetType() == 3)
+		{
+			koopa->SetType(2);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopa->GetState() != KOOPA_STATE_SHELL)				// When Koopa is in turtle form
 		{
 			koopa->SetState(KOOPA_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;

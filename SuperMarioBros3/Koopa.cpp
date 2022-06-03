@@ -53,6 +53,13 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 
 	if (!e->obj->IsBlocking()) return;
 
+	if ((type == 1 || type == 3) && e->ny != 0 && e->obj->IsBlocking())
+	{
+		vy = 0;
+		ay = -ay;
+		if (e->ny < 0) isOnPlatform = true;
+	}
+
 	if (e->ny != 0)
 	{
 		vy = 0;
@@ -93,15 +100,22 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-
-
+	DebugOut(L"%f \n", vy);
+	if (type == 1 || type == 3)
+	{
+		if (vy <= -KOOPA_JUMP_SPEED)
+		{
+			vy = 0;
+			ay = -ay;
+		}
+	}
+	
 	if (isFlipped)
 	{
 		ax = 0;
 		vx = 0;
 		ay = KOOPA_GRAVITY;
 	}
-
 	else if (state == KOOPA_STATE_AWAKE)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT)
@@ -128,6 +142,9 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 			state = KOOPA_STATE_WALKING;
 	}		
 
+	isOnPlatform = false;
+	//ay = KOOPA_GRAVITY;
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
@@ -146,6 +163,11 @@ void CKoopa::Render()
 			aniId = ID_ANI_KOOPA_NORMAL_GREEN_WALKING_RIGHT;
 		break;
 	case 1:
+		if (state == KOOPA_STATE_WALKING)
+			aniId = ID_ANI_KOOPA_FLY_GREEN_WALKING_LEFT;
+		else if (state == KOOPA_STATE_WALKING + 1)
+			aniId = ID_ANI_KOOPA_FLY_GREEN_WALKING_RIGHT;
+		break;
 		break;
 	case 2:				//Normal Red
 		if (state == KOOPA_STATE_WALKING)
