@@ -179,32 +179,28 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	// Jump on top >> Koopa turns into shell and Mario deflects a bit 
 	if (e->ny < 0)
 	{
-		// Red Koopa
-		if (koopa->GetType() == 2)
+		if (koopa->GetState() != KOOPA_STATE_SHELL)				// When Koopa is in turtle form
 		{
-			if (koopa->GetState() != KOOPA_STATE_SHELL)				// When Koopa is in turtle form
-			{
-				koopa->SetState(KOOPA_STATE_SHELL);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
-			}
-			else if (koopa->GetState() == KOOPA_STATE_SHELL)		// When Koopa is in shell form
-			{
-				float koox, kooy;
-				koopa->GetPosition(koox, kooy);
+			koopa->SetState(KOOPA_STATE_SHELL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopa->GetState() == KOOPA_STATE_SHELL)		// When Koopa is in shell form
+		{
+			float koox, kooy;
+			koopa->GetPosition(koox, kooy);
 
-				if (this->x < koox)
-					koopa->SetDir(-1);
-				else
-					koopa->SetDir(1);
+			if (this->x < koox)
+				koopa->SetDir(-1);
+			else
+				koopa->SetDir(1);
 
-				koopa->SetState(KOOPA_STATE_SHELL_MOVING);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
-			}
-			else if (koopa->GetState() == KOOPA_STATE_SHELL_MOVING)	// When Koopa is in shell form and moving
-			{
-				koopa->SetState(KOOPA_STATE_SHELL);
-				vy = -MARIO_JUMP_DEFLECT_SPEED;
-			}
+			koopa->SetState(KOOPA_STATE_SHELL_MOVING);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
+		}
+		else if (koopa->GetState() == KOOPA_STATE_SHELL_MOVING)	// When Koopa is in shell form and moving
+		{
+			koopa->SetState(KOOPA_STATE_SHELL);
+			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
 	else // Collide X with Koopa

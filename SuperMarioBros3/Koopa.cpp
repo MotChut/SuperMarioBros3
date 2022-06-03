@@ -48,6 +48,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 {
 	if (dynamic_cast<CGoomba*>(e->obj))
 		OnCollisionWithGoomba(e);
+	else if (dynamic_cast<CKoopa*>(e->obj))
+		OnCollisionWithKoopa(e);
 
 	if (!e->obj->IsBlocking()) return;
 
@@ -72,10 +74,18 @@ void CKoopa::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			isFlipped = true;
 			state = KOOPA_STATE_SHELL;
 		}
-		vx = 0;
-		ax = 0;
-		ay = KOOPA_GRAVITY;
+
 		goomba->SetState(GOOMBA_STATE_FLIPPED);
+	}
+}
+
+void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
+{
+	CKoopa* koopa = dynamic_cast<CKoopa*>(e->obj);
+
+	if (state == KOOPA_STATE_SHELL_MOVING)
+	{
+		koopa->SetStateFlipped(true);
 	}
 }
 
@@ -84,7 +94,15 @@ void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	vy += ay * dt;
 	vx += ax * dt;
 
-	if (state == KOOPA_STATE_AWAKE)
+
+	if (isFlipped)
+	{
+		ax = 0;
+		vx = 0;
+		ay = KOOPA_GRAVITY;
+	}
+
+	else if (state == KOOPA_STATE_AWAKE)
 	{
 		if (GetTickCount64() - shell_start > KOOPA_SHELL_TIMEOUT)
 		{
@@ -119,16 +137,39 @@ void CKoopa::Render()
 {
 	int aniId = -1;
 	
-	if (state == KOOPA_STATE_WALKING)
-		aniId = ID_ANI_KOOPA_NORMAL_RED_WALKING_LEFT;
-	else if (state == KOOPA_STATE_WALKING + 1)
-		aniId = ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT;
+	switch (type)
+	{
+	case 0:				//Normal Green
+		if (state == KOOPA_STATE_WALKING)
+			aniId = ID_ANI_KOOPA_NORMAL_GREEN_WALKING_LEFT;
+		else if (state == KOOPA_STATE_WALKING + 1)
+			aniId = ID_ANI_KOOPA_NORMAL_GREEN_WALKING_RIGHT;
+		break;
+	case 1:
+		break;
+	case 2:				//Normal Red
+		if (state == KOOPA_STATE_WALKING)
+			aniId = ID_ANI_KOOPA_NORMAL_RED_WALKING_LEFT;
+		else if (state == KOOPA_STATE_WALKING + 1)
+			aniId = ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT;
+		break;
+	case 3:
+		break;
+	}
+	
 
 
 	//SHELL
 	if (type == 0 || type == 1) 
 	{
-		//aniId = ID_ANI_KOOPA_RED_SHELL;
+		if (state == KOOPA_STATE_SHELL || state == KOOPA_STATE_CARRIED)
+			aniId = ID_ANI_KOOPA_GREEN_SHELL;
+		else if (state == KOOPA_STATE_SHELL_MOVING)
+			aniId = ID_ANI_KOOPA_GREEN_SHELL_MOVING;
+		else if (state == KOOPA_STATE_AWAKE)
+			aniId = ID_ANI_KOOPA_GREEN_SHELL_AWAKE;
+
+		if (isFlipped)	aniId = ID_ANI_KOOPA_GREEN_SHELL_FLIPPED;
 	}
 	else if (type == 2 || type == 3)
 	{

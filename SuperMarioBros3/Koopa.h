@@ -20,6 +20,20 @@
 #define KOOPA_STATE_AWAKE	400
 #define KOOPA_STATE_CARRIED	500
 
+
+//ANIMATIONS
+//Normal Green
+#define ID_ANI_KOOPA_NORMAL_GREEN_WALKING_LEFT 91100
+#define ID_ANI_KOOPA_NORMAL_GREEN_WALKING_RIGHT 91200
+
+#define ID_ANI_KOOPA_GREEN_SHELL	91300
+#define ID_ANI_KOOPA_GREEN_SHELL_AWAKE	91400
+
+#define ID_ANI_KOOPA_GREEN_SHELL_MOVING	91500
+
+#define ID_ANI_KOOPA_GREEN_SHELL_FLIPPED	91600
+
+//Normal Red
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_LEFT 93100
 #define ID_ANI_KOOPA_NORMAL_RED_WALKING_RIGHT 93200
 										
@@ -29,7 +43,6 @@
 #define ID_ANI_KOOPA_RED_SHELL_MOVING	93500
 
 #define ID_ANI_KOOPA_RED_SHELL_FLIPPED	93600
-
 
 
 class CKoopa : public CGameObject
@@ -59,6 +72,7 @@ protected:
 
 	virtual void OnCollisionWith(LPCOLLISIONEVENT e);
 	virtual void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
+	virtual void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
 	
 public:
 	CKoopa(float x, float y, int type = 0);
@@ -66,4 +80,5 @@ public:
 	virtual int GetType() { return type; }
 	virtual void SetDir(int dir) { this->dir = dir; }
 	virtual bool GetStateFlipped() { return isFlipped; }
+	virtual void SetStateFlipped(bool state) { isFlipped = state; }
 };
