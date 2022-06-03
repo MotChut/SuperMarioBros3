@@ -47,6 +47,8 @@
 
 #define MARIO_STATE_LANDING	1100
 
+#define MARIO_STATE_HIT	1200
+
 
 #pragma region ANIMATION_ID
 // BIG MARIO
@@ -114,6 +116,8 @@
 #define ID_ANI_TAIL_CARRY_RIGHT	320000
 #define ID_ANI_TAIL_CARRY_LEFT	320001
 
+#define ID_ANI_TAIL_HIT_RIGHT	330000
+#define ID_ANI_TAIL_HIT_LEFT	330001
 // SMALL MARIO
 #define ID_ANI_MARIO_SMALL_IDLE_RIGHT 1100
 #define ID_ANI_MARIO_SMALL_IDLE_LEFT 1102
@@ -152,6 +156,7 @@
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
+#define MARIO_TAIL_BBOX_WIDTH 24
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
@@ -163,6 +168,7 @@
 
 #define MARIO_UNTOUCHABLE_TIME 2500
 #define MARIO_KICKABLE_TIME 100
+#define MARIO_HITTABLE_TIME 500
 #define MARIO_P_TIME	4000
 
 class CMario : public CGameObject
@@ -177,10 +183,12 @@ class CMario : public CGameObject
 	int dir = 1;			// -1: left, 1: right
 	int untouchable; 
 	int kickable;
+	int hittable;
 
 	ULONGLONG untouchable_start;
 	ULONGLONG kickable_start;
 	ULONGLONG flyable_start;
+	ULONGLONG hittable_start;
 	BOOLEAN isOnPlatform;
 
 	CKoopa* shell = NULL;
@@ -189,6 +197,7 @@ class CMario : public CGameObject
 	// Actions
 	bool isCarrying = false;
 	bool isFlying = false;
+	bool flyable = false;
 
 	void OnCollisionWithGoomba(LPCOLLISIONEVENT e);
 	void OnCollisionWithKoopa(LPCOLLISIONEVENT e);
@@ -216,8 +225,10 @@ public:
 		untouchable = 0;
 		untouchable_start = -1;
 		kickable = 0;
+		hittable = 0;
 		kickable_start = -1;
 		flyable_start = -1;
+		hittable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
 	}
@@ -239,6 +250,7 @@ public:
 	int GetLevel() { return level; }
 	void StartUntouchable() { untouchable = 1; untouchable_start = GetTickCount64(); }
 	void StartKickable() { kickable = 1; kickable_start = GetTickCount64(); }
+	void StartHittable() { hittable = 1; hittable_start = GetTickCount64(); }
 	void StartFlying() { isFlying = true; flyable_start = GetTickCount64(); }
 	void GetBoundingBox(float& left, float& top, float& right, float& bottom);
 	bool GetCarryingState() { return isCarrying; }

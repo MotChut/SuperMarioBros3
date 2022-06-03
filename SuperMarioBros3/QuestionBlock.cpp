@@ -1,5 +1,7 @@
 #include "QuestionBlock.h"
-#include "Mario.h"
+#include "Koopa.h"
+#include "Mushroom.h"
+#include "Leaf.h"
 #include "Debug.h"
 
 void CQuestionBlock::Render()
@@ -29,23 +31,6 @@ void CQuestionBlock::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
-/*void CQuestionBlock::OnCollisionWith(LPCOLLISIONEVENT e)
-{
-	DebugOut(L"Hey! \n");
-	if (dynamic_cast<CMario*>(e->obj))
-		OnCollisionWithMario(e);
-}
-
-void CQuestionBlock::OnCollisionWithMario(LPCOLLISIONEVENT e)
-{
-	CMario* player = dynamic_cast<CMario*>(e->obj);
-
-	if (this->hasItem && e->ny < 0)
-	{
-		this->SetHasItem(false);
-	}
-}
-*/
 
 void CQuestionBlock::GetBoundingBox(float& l, float& t, float& r, float& b)
 {

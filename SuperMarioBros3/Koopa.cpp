@@ -1,5 +1,8 @@
 #include "Koopa.h"
 #include "Goomba.h"
+#include "Mushroom.h"
+#include  "Leaf.h"
+#include "QuestionBlock.h"
 #include "Game.h"
 #include "Debug.h"
 
@@ -50,6 +53,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithGoomba(e);
 	else if (dynamic_cast<CKoopa*>(e->obj))
 		OnCollisionWithKoopa(e);
+	else if (dynamic_cast<CQuestionBlock*>(e->obj))
+		OnCollisionWithQuestionBlock(e);
 
 	if (!e->obj->IsBlocking()) return;
 
@@ -96,11 +101,59 @@ void CKoopa::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 }
 
+void CKoopa::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
+{
+	CQuestionBlock* qblock = dynamic_cast <CQuestionBlock*> (e->obj);
+	if (state != KOOPA_STATE_SHELL_MOVING) return;
+
+	if (e->nx > 0)
+	{
+		if (qblock->GetBlockType() == 1)		//Mushroom
+		{
+			qblock->SetHasItem(false);
+			float qblock_x, qblock_y;
+			qblock->GetPosition(qblock_x, qblock_y);
+
+			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+			CQuestionBlock* newquestionblock = new CQuestionBlock(qblock_x, qblock_y);
+
+			qblock->Delete();
+			newquestionblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+
+
+			CMushroom* newmushroom = new CMushroom(qblock_x, qblock_y - 32);
+			newquestionblock->SetHasItem(false);
+
+			thisscene->AddNewObject(newmushroom);
+			thisscene->AddNewObject(newquestionblock);
+		}
+		else if (qblock->GetBlockType() == 2)		//Leaf
+		{
+			qblock->SetHasItem(false);
+			float qblock_x, qblock_y;
+			qblock->GetPosition(qblock_x, qblock_y);
+
+			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+			CQuestionBlock* newquestionblock = new CQuestionBlock(qblock_x, qblock_y);
+
+			qblock->Delete();
+			newquestionblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+
+
+			CLeaf* newleaf = new CLeaf(qblock_x + 16, qblock_y - 32);
+			newquestionblock->SetHasItem(false);
+
+			thisscene->AddNewObject(newleaf);
+			thisscene->AddNewObject(newquestionblock);
+		}
+	}
+}
+
 void CKoopa::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	vy += ay * dt;
 	vx += ax * dt;
-	DebugOut(L"%f \n", vy);
+
 	if (type == 1 || type == 3)
 	{
 		if (vy <= -KOOPA_JUMP_SPEED)

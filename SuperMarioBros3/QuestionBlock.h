@@ -20,8 +20,6 @@ public:
 	virtual void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	virtual void GetBoundingBox(float& l, float& t, float& r, float& b);
 
-	//virtual void OnCollisionWith(LPCOLLISIONEVENT e);
-	//virtual void OnCollisionWithMario(LPCOLLISIONEVENT e);
 	void SetHasItem(bool state) { this->hasItem = state; }
 	bool HasItem() { return this->hasItem; }
 	int GetBlockType() { return this->block_type; }
