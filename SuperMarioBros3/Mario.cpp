@@ -147,7 +147,10 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 	{
 		if (goomba->GetState() != GOOMBA_STATE_DIE)
 		{
-			goomba->SetState(GOOMBA_STATE_DIE);
+			if (goomba->GetType() == 0 || goomba->GetType() == 1)
+				goomba->SetState(GOOMBA_STATE_DIE);
+			else if (goomba->GetType() == 2)
+				goomba->SetType(1);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
 		}
 	}
@@ -704,7 +707,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 	//DebugOutTitle(L"Coins: %d", coin);
 }

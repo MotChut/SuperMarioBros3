@@ -165,6 +165,9 @@
     <ClCompile Include="Leaf.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="TransparentBlock.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -264,6 +267,9 @@
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
     <ClInclude Include="Leaf.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="TransparentBlock.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
   </ItemGroup>

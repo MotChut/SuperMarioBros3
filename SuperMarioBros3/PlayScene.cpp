@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "QuestionBlock.h"
 #include "Koopa.h"
+#include "TransparentBlock.h"
 
 #include "GameMaps.h"
 
@@ -114,6 +115,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJET_TYPE_TRANSBLOCK: obj = new CTransparentBlock(x, y); break;
 	case OBJECT_TYPE_KOOPAS:
 	{
 		int koopaType = (int)atoi(tokens[3].c_str());
@@ -133,7 +135,11 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 		DebugOut(L"[INFO] Player object has been created!\n");
 		break;
 	
-	case OBJECT_TYPE_GOOMBA: obj = new CGoomba(x,y); break;
+	case OBJECT_TYPE_GOOMBA: 
+	{
+		int gootype = (int)atoi(tokens[3].c_str());
+		obj = new CGoomba(x, y, gootype); break;
+	}
 	
 	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
 	case OBJECT_TYPE_COIN: 

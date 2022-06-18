@@ -3,6 +3,7 @@
 #include "Mushroom.h"
 #include  "Leaf.h"
 #include "QuestionBlock.h"
+#include "TransparentBlock.h"
 #include "Game.h"
 #include "Debug.h"
 
@@ -55,6 +56,8 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithKoopa(e);
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
+	else if (dynamic_cast<CTransparentBlock*>(e->obj))
+		vx = -vx;
 
 	if (!e->obj->IsBlocking()) return;
 
@@ -62,6 +65,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	{
 		vy = 0;
 		ay = -ay;
+		
 		if (e->ny < 0) isOnPlatform = true;
 	}
 
