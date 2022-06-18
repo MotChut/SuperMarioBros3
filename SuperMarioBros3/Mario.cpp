@@ -7,6 +7,8 @@
 #include "Goomba.h"
 #include "Koopa.h"
 #include "Coin.h"
+#include "Brick.h" 
+#include "BrickPiece.h"
 #include "Portal.h"
 #include "Platform.h"
 #include "QuestionBlock.h"
@@ -136,6 +138,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithLeaf(e);
 	else if (dynamic_cast<CPortal*>(e->obj))
 		OnCollisionWithPortal(e);
+	else if (dynamic_cast<CBrick*>(e->obj))
+		OnCollisionWithBrick(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -299,6 +303,34 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 		objcoin->Delete();
 		coin++;
 	}
+}
+
+void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
+{
+	CBrick* objbrick = dynamic_cast<CBrick*>(e->obj);
+	float bx, by;
+	objbrick->GetPosition(bx, by);
+	
+	if ((e->nx != 0 && hittable == 1 && (y - by <= MARIO_ATTACK_ZONE)) || e->ny > 0)
+	{
+		objbrick->Delete();
+
+		CBrickPiece* leftp1 = new CBrickPiece(bx - PIECE_X_OFFSET, by - PIECE_Y_OFFSET, 0);
+		CBrickPiece* leftp2 = new CBrickPiece(bx - PIECE_X_OFFSET, by + PIECE_Y_OFFSET, 0);
+		CBrickPiece* rightp1 = new CBrickPiece(bx + PIECE_X_OFFSET, by - PIECE_Y_OFFSET, 1);
+		CBrickPiece* rightp2 = new CBrickPiece(bx + PIECE_X_OFFSET, by + PIECE_Y_OFFSET, 1);
+
+		LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+
+		thisscene->AddNewObject(leftp1);
+		thisscene->AddNewObject(leftp2);
+		thisscene->AddNewObject(rightp1);
+		thisscene->AddNewObject(rightp2);
+
+		hittable = -1;
+	}
+
+
 }
 
 void CMario:: OnCollisionWithMushroom(LPCOLLISIONEVENT e)
@@ -707,7 +739,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
 	//DebugOutTitle(L"Coins: %d", coin);
 }

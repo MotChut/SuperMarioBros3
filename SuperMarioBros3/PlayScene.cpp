@@ -115,7 +115,7 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
-	case OBJET_TYPE_TRANSBLOCK: obj = new CTransparentBlock(x, y); break;
+	case OBJECT_TYPE_TRANSBLOCK: obj = new CTransparentBlock(x, y); break;
 	case OBJECT_TYPE_KOOPAS:
 	{
 		int koopaType = (int)atoi(tokens[3].c_str());

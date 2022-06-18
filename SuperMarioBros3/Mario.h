@@ -156,9 +156,10 @@
 
 #define MARIO_BIG_BBOX_WIDTH  14
 #define MARIO_BIG_BBOX_HEIGHT 24
-#define MARIO_TAIL_BBOX_WIDTH 24
+#define MARIO_TAIL_BBOX_WIDTH 18
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
+
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
 
@@ -170,6 +171,8 @@
 #define MARIO_KICKABLE_TIME 100
 #define MARIO_HITTABLE_TIME 500
 #define MARIO_P_TIME	4000
+
+#define MARIO_ATTACK_ZONE	8
 
 class CMario : public CGameObject
 {
@@ -207,6 +210,8 @@ class CMario : public CGameObject
 	void OnCollisionWithLeaf(LPCOLLISIONEVENT e);
 	void OnCollisionWithPortal(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlatform(LPCOLLISIONEVENT e);
+	void OnCollisionWithBrick(LPCOLLISIONEVENT e);
+
 
 
 	int GetAniIdBig();
