@@ -4,7 +4,7 @@
 #include "Animation.h"
 #include "Animations.h"
 
-#define TB_BBOX_WIDTH 2
+#define TB_BBOX_WIDTH 16
 #define TB_BBOX_HEIGHT 16
 #define TB_ID_ANIMATION	60000
 

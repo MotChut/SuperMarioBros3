@@ -9,6 +9,7 @@
 #include "Coin.h"
 #include "Brick.h" 
 #include "BrickPiece.h"
+#include "Button.h"
 #include "Portal.h"
 #include "Platform.h"
 #include "QuestionBlock.h"
@@ -140,6 +141,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPortal(e);
 	else if (dynamic_cast<CBrick*>(e->obj))
 		OnCollisionWithBrick(e);
+	else if (dynamic_cast<CButton*>(e->obj))
+		OnCollisionWithButton(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -305,6 +308,23 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
+{
+	CButton* objbtn = dynamic_cast<CButton*>(e->obj);
+
+	if (!objbtn->GetDown() && e->ny <= 0)
+	{ 
+		float btnx, btny;
+		objbtn->GetPosition(btnx, btny);
+		objbtn->SetDown(true);
+		objbtn->SetPosition(btnx, btny + BUTTON_OFFSET);
+
+		LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+
+		thisscene->SetBonus(true);
+	}
+}
+
 void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 {
 	CBrick* objbrick = dynamic_cast<CBrick*>(e->obj);
@@ -313,8 +333,6 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 	
 	if ((e->nx != 0 && hittable == 1 && (y - by <= MARIO_ATTACK_ZONE)) || e->ny > 0)
 	{
-		objbrick->Delete();
-
 		CBrickPiece* leftp1 = new CBrickPiece(bx - PIECE_X_OFFSET, by - PIECE_Y_OFFSET, 0);
 		CBrickPiece* leftp2 = new CBrickPiece(bx - PIECE_X_OFFSET, by + PIECE_Y_OFFSET, 0);
 		CBrickPiece* rightp1 = new CBrickPiece(bx + PIECE_X_OFFSET, by - PIECE_Y_OFFSET, 1);
@@ -327,6 +345,17 @@ void CMario::OnCollisionWithBrick(LPCOLLISIONEVENT e)
 		thisscene->AddNewObject(rightp1);
 		thisscene->AddNewObject(rightp2);
 
+		if (objbrick->GetType() == 1)
+		{
+			CQuestionBlock* qblock = new CQuestionBlock(bx, by, 0);
+			qblock->SetHasItem(false);
+			CButton* btn = new CButton(bx, by - BUTTON_WIDTH);
+
+			thisscene->AddNewObject(qblock);
+			thisscene->AddNewObject(btn);
+		}
+
+		objbrick->Delete();
 		hittable = -1;
 	}
 

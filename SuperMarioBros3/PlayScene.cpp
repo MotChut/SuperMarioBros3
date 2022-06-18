@@ -138,10 +138,16 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	case OBJECT_TYPE_GOOMBA: 
 	{
 		int gootype = (int)atoi(tokens[3].c_str());
-		obj = new CGoomba(x, y, gootype); break;
+		obj = new CGoomba(x, y, gootype); 
+		break;
 	}
 	
-	case OBJECT_TYPE_BRICK: obj = new CBrick(x,y); break;
+	case OBJECT_TYPE_BRICK: 
+	{
+		int bricktype = (int)atoi(tokens[3].c_str());
+		obj = new CBrick(x, y, bricktype);
+		break;
+	}
 	case OBJECT_TYPE_COIN: 
 	{
 		int cointype = (int)atoi(tokens[3].c_str());
@@ -312,6 +318,16 @@ void CPlayScene::Update(DWORD dt)
 	{
 		/*if (dynamic_cast<CQuestionBlock*>(objects[i]))
 			DebugOut(L"This is block!!!!!!!!!!!!!!!!!!!! \n");*/
+		if (bonusMys) {
+			if (dynamic_cast<CBrick*>(objects[i]))
+			{
+				float tempx, tempy;
+				objects[i]->GetPosition(tempx, tempy);
+				objects[i]->Delete();
+				CCoin* brickcoin = new CCoin(tempx, tempy, 0);
+				objects.push_back(brickcoin);
+			}
+		}
 		objects[i]->Update(dt, &coObjects);
 	}
 

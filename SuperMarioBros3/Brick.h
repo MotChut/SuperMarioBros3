@@ -10,9 +10,12 @@
 #define BRICK_BBOX_HEIGHT 16
 
 class CBrick : public CGameObject {
+protected:
+	int type = 0;	//0: default, 1: contain mystery
 public:
-	CBrick(float x, float y) : CGameObject(x, y) {}
+	CBrick(float x, float y, int type) : CGameObject(x, y) { this->type = type; }
 	void Render();
-	void Update(DWORD dt) {}
+	void Update(DWORD dt) {};
 	void GetBoundingBox(float& l, float& t, float& r, float& b);
+	int GetType() { return type; }
 };

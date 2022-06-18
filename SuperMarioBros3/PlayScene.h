@@ -13,7 +13,8 @@ class CPlayScene: public CScene
 {
 protected: 
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;					
+	LPGAMEOBJECT player;			
+	bool bonusMys = false;
 
 	vector<LPGAMEOBJECT> objects;
 
@@ -42,6 +43,8 @@ public:
 	static bool IsGameObjectDeleted(const LPGAMEOBJECT& o);
 
 	void AddNewObject(LPGAMEOBJECT o) { this->objects.push_back(o); }
+
+	void SetBonus(bool state) { bonusMys = state; }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

@@ -57,7 +57,10 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 	else if (dynamic_cast<CQuestionBlock*>(e->obj))
 		OnCollisionWithQuestionBlock(e);
 	else if (dynamic_cast<CTransparentBlock*>(e->obj))
-		vx = -vx;
+	{
+		if (type == 2) vx = -vx;
+	}
+		
 
 	if (!e->obj->IsBlocking()) return;
 
