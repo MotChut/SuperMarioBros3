@@ -28,6 +28,7 @@
 //Camera
 #define Cam_Y_Middle	240
 #define Cam_Y_Top	64
+#define Cam_Y_Bottom	448
 
 #define Left_Edge	8
 #define Right_Edge	2816

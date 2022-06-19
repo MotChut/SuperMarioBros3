@@ -174,6 +174,9 @@
     <ClCompile Include="Button.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Pipe.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -284,6 +287,12 @@
     <ClInclude Include="Button.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Pipe.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Plain.h">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="scene0005.txt" />
@@ -302,6 +311,7 @@
     <Text Include="Leaf.txt" />
     <Text Include="BrickPiece.txt" />
     <Text Include="Button.txt" />
+    <Text Include="Pipe.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

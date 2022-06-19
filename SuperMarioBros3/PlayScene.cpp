@@ -11,6 +11,7 @@
 #include "Platform.h"
 #include "QuestionBlock.h"
 #include "Koopa.h"
+#include "Pipe.h"
 #include "TransparentBlock.h"
 
 #include "GameMaps.h"
@@ -115,6 +116,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_PIPE:
+	{
+		int pipeType = (int)atoi(tokens[3].c_str());
+
+		obj = new CPipe(x, y, pipeType);
+		break;
+	}
 	case OBJECT_TYPE_TRANSBLOCK: obj = new CTransparentBlock(x, y); break;
 	case OBJECT_TYPE_KOOPAS:
 	{
@@ -185,8 +193,10 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 	{
 		float r = (float)atof(tokens[3].c_str());
 		float b = (float)atof(tokens[4].c_str());
+		float desx = (float)atof(tokens[5].c_str());
+		float desy = (float)atof(tokens[6].c_str());
 		int scene_id = atoi(tokens[5].c_str());
-		obj = new CPortal(x, y, r, b, scene_id);
+		obj = new CPortal(x, y, r, b, desx, desy, scene_id);
 	}
 	break;
 
@@ -347,7 +357,8 @@ void CPlayScene::Update(DWORD dt)
 	
 	if (cy < Cam_Y_Middle) cy = Cam_Y_Top;
 	else if (cy > Cam_Y_Top && cy < Cam_Y_Middle) cy -= game->GetBackBufferHeight() / 2;
-	else  cy = Cam_Y_Middle;
+	else if (cy > Cam_Y_Bottom) cy = Cam_Y_Bottom;
+	else cy = Cam_Y_Middle;
 	
 	CGame::GetInstance()->SetCamPos(cx, cy /*cy*/);
 

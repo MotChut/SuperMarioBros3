@@ -17,7 +17,6 @@ void CBrickPiece::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
 	x += vx;
 	y += vy;
-	DebugOut(L"%f", vy);
 
 	if (GetTickCount64() - delete_start > DELETE_TIME)
 	{

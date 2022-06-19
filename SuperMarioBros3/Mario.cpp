@@ -11,6 +11,8 @@
 #include "BrickPiece.h"
 #include "Button.h"
 #include "Portal.h"
+#include "Pipe.h"
+
 #include "Platform.h"
 #include "QuestionBlock.h"
 #include "Mushroom.h"
@@ -111,7 +113,7 @@ void CMario::OnNoCollision(DWORD dt)
 
 void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 {
-	if (dynamic_cast<CPlatform*>(e->obj) && dynamic_cast<CPlatform*>(e->obj)->getType() != 0)
+	if (dynamic_cast<CPlatform*>(e->obj))
 		OnCollisionWithPlatform(e);
 
 	if (e->ny != 0 && e->obj->IsBlocking())
@@ -456,7 +458,16 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPortal(LPCOLLISIONEVENT e)
 {
 	CPortal* p = (CPortal*)e->obj;
-	CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	float desx, desy;
+	p->GetDesPos(desx, desy);
+
+	if (desx == -1 && desy == -1)
+		CGame::GetInstance()->InitiateSwitchScene(p->GetSceneId());
+	else
+	{
+		x = desx;
+		y = desy;
+	}
 }
 
 void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
@@ -465,6 +476,10 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 
 	switch (platform->getType()) 
 	{
+	case 0:
+		if (isSitting && e->ny < 0)
+			platform->SetState(PLATFORM_PASSABLE);
+		break;
 	case 1:
 		if (e->ny < 0)
 		{
@@ -768,7 +783,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 	//DebugOutTitle(L"Coins: %d", coin);
 }

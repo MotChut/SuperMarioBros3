@@ -58,7 +58,7 @@ void CKoopa::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithQuestionBlock(e);
 	else if (dynamic_cast<CTransparentBlock*>(e->obj))
 	{
-		if (type == 2) vx = -vx;
+		if (type == 2 && e->obj->GetState() != KOOPA_STATE_SHELL_MOVING) vx = -vx;
 	}
 		
 
