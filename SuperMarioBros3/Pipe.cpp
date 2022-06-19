@@ -3,8 +3,8 @@
 void CPipe::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();
-	if (type == 0) animations->Get(ID_ANI_PIPE)->Render(x, y);
-	else animations->Get(ID_ANI_PIPE_BLACK)->Render(x, y);
+	if (type == 0 || type == 1) animations->Get(ID_ANI_PIPE)->Render(x, y);
+	else if (type == 2)animations->Get(ID_ANI_PIPE_BLACK)->Render(x, y);
 	//RenderBoundingBox();
 }
 

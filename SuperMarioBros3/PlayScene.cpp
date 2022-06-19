@@ -12,6 +12,7 @@
 #include "QuestionBlock.h"
 #include "Koopa.h"
 #include "Pipe.h"
+#include "Plain.h"
 #include "TransparentBlock.h"
 
 #include "GameMaps.h"
@@ -116,6 +117,14 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_PLAIN:
+	{
+		int plaintype = (int)atoi(tokens[3].c_str());
+		
+		obj = new CPlain(x, y, plaintype);
+		break;
+	}
+		break;
 	case OBJECT_TYPE_PIPE:
 	{
 		int pipeType = (int)atoi(tokens[3].c_str());
