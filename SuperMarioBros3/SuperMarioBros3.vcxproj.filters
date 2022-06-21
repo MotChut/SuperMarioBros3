@@ -180,6 +180,9 @@
     <ClCompile Include="Plain.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="FireBullet.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -296,6 +299,9 @@
     <ClInclude Include="Plain.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
+    <ClInclude Include="FireBullet.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="scene0005.txt" />
@@ -316,6 +322,7 @@
     <Text Include="Button.txt" />
     <Text Include="Pipe.txt" />
     <Text Include="Plain.txt" />
+    <Text Include="FireBullet.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

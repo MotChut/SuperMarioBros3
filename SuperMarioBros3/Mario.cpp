@@ -12,6 +12,8 @@
 #include "Button.h"
 #include "Portal.h"
 #include "Pipe.h"
+#include "Plain.h"
+#include "FireBullet.h"
 
 #include "Platform.h"
 #include "QuestionBlock.h"
@@ -145,6 +147,10 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBrick(e);
 	else if (dynamic_cast<CButton*>(e->obj))
 		OnCollisionWithButton(e);
+	else if (dynamic_cast<CPlain*>(e->obj))
+		OnCollisionWithPlain(e);
+	else if (dynamic_cast<CBullet*>(e->obj))
+		OnCollisionWithBullet(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -300,6 +306,30 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 	}
 }
 
+void CMario::OnCollisionWithPlain(LPCOLLISIONEVENT e)
+{
+	CPlain* objplain = dynamic_cast<CPlain*>(e->obj);
+	DebugOut(L"K");
+	if (hittable == 1)
+	{
+		if (e->nx < 0 && nx > 0)
+			objplain->Delete();
+		else if (e->nx > 0 && nx < 0)
+			objplain->Delete();
+	}
+	else if (untouchable == 0)
+	{
+		if (level == MARIO_LEVEL_TAIL)
+			level = MARIO_LEVEL_BIG;
+		else if (level == MARIO_LEVEL_BIG)
+			level = MARIO_LEVEL_SMALL;
+		else
+			SetState(MARIO_STATE_DIE);
+
+		StartUntouchable();
+	}
+}
+
 void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 {
 	CCoin* objcoin = dynamic_cast<CCoin*>(e->obj);
@@ -308,6 +338,25 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 		objcoin->Delete();
 		coin++;
 	}
+}
+
+void CMario::OnCollisionWithBullet(LPCOLLISIONEVENT e)
+{
+	CBullet* objbullet = dynamic_cast<CBullet*>(e->obj);
+	
+	if (untouchable == 0)
+	{
+		if (level == MARIO_LEVEL_TAIL)
+			level = MARIO_LEVEL_BIG;
+		else if (level == MARIO_LEVEL_BIG)
+			level = MARIO_LEVEL_SMALL;
+		else
+			SetState(MARIO_STATE_DIE);
+
+		StartUntouchable();
+	}	
+
+	objbullet->Delete();
 }
 
 void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)

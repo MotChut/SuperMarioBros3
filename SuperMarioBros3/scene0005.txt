@@ -13,6 +13,7 @@ Koopa.txt
 Button.txt
 Pipe.txt
 Plain.txt
+FireBullet.txt
 #
 
 [MAPS]
@@ -96,7 +97,7 @@ Plain.txt
 
 
 #PLAIN
-7	360	348	0
+7	360	373	2
 
 #PIPE
 9	360	376	0
@@ -227,4 +228,4 @@ Plain.txt
 
 #Portal 
 50	2240	192	2272	208	2081	496	5
-
+50	2304	480	2336	496	2304	352	5
