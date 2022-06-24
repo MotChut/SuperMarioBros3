@@ -309,7 +309,7 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 void CMario::OnCollisionWithPlain(LPCOLLISIONEVENT e)
 {
 	CPlain* objplain = dynamic_cast<CPlain*>(e->obj);
-	DebugOut(L"K");
+	
 	if (hittable == 1)
 	{
 		if (e->nx < 0 && nx > 0)
@@ -337,6 +337,7 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 	{
 		objcoin->Delete();
 		coin++;
+		CGame::GetInstance()->GetCurrentScene()->SetCoin(coin);
 	}
 }
 
@@ -460,6 +461,7 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 			qblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
 
 			coin++;
+			CGame::GetInstance()->GetCurrentScene()->SetCoin(coin);
 		}
 		else if (qblock->GetBlockType() == 1)		//Mushroom
 		{
@@ -961,6 +963,7 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		CGame::GetInstance()->GetCurrentScene()->SetLife(--live);
 		break;
 	}
 

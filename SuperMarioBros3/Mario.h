@@ -182,6 +182,7 @@ class CMario : public CGameObject
 	float ay;				// acceleration on y 
 
 	int level; 
+	int live;
 
 	int dir = 1;			// -1: left, 1: right
 	int untouchable; 
@@ -228,6 +229,7 @@ public:
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 
+		live = 5;
 		level = MARIO_LEVEL_TAIL;
 		untouchable = 0;
 		untouchable_start = -1;

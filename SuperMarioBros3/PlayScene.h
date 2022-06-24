@@ -6,6 +6,7 @@
 #include "Brick.h"
 #include "Mario.h"
 #include "Goomba.h"
+#include "Hud.h"
 //#include "Koopas.h"
 
 
@@ -13,7 +14,8 @@ class CPlayScene: public CScene
 {
 protected: 
 	// A play scene has to have player, right? 
-	LPGAMEOBJECT player;			
+	LPGAMEOBJECT player;	
+	CHud* hud;
 	bool bonusMys = false;
 
 	vector<LPGAMEOBJECT> objects;
@@ -45,6 +47,8 @@ public:
 	void AddNewObject(LPGAMEOBJECT o) { this->objects.push_back(o); }
 
 	void SetBonus(bool state) { bonusMys = state; }
+	void SetCoin(int c) { this->hud->SetCoin(c); }
+	void SetLife(int l) { this->hud->SetLife(l); }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

@@ -160,6 +160,6 @@ void CPlain::Render()
 	}
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 

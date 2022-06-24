@@ -183,6 +183,12 @@
     <ClCompile Include="FireBullet.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="HudItem.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -302,6 +308,12 @@
     <ClInclude Include="FireBullet.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
+    <ClInclude Include="HudItem.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="scene0005.txt" />
@@ -323,6 +335,7 @@
     <Text Include="Pipe.txt" />
     <Text Include="Plain.txt" />
     <Text Include="FireBullet.txt" />
+    <Text Include="Hud.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

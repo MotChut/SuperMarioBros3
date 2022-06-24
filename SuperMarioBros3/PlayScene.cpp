@@ -14,6 +14,8 @@
 #include "Pipe.h"
 #include "Plain.h"
 #include "TransparentBlock.h"
+#include "HudItem.h"
+#include "Hud.h"
 
 #include "GameMaps.h"
 
@@ -29,6 +31,7 @@ CPlayScene::CPlayScene(int id, LPCWSTR filePath):
 	CScene(id, filePath)
 {
 	player = NULL;
+	hud = NULL;
 	key_handler = new CSampleKeyHandler(this);
 }
 
@@ -117,6 +120,25 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_HUD_ITEM:
+	{
+		int type = atoi(tokens[3].c_str());
+
+		obj = new CHudItem(x, y, type);
+		hud->AddProperty(dynamic_cast<CHudItem*>(obj));
+		break;
+	}
+	case OBJECT_TYPE_HUD:
+	{
+		float ccx, ccy;
+		CGame::GetInstance()->GetCamPos(ccx, ccy);
+
+		int time = atoi(tokens[3].c_str());
+
+		obj = new CHud(x, y, 0, 0, 0, 15, 0, time);
+		this->hud = (CHud*)(obj);
+		break;
+	}
 	case OBJECT_TYPE_PLAIN:
 	{
 		int plaintype = (int)atoi(tokens[3].c_str());
@@ -356,6 +378,7 @@ void CPlayScene::Update(DWORD dt)
 	// Update camera to follow mario
 	float cx, cy;
 	player->GetPosition(cx, cy);
+	
 	
 	CGame *game = CGame::GetInstance();
 

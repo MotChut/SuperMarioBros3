@@ -158,6 +158,8 @@
     <ClCompile Include="GameMaps.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Goomba.cpp" />
+    <ClCompile Include="Hud.cpp" />
+    <ClCompile Include="HudItem.cpp" />
     <ClCompile Include="Koopa.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="main.cpp" />
@@ -197,6 +199,8 @@
     <ClInclude Include="GameMaps.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Goomba.h" />
+    <ClInclude Include="Hud.h" />
+    <ClInclude Include="HudItem.h" />
     <ClInclude Include="KeyEventHandler.h" />
     <ClInclude Include="Koopa.h" />
     <ClInclude Include="Leaf.h" />
@@ -225,6 +229,7 @@
     <Text Include="BrickPiece.txt" />
     <Text Include="Button.txt" />
     <Text Include="FireBullet.txt" />
+    <Text Include="Hud.txt" />
     <Text Include="Koopa.txt" />
     <Text Include="Leaf.txt" />
     <Text Include="Mushroom.txt" />

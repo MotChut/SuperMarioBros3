@@ -23,6 +23,9 @@ public:
 	virtual void Render() = 0; 
 	virtual void AddNewObject(LPGAMEOBJECT o) = 0;
 	virtual void SetBonus(bool o) = 0;
+	virtual void SetCoin(int c) = 0;
+	virtual void SetLife(int l) = 0;
+
 	virtual LPGAMEOBJECT GetPlayer() = 0;
 };
 typedef CScene * LPSCENE;
