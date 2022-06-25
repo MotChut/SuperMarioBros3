@@ -49,6 +49,7 @@ public:
 	void SetBonus(bool state) { bonusMys = state; }
 	void SetCoin(int c) { this->hud->SetCoin(c); }
 	void SetLife(int l) { this->hud->SetLife(l); }
+	void SetScore(int s) { this->hud->SetScore(s); }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

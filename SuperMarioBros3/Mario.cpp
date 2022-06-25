@@ -167,6 +167,8 @@ void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
 			else if (goomba->GetType() == 2)
 				goomba->SetType(1);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 		}
 	}
 	else // hit by Goomba
@@ -216,16 +218,25 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 		{
 			koopa->SetType(0);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 		}
 		else if (koopa->GetType() == 3)
 		{
 			koopa->SetType(2);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 		}
 		else if (koopa->GetState() != KOOPA_STATE_SHELL)				// When Koopa is in turtle form
 		{
 			koopa->SetState(KOOPA_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 		}
 		else if (koopa->GetState() == KOOPA_STATE_SHELL)		// When Koopa is in shell form
 		{
@@ -239,11 +250,17 @@ void CMario::OnCollisionWithKoopa(LPCOLLISIONEVENT e)
 
 			koopa->SetState(KOOPA_STATE_SHELL_MOVING);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 		}
 		else if (koopa->GetState() == KOOPA_STATE_SHELL_MOVING)	// When Koopa is in shell form and moving
 		{
 			koopa->SetState(KOOPA_STATE_SHELL);
 			vy = -MARIO_JUMP_DEFLECT_SPEED;
+
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 		}
 	}
 	else // Collide X with Koopa
@@ -313,9 +330,17 @@ void CMario::OnCollisionWithPlain(LPCOLLISIONEVENT e)
 	if (hittable == 1)
 	{
 		if (e->nx < 0 && nx > 0)
+		{
 			objplain->Delete();
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
+		}
 		else if (e->nx > 0 && nx < 0)
+		{
 			objplain->Delete();
+			score += HUNDRED;
+			CGame::GetInstance()->GetCurrentScene()->SetScore(score);
+		}
 	}
 	else if (untouchable == 0)
 	{
@@ -425,6 +450,8 @@ void CMario:: OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 	}
 
 	objmushroom->Delete();
+	score += THOUSAND;
+	CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 }
 
 void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
@@ -438,6 +465,8 @@ void CMario::OnCollisionWithLeaf(LPCOLLISIONEVENT e)
 	}
 
 	objleaf->Delete();
+	score += THOUSAND;
+	CGame::GetInstance()->GetCurrentScene()->SetScore(score);
 }
 
 void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)

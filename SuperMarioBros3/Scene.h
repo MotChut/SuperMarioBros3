@@ -25,6 +25,7 @@ public:
 	virtual void SetBonus(bool o) = 0;
 	virtual void SetCoin(int c) = 0;
 	virtual void SetLife(int l) = 0;
+	virtual void SetScore(int s) = 0;
 
 	virtual LPGAMEOBJECT GetPlayer() = 0;
 };

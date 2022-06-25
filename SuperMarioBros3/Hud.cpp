@@ -116,6 +116,21 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		properties[i]->SetPosition(ccx + 58 + 8 * (i - 9), ccy + 214);
 	}
 
+	//SCORE
+	int stemp, sunit, si = 17;
+	stemp = score;
+
+	while (stemp != 0)
+	{
+		sunit = stemp % 10;
+		properties[si--]->SetType(sunit);
+		stemp /= 10;
+	};
+
+	for (int i = 11; i < 18; i++)
+		properties[i]->SetPosition(ccx + 82 + 8 * (i - 11), ccy + 214);
+	
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }

@@ -7,6 +7,9 @@
 
 #include "debug.h"
 
+#define HUNDRED	100
+#define THOUSAND	1000
+
 #define MARIO_WALKING_SPEED		0.1f
 #define MARIO_RUNNING_SPEED		0.3f
 #define MARIO_CARRY_SPEED	0.2f
@@ -197,6 +200,7 @@ class CMario : public CGameObject
 
 	CKoopa* shell = NULL;
 	int coin; 
+	int score;
 
 	// Actions
 	bool isCarrying = false;
@@ -240,6 +244,7 @@ public:
 		hittable_start = -1;
 		isOnPlatform = false;
 		coin = 0;
+		score = 0;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();
