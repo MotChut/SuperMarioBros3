@@ -10,6 +10,8 @@ CHud::CHud(float x, float y, int speed, int flyable, int coin, int life, int sco
 	this->score = score;
 	this->time = time;
 	properties = {};
+
+	time_start = 0;
 }
 
 void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -130,6 +132,22 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (int i = 11; i < 18; i++)
 		properties[i]->SetPosition(ccx + 82 + 8 * (i - 11), ccy + 214);
 	
+	//TIME
+	time_start = GetTickCount64();
+	int timepass = (int)time_start / 1000;
+	timepass = timepass % 10;
+	int tin, ti = 20;
+
+	int timeleft = time - timepass;
+	while (timeleft != 0)
+	{
+		tin = timeleft % 10;
+		properties[ti--]->SetType(tin);
+		timeleft /= 10;
+	}
+
+	for (int i = 18; i < 21; i++)
+		properties[i]->SetPosition(ccx + 154 + 8 * (i - 18), ccy + 214);
 
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
