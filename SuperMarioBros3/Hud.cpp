@@ -11,7 +11,7 @@ CHud::CHud(float x, float y, int speed, int flyable, int coin, int life, int sco
 	this->time = time;
 	properties = {};
 
-	time_start = 0;
+	time_start = GetTickCount64();
 }
 
 void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -133,10 +133,10 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		properties[i]->SetPosition(ccx + 82 + 8 * (i - 11), ccy + 214);
 	
 	//TIME
-	time_start = GetTickCount64();
-	int timepass = (int)time_start / 1000;
-	timepass = timepass % 10;
-	int tin, ti = 20;
+	
+	int timepass = (int)(GetTickCount64() / 1000 - time_start / 1000);
+	//timepass = timepass % 10;
+	int tin = 0, ti = 20;
 
 	int timeleft = time - timepass;
 	while (timeleft != 0)

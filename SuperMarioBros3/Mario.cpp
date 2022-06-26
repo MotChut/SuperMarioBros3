@@ -556,7 +556,7 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 
 	switch (platform->getType()) 
 	{
-	case 0:
+	case 3:
 		if (isSitting && e->ny < 0)
 			platform->SetState(PLATFORM_PASSABLE);
 		break;

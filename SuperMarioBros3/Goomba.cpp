@@ -161,7 +161,7 @@ void CGoomba::Render()
 		aniId = ID_ANI_GOOMBA_FLIP_RED;
 
 	CAnimations::GetInstance()->Get(aniId)->Render(x, y);
-	RenderBoundingBox();
+	//RenderBoundingBox();
 }
 
 void CGoomba::SetState(int state)
