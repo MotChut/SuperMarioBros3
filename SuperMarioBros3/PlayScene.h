@@ -50,6 +50,7 @@ public:
 	void SetCoin(int c) { this->hud->SetCoin(c); }
 	void SetLife(int l) { this->hud->SetLife(l); }
 	void SetScore(int s) { this->hud->SetScore(s); }
+	void SetBonusGift(int g) { this->hud->SetBonusGift(g); }
 };
 
 typedef CPlayScene* LPPLAYSCENE;

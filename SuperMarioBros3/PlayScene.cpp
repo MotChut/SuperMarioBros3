@@ -16,6 +16,7 @@
 #include "TransparentBlock.h"
 #include "HudItem.h"
 #include "Hud.h"
+#include "BonusItem.h"
 
 #include "GameMaps.h"
 
@@ -120,6 +121,13 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 	switch (object_type)
 	{
+	case OBJECT_TYPE_BONUS_ITEM:
+	{
+		int type = atoi(tokens[3].c_str());
+
+		obj = new CBonusItem(x, y, type);
+		break;
+	}
 	case OBJECT_TYPE_HUD_ITEM:
 	{
 		int type = atoi(tokens[3].c_str());

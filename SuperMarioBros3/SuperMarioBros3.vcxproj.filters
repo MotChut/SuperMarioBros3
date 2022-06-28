@@ -189,6 +189,9 @@
     <ClCompile Include="Hud.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="BonusItem.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -312,6 +315,9 @@
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
     <ClInclude Include="Hud.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="BonusItem.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
   </ItemGroup>

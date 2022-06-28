@@ -19,7 +19,7 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	float ccx, ccy;
 	CGame::GetInstance()->GetCamPos(ccx, ccy);
 
-	x = ccx + 144;
+	x = ccx + 143;
 	y = ccy + 210;
 
 	float cvx = 0, cvy = 0;
@@ -149,9 +149,24 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	for (int i = 18; i < 21; i++)
 		properties[i]->SetPosition(ccx + 154 + 8 * (i - 18), ccy + 214);
 
+	for (int i = 21; i < 24; i++)
+		properties[i]->SetPosition(ccx + 197 + 24 * (i - 21), ccy + 210);
+
 	CGameObject::Update(dt, coObjects);
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
+
+void CHud::SetBonusGift(int bonus)
+{
+	if (properties[21]->GetType() == -1)
+		properties[21]->SetType(bonus);
+	else if (properties[22]->GetType() == -1)
+		properties[22]->SetType(bonus);
+	else if (properties[23]->GetType() == -1)
+		properties[23]->SetType(bonus);
+	
+}
+
 void CHud::Render()
 {
 	CAnimations* animations = CAnimations::GetInstance();

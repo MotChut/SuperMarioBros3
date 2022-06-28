@@ -14,6 +14,7 @@
 #include "Pipe.h"
 #include "Plain.h"
 #include "FireBullet.h"
+#include "BonusItem.h"
 
 #include "Platform.h"
 #include "QuestionBlock.h"
@@ -151,6 +152,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithPlain(e);
 	else if (dynamic_cast<CBullet*>(e->obj))
 		OnCollisionWithBullet(e);
+	else if (dynamic_cast<CBonusItem*>(e->obj))
+		OnCollisionWithBonusItem(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -363,6 +366,30 @@ void CMario::OnCollisionWithCoin(LPCOLLISIONEVENT e)
 		objcoin->Delete();
 		coin++;
 		CGame::GetInstance()->GetCurrentScene()->SetCoin(coin);
+	}
+}
+
+void CMario::OnCollisionWithBonusItem(LPCOLLISIONEVENT e)
+{
+	CBonusItem* objitem = dynamic_cast<CBonusItem*>(e->obj);
+	if (objitem->GetRanState() == 1)
+	{
+		objitem->SetRanState(0);
+		vy = -vy;
+		switch (objitem->GetType())
+		{
+		case 0:
+			CGame::GetInstance()->GetCurrentScene()->SetBonusGift(12);
+			break;
+		case 1:
+			CGame::GetInstance()->GetCurrentScene()->SetBonusGift(13);
+			break;
+		case 2:
+			CGame::GetInstance()->GetCurrentScene()->SetBonusGift(14);
+			break;
+		}
+
+		objitem->Delete();	
 	}
 }
 

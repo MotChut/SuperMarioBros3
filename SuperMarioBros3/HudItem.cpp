@@ -7,50 +7,6 @@ CHudItem::CHudItem(float x, float y, int type) : CGameObject(x, y)
 
 void CHudItem::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 {
-	switch (type)
-	{
-	case 0:
-		
-		break;
-	case 1:
-		
-		break;
-	case 2:
-		
-		break;
-	case 3:
-		
-		break;
-	case 4:
-		
-		break;
-	case 5:
-		
-	case 6:
-		
-	case 7:
-		
-	case 8:
-		
-	case 9:
-		
-		break;
-	case 10:
-		
-		break;
-
-	case 11:
-		break;
-	case 12:
-		break;
-	case 13:
-		break;
-	case 14:
-		break;
-	}
-
-	CGameObject::Update(dt, coObjects);
-	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 void CHudItem::Render()
 {
@@ -96,15 +52,19 @@ void CHudItem::Render()
 		ani = ANI_FLYABLE;
 		break;
 	case 12:
+		ani = ANI_MUSHROOM;
 		break;
 	case 13:
+		ani = ANI_FLOWER;
 		break;
 	case 14:
+		ani = ANI_STAR;
 		break;
 	}
 
-	if (visible == 1)
+	if (visible == 1 && (type != -1))
 		animations->Get(ani)->Render(x, y);
+
 	//RenderBoundingBox();
 }
 
@@ -123,12 +83,12 @@ void CHudItem::GetBoundingBox(float& l, float& t, float& r, float& b)
 	case 8:
 	case 9:
 	case 10:
+	case 11:
 		l = x - HUD_ITEM_BBOX_WIDTH / 2;
 		t = y - HUD_ITEM_BBOX_HEIGHT / 2;
 		r = l + HUD_ITEM_BBOX_WIDTH;
 		b = t + HUD_ITEM_BBOX_HEIGHT;
 		break;
-	case 11:
 	case 12:
 	case 13:
 	case 14:
@@ -136,8 +96,6 @@ void CHudItem::GetBoundingBox(float& l, float& t, float& r, float& b)
 		t = y - HUD_GIFT_SIZE / 2;
 		r = l + HUD_GIFT_SIZE;
 		b = t + HUD_GIFT_SIZE;
-		break;
-	case 15:
 		break;
 	}
 }

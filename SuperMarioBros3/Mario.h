@@ -219,7 +219,7 @@ class CMario : public CGameObject
 	void OnCollisionWithButton(LPCOLLISIONEVENT e);
 	void OnCollisionWithPlain(LPCOLLISIONEVENT e);
 	void OnCollisionWithBullet(LPCOLLISIONEVENT e);
-
+	void OnCollisionWithBonusItem(LPCOLLISIONEVENT e);
 
 	int GetAniIdBig();
 	int GetAniIdSmall();

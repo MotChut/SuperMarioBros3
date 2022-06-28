@@ -18,7 +18,7 @@ protected:
 	int speed;
 	int flyable;
 	int coin;
-	int life; 
+	int life;
 	int score;
 	int time;
 
@@ -27,6 +27,7 @@ protected:
 	vector<LPHUDITEM> properties;	//0->5: speed, 6: flyable
 									//7->8: coin, 9->10: life
 									//11->17: score, 18->20: time
+									//21->23: bonus
 public:
 	CHud(float x, float y, int speed, int flyable, int coin, int life, int score, int time);
 	void Render();
@@ -40,4 +41,5 @@ public:
 	void SetCoin(int coin) { this->coin = coin; }
 	void SetLife(int life) { this->life = life; }
 	void SetScore(int score) { this->score = score; }
+	void SetBonusGift(int gift);
 };
