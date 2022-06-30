@@ -20,6 +20,7 @@
 #include "QuestionBlock.h"
 #include "Mushroom.h"
 #include "Leaf.h"
+#include "WorldItem.h"
 
 #include "Collision.h"
 #include "PlayScene.h"
@@ -27,84 +28,86 @@
 void CMario::Update(DWORD dt, vector<LPGAMEOBJECT> *coObjects)
 {
 	// Update velocity
-	vy += ay * dt;
-	vx += ax * dt;
+	if (state != MARIO_STATE_MAP && state != MARIO_STATE_MAP_TRANS)
+	{
+		vy += ay * dt;
+		vx += ax * dt;
 
-	if (abs(vx) > abs(maxVx))	vx = maxVx;
-	//DebugOut(L"%f %i %i\n", vx, isFlying, isOnPlatform);
-	// Stop Mario leaving the map
-	if (x <= Left_Edge)
-	{
-		vx = 0;
-		x += Left_Push;
-	} 
-	else if (x >= Right_Edge - 32)
-	{
-		vx = 0;
-		x -= Left_Push;
-	}
-	else if (y <= Top_Edge)
-	{
-		vy = 0;
-		y += Left_Push;
-	}
-	
-	// Hitting State
-	if (GetTickCount64() - hittable_start > MARIO_HITTABLE_TIME)
-	{
-		hittable = 0;
-		hittable_start = -1;
-	}
-
-	// Flying State
-	if (GetTickCount64() - flyable_start > MARIO_P_TIME)
-	{
-		isFlying = false;
-		flyable = false;
-		flyable_start = -1;
-	}
-
-	// Carry Shell 
-	if (shell!= NULL && shell->GetState() == KOOPA_STATE_AWAKE)
-		isCarrying = false;
-	if (shell != NULL && shell->GetState() == KOOPA_STATE_CARRIED)
-	{
-		if (vx > 0)
+		if (abs(vx) > abs(maxVx))	vx = maxVx;
+		//DebugOut(L"%f %i %i\n", vx, isFlying, isOnPlatform);
+		// Stop Mario leaving the map
+		if (x <= Left_Edge)
 		{
-			shell->SetPosition(x + 16.0f, y - 1.0f);
-			shell->SetDir(-1);
+			vx = 0;
+			x += Left_Push;
 		}
-		else if (vx < 0)
+		else if (x >= Right_Edge - 32)
 		{
-			shell->SetPosition(x - 16.0f, y - 1.0f);
-			shell->SetDir(1);
+			vx = 0;
+			x -= Left_Push;
 		}
-		else
+		else if (y <= Top_Edge)
 		{
-			float koox, kooy;
-			shell->GetPosition(koox, kooy);
-			shell->SetPosition(koox, y - 1.0f);
+			vy = 0;
+			y += Left_Push;
 		}
+
+		// Hitting State
+		if (GetTickCount64() - hittable_start > MARIO_HITTABLE_TIME)
+		{
+			hittable = 0;
+			hittable_start = -1;
+		}
+
+		// Flying State
+		if (GetTickCount64() - flyable_start > MARIO_P_TIME)
+		{
+			isFlying = false;
+			flyable = false;
+			flyable_start = -1;
+		}
+
+		// Carry Shell 
+		if (shell != NULL && shell->GetState() == KOOPA_STATE_AWAKE)
+			isCarrying = false;
+		if (shell != NULL && shell->GetState() == KOOPA_STATE_CARRIED)
+		{
+			if (vx > 0)
+			{
+				shell->SetPosition(x + 16.0f, y - 1.0f);
+				shell->SetDir(-1);
+			}
+			else if (vx < 0)
+			{
+				shell->SetPosition(x - 16.0f, y - 1.0f);
+				shell->SetDir(1);
+			}
+			else
+			{
+				float koox, kooy;
+				shell->GetPosition(koox, kooy);
+				shell->SetPosition(koox, y - 1.0f);
+			}
+		}
+
+
+		// Untouchable when received attack
+		if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME)
+		{
+			untouchable_start = 0;
+			untouchable = 0;
+		}
+
+		// Kick Shell
+		if (GetTickCount64() - kickable_start > MARIO_KICKABLE_TIME)
+		{
+			kickable_start = 0;
+			kickable = 0;
+		}
+
+		isOnPlatform = false;
+		ay = MARIO_GRAVITY;
 	}
-
-
-	// Untouchable when received attack
-	if (GetTickCount64() - untouchable_start > MARIO_UNTOUCHABLE_TIME) 
-	{
-		untouchable_start = 0;
-		untouchable = 0;
-	}
-
-	// Kick Shell
-	if (GetTickCount64() - kickable_start > MARIO_KICKABLE_TIME)
-	{
-		kickable_start = 0;
-		kickable = 0;
-	}
-
-	isOnPlatform = false;
-	ay = MARIO_GRAVITY;
-
 	CCollision::GetInstance()->Process(this, dt, coObjects);
 }
 
@@ -154,6 +157,8 @@ void CMario::OnCollisionWith(LPCOLLISIONEVENT e)
 		OnCollisionWithBullet(e);
 	else if (dynamic_cast<CBonusItem*>(e->obj))
 		OnCollisionWithBonusItem(e);
+	else if (dynamic_cast<CWorldItem*>(e->obj))
+		OnCollisionWithWorldItem(e);
 }
 
 void CMario::OnCollisionWithGoomba(LPCOLLISIONEVENT e)
@@ -390,6 +395,7 @@ void CMario::OnCollisionWithBonusItem(LPCOLLISIONEVENT e)
 		}
 
 		objitem->Delete();	
+		CGame::GetInstance()->InitiateSwitchScene(7);
 	}
 }
 
@@ -426,6 +432,36 @@ void CMario::OnCollisionWithButton(LPCOLLISIONEVENT e)
 		LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
 
 		thisscene->SetBonus(true);
+	}
+}
+
+void CMario::OnCollisionWithWorldItem(LPCOLLISIONEVENT e)
+{
+	CWorldItem* objitem = dynamic_cast<CWorldItem*>(e->obj);
+	switch (objitem->GetType())
+	{
+	case 0:
+	case 1:
+	case 2:
+	case 3:
+	case 4:
+	case 5:
+	case 6:
+	case 8:
+		if (vx > 0) x += 14;
+		else if (vx < 0) x -= 14;
+		else if (vy > 0) y += 14;
+		else if (vy < 0) y -= 14;
+		if (objitem->GetType() != 8)
+			state = MARIO_STATE_MAP_TRANS;
+		else 
+			state = MARIO_STATE_MAP;
+
+		vx = vy = 0;
+		break;
+	default:
+		state = MARIO_STATE_MAP;
+		break;
 	}
 }
 
@@ -610,7 +646,9 @@ void CMario::OnCollisionWithPlatform(LPCOLLISIONEVENT e)
 int CMario::GetAniIdSmall()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
+	if (state == MARIO_STATE_MAP || state == MARIO_STATE_MAP_TRANS)
+		aniId = ID_ANI_SMALL_MAP;
+	else if (!isOnPlatform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
@@ -695,7 +733,9 @@ int CMario::GetAniIdSmall()
 int CMario::GetAniIdBig()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
+	if (state == MARIO_STATE_MAP || state == MARIO_STATE_MAP_TRANS)
+		aniId = ID_ANI_MARIO_MAP;
+	else if (!isOnPlatform)
 	{
 		if (abs(ax) == MARIO_ACCEL_RUN_X)
 		{
@@ -775,7 +815,9 @@ int CMario::GetAniIdBig()
 int CMario::GetAniIdTail()
 {
 	int aniId = -1;
-	if (!isOnPlatform)
+	if (state == MARIO_STATE_MAP || state == MARIO_STATE_MAP_TRANS)
+		aniId = ID_ANI_TAIL_MAP;
+	else if (!isOnPlatform)
 	{
 		if (isFlying)
 		{
@@ -890,7 +932,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	//RenderBoundingBox();
+	RenderBoundingBox();
 	
 	//DebugOutTitle(L"Coins: %d", coin);
 }
@@ -1028,7 +1070,14 @@ void CMario::SetState(int state)
 
 void CMario::GetBoundingBox(float &left, float &top, float &right, float &bottom)
 {
-	if (level == MARIO_LEVEL_TAIL)
+	if (state == MARIO_STATE_MAP)
+	{
+		left = x - MARIO_MAP_SIZE / 2;
+		top = y - MARIO_MAP_SIZE / 2;
+		right = left + MARIO_MAP_SIZE;
+		bottom = top + MARIO_MAP_SIZE;
+	}
+	else if (level == MARIO_LEVEL_TAIL)
 	{
 		if (isSitting)
 		{

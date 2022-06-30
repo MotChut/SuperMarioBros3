@@ -28,7 +28,14 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 		p->GetSpeed(cvx, cvy);
 
 	//SPEED
-	if (abs(cvx) >= MARIO_RUNNING_SPEED && ( p->GetState() == 400 || p->GetState() == 500) 
+	if (p->GetState() == -100)
+	{
+		for (int i = 0; i < 6; i++)
+			properties[i]->SetVisible(0);
+
+		properties[6]->SetVisible(0);
+	}
+	else if (abs(cvx) >= MARIO_RUNNING_SPEED && ( p->GetState() == 400 || p->GetState() == 500) 
 		|| (p->GetState() == 1000 || abs(cvx) == MARIO_FLY_SPEED))
 	{
 		for (int i = 0; i < 6; i++)
@@ -44,6 +51,8 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (int i = 5; i < 6; i++)
 			properties[i]->SetVisible(0);
+
+		properties[6]->SetVisible(0);
 	}
 	else if (abs(cvx) >= MARIO_RUNNING_SPEED * 4/6)
 	{
@@ -52,6 +61,8 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (int i = 4; i < 6; i++)
 			properties[i]->SetVisible(0);
+
+		properties[6]->SetVisible(0);
 	}
 	else if (abs(cvx) >= MARIO_RUNNING_SPEED * 3/6)
 	{
@@ -60,6 +71,8 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (int i = 3; i < 6; i++)
 			properties[i]->SetVisible(0);
+
+		properties[6]->SetVisible(0);
 	}
 	else if (abs(cvx) >= MARIO_RUNNING_SPEED * 2 / 6)
 	{
@@ -68,6 +81,8 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (int i = 2; i < 6; i++)
 			properties[i]->SetVisible(0);
+
+		properties[6]->SetVisible(0);
 	}
 	else if (abs(cvx) >= MARIO_RUNNING_SPEED * 1 / 6)
 	{
@@ -76,6 +91,8 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 		for (int i = 1; i < 6; i++)
 			properties[i]->SetVisible(0);
+
+		properties[6]->SetVisible(0);
 	}
 	else
 	{
@@ -139,7 +156,7 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 	int tin = 0, ti = 20;
 
 	int timeleft = time - timepass;
-	while (timeleft != 0)
+	while (timeleft > 0)
 	{
 		tin = timeleft % 10;
 		properties[ti--]->SetType(tin);

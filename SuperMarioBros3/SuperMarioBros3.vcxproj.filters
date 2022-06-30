@@ -204,6 +204,9 @@
     <ClCompile Include="WorldMap.cpp">
       <Filter>Game Framework\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="WorldItem.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -344,6 +347,9 @@
     <ClInclude Include="WorldMap.h">
       <Filter>Game Framework\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="WorldItem.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="scene0005.txt" />
@@ -368,6 +374,8 @@
     <Text Include="Hud.txt" />
     <Text Include="intro.txt" />
     <Text Include="TitleItem.txt" />
+    <Text Include="World.txt" />
+    <Text Include="WorldItem.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

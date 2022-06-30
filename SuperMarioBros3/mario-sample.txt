@@ -8,6 +8,9 @@ height	240
 [TITLE]
 6	intro.txt
 
+[WORLD]
+7	World.txt
+
 [SCENES]
 1	scene01.txt
 2	scene02.txt
@@ -22,3 +25,4 @@ height	240
 30	Resources\HUD.png
 40	Resources\Title.png
 50	Resources\World.png
+60	Resources\WorldItem.png

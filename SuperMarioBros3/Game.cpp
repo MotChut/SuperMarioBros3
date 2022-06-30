@@ -8,6 +8,7 @@
 #include "Animations.h"
 #include "PlayScene.h"
 #include "Title.h"
+#include "WorldMap.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -440,6 +441,7 @@ void CGame::ProcessKeyboard()
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_TEXTURES 3
 #define GAME_FILE_SECTION_TITLE 4
+#define GAME_FILE_SECTION_WORLD	5
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -461,6 +463,18 @@ void CGame::_ParseSection_TITLE(string line)
 	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
 
 	LPSCENE scene = new CTitle(id, path);
+	scenes[id] = scene;
+}
+
+void CGame::_ParseSection_WORLD(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	int id = atoi(tokens[0].c_str());
+	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
+
+	LPSCENE scene = new CWorldMap(id, path);
 	scenes[id] = scene;
 }
 
@@ -499,6 +513,7 @@ void CGame::Load(LPCWSTR gameFile)
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[TEXTURES]") { section = GAME_FILE_SECTION_TEXTURES; continue; }
 		if (line == "[TITLE]") { section = GAME_FILE_SECTION_TITLE; continue; }
+		if (line == "[WORLD]") { section = GAME_FILE_SECTION_WORLD; continue; }
 		if (line == "[SCENES]") { section = GAME_FILE_SECTION_SCENES; continue; }
 		if (line[0] == '[') 
 		{ 
@@ -514,6 +529,7 @@ void CGame::Load(LPCWSTR gameFile)
 		{
 		case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
 		case GAME_FILE_SECTION_TITLE: _ParseSection_TITLE(line); break;
+		case GAME_FILE_SECTION_WORLD: _ParseSection_WORLD(line); break;
 		case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
 		case GAME_FILE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
 		}

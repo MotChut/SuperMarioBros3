@@ -184,6 +184,7 @@
     <ClCompile Include="TItleKey.cpp" />
     <ClCompile Include="TransparentBlock.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="WorldItem.cpp" />
     <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +233,7 @@
     <ClInclude Include="TitleKey.h" />
     <ClInclude Include="TransparentBlock.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="WorldItem.h" />
     <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>
@@ -257,6 +259,8 @@
     <Text Include="scene01.txt" />
     <Text Include="scene02.txt" />
     <Text Include="TitleItem.txt" />
+    <Text Include="World.txt" />
+    <Text Include="WorldItem.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png" />
