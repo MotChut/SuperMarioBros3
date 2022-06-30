@@ -1,0 +1,25 @@
+# list of object assets to load in this scene
+[ASSETS]
+platform.txt
+Koopa.txt
+TitleItem.txt
+#
+
+[MAPS]
+1	Resources\Maps\Title_Back.txt	Resources\Maps\Title_Front.txt	Resources\Maps\TilesetConfig_1_1.txt	Resources\Maps\World_1_1.png	
+
+[OBJECTS]
+# type	x	y	extra_settings per object type
+# type: 0 = Mario , 1 = Brick, 2 = Goomba, 3 = Koopas
+# See OBJECT_TYPE constants in AssetIDs.h
+
+3	-64	200	0
+3	-32	200	0
+3	0	200	0
+
+5	-80	208	16	16	1	60000	60000	60000	0
+5	-64	224	16	16	40	60000	60000	60000	0
+
+14	128	112	0
+14	128	128	2
+14	64	156	1

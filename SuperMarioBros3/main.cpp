@@ -55,7 +55,10 @@ void Render()
 	ID3D10RenderTargetView* pRenderTargetView = g->GetRenderTargetView();
 	ID3DX10Sprite* spriteHandler = g->GetSpriteHandler();
 
-	pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+	if (dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer()))
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, BACKGROUND_COLOR);
+	else 
+		pD3DDevice->ClearRenderTargetView(pRenderTargetView, TITLE_COLOR);
 
 	spriteHandler->Begin(D3DX10_SPRITE_SORT_TEXTURE);
 

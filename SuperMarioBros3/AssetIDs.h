@@ -8,7 +8,8 @@
 #define ID_TEX_ENEMY 10
 #define ID_TEX_MISC 20
 #define ID_TEX_HUD	30
-
+#define ID_TEX_TITLE	40
+#define ID_TEX_WORLD	50
 
 #define OBJECT_TYPE_MARIO	0
 #define OBJECT_TYPE_BRICK	1
@@ -24,6 +25,7 @@
 #define OBJECT_TYPE_HUD	11
 #define OBJECT_TYPE_HUD_ITEM	12
 #define OBJECT_TYPE_BONUS_ITEM	13
+#define OBJECT_TYPE_TITLE_ITEM	14
 
 #define OBJECT_TYPE_TILES 10
 
@@ -181,6 +183,9 @@
 #define ID_FLOWER	28400
 #define ID_STAR	28500
 
+#define ID_TITLE	29000
+#define ID_CURSOR	29100
+#define ID_VERSION	29200
 
 
 #define ID_SPRITE_GOOMBA 30000

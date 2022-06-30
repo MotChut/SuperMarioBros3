@@ -1,12 +1,14 @@
 [SETTINGS]
-start	5
+start	6
 width	288
 height	240
 # 640 480
 #id	type	file
 # type: 0: intro, 1: play scene 
+[TITLE]
+6	intro.txt
+
 [SCENES]
-0	intro.txt
 1	scene01.txt
 2	scene02.txt
 5	scene0005.txt
@@ -18,3 +20,5 @@ height	240
 10	Resources\enemies.png
 20	Resources\Maps\World_1_1.png
 30	Resources\HUD.png
+40	Resources\Title.png
+50	Resources\World.png

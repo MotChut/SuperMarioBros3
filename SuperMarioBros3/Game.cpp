@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "Animations.h"
 #include "PlayScene.h"
+#include "Title.h"
 
 CGame * CGame::__instance = NULL;
 
@@ -438,7 +439,7 @@ void CGame::ProcessKeyboard()
 #define GAME_FILE_SECTION_SETTINGS 1
 #define GAME_FILE_SECTION_SCENES 2
 #define GAME_FILE_SECTION_TEXTURES 3
-
+#define GAME_FILE_SECTION_TITLE 4
 
 void CGame::_ParseSection_SETTINGS(string line)
 {
@@ -449,6 +450,18 @@ void CGame::_ParseSection_SETTINGS(string line)
 		next_scene = atoi(tokens[1].c_str());
 	else
 		DebugOut(L"[ERROR] Unknown game setting: %s\n", ToWSTR(tokens[0]).c_str());
+}
+
+void CGame::_ParseSection_TITLE(string line)
+{
+	vector<string> tokens = split(line);
+
+	if (tokens.size() < 2) return;
+	int id = atoi(tokens[0].c_str());
+	LPCWSTR path = ToLPCWSTR(tokens[1]);   // file: ASCII format (single-byte char) => Wide Char
+
+	LPSCENE scene = new CTitle(id, path);
+	scenes[id] = scene;
 }
 
 void CGame::_ParseSection_SCENES(string line)
@@ -485,6 +498,7 @@ void CGame::Load(LPCWSTR gameFile)
 
 		if (line == "[SETTINGS]") { section = GAME_FILE_SECTION_SETTINGS; continue; }
 		if (line == "[TEXTURES]") { section = GAME_FILE_SECTION_TEXTURES; continue; }
+		if (line == "[TITLE]") { section = GAME_FILE_SECTION_TITLE; continue; }
 		if (line == "[SCENES]") { section = GAME_FILE_SECTION_SCENES; continue; }
 		if (line[0] == '[') 
 		{ 
@@ -499,6 +513,7 @@ void CGame::Load(LPCWSTR gameFile)
 		switch (section)
 		{
 		case GAME_FILE_SECTION_SETTINGS: _ParseSection_SETTINGS(line); break;
+		case GAME_FILE_SECTION_TITLE: _ParseSection_TITLE(line); break;
 		case GAME_FILE_SECTION_SCENES: _ParseSection_SCENES(line); break;
 		case GAME_FILE_SECTION_TEXTURES: _ParseSection_TEXTURES(line); break;
 		}
@@ -514,9 +529,10 @@ void CGame::SwitchScene()
 {
 	if (next_scene < 0 || next_scene == current_scene) return; 
 
-	DebugOut(L"[INFO] Switching to scene %d\n", next_scene);
+	DebugOut(L"[INFO] Switching to scene %d %i\n", next_scene, current_scene);
 
-	scenes[current_scene]->Unload();
+	if (current_scene != 0)
+		scenes[current_scene]->Unload();
 
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();

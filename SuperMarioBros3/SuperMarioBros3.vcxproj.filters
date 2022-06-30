@@ -192,6 +192,18 @@
     <ClCompile Include="BonusItem.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="Title.cpp">
+      <Filter>Game Framework\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TItleKey.cpp">
+      <Filter>Game Framework\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="TItleItem.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="WorldMap.cpp">
+      <Filter>Game Framework\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -320,6 +332,18 @@
     <ClInclude Include="BonusItem.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
+    <ClInclude Include="Title.h">
+      <Filter>Game Framework\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleKey.h">
+      <Filter>Game Framework\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleItem.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="WorldMap.h">
+      <Filter>Game Framework\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="scene0005.txt" />
@@ -342,6 +366,8 @@
     <Text Include="Plain.txt" />
     <Text Include="FireBullet.txt" />
     <Text Include="Hud.txt" />
+    <Text Include="intro.txt" />
+    <Text Include="TitleItem.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png">

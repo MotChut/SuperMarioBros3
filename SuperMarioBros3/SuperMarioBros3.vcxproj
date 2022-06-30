@@ -179,8 +179,12 @@
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Tiles.cpp" />
+    <ClCompile Include="Title.cpp" />
+    <ClCompile Include="TItleItem.cpp" />
+    <ClCompile Include="TItleKey.cpp" />
     <ClCompile Include="TransparentBlock.cpp" />
     <ClCompile Include="Utils.cpp" />
+    <ClCompile Include="WorldMap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h" />
@@ -223,8 +227,12 @@
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Tiles.h" />
+    <ClInclude Include="Title.h" />
+    <ClInclude Include="TitleItem.h" />
+    <ClInclude Include="TitleKey.h" />
     <ClInclude Include="TransparentBlock.h" />
     <ClInclude Include="Utils.h" />
+    <ClInclude Include="WorldMap.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="brick.txt" />
@@ -232,6 +240,7 @@
     <Text Include="Button.txt" />
     <Text Include="FireBullet.txt" />
     <Text Include="Hud.txt" />
+    <Text Include="intro.txt" />
     <Text Include="Koopa.txt" />
     <Text Include="Leaf.txt" />
     <Text Include="Mushroom.txt" />
@@ -247,6 +256,7 @@
     <Text Include="scene0005.txt" />
     <Text Include="scene01.txt" />
     <Text Include="scene02.txt" />
+    <Text Include="TitleItem.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\bbox.png" />
