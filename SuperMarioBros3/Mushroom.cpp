@@ -1,10 +1,11 @@
 #include "Mushroom.h"
 #include "Debug.h"
 
-CMushroom::CMushroom(float x, float y) :CGameObject(x, y)
+CMushroom::CMushroom(float x, float y, int type) :CGameObject(x, y)
 {
 	this->vx = MUSHROOM_SPEED;
 	this->vy = MUSHROOM_GRAVITY;
+	this->type = type;
 }
 
 void CMushroom::GetBoundingBox(float& left, float& top, float& right, float& bottom)
@@ -59,7 +60,10 @@ void CMushroom::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 void CMushroom::Render()
 {
-	CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM)->Render(x, y);
+	if (type == 0)
+		CAnimations::GetInstance()->Get(ID_ANI_MUSHROOM)->Render(x, y);
+	else 
+		CAnimations::GetInstance()->Get(ID_ANI_LIFE_UP)->Render(x, y);
 	//RenderBoundingBox();
 }
 

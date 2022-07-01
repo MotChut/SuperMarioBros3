@@ -516,10 +516,18 @@ void CMario:: OnCollisionWithMushroom(LPCOLLISIONEVENT e)
 {
 	CMushroom* objmushroom = dynamic_cast<CMushroom*>(e->obj);
 
-	if (level == MARIO_LEVEL_SMALL)
+	if (objmushroom->GetType() == 0)
 	{
-		y = y - Push_Up_Platform * 2;
-		level = MARIO_LEVEL_BIG;
+		if (level == MARIO_LEVEL_SMALL)
+		{
+			y = y - Push_Up_Platform * 2;
+			level = MARIO_LEVEL_BIG;
+		}
+	}
+	else if (objmushroom->GetType() == 1)
+	{
+		live++;
+		CGame::GetInstance()->GetCurrentScene()->SetLife(live);
 	}
 
 	objmushroom->Delete();
@@ -601,6 +609,25 @@ void CMario::OnCollisionWithQuestionBlock(LPCOLLISIONEVENT e)
 			newquestionblock->SetHasItem(false);
 
 			thisscene->AddNewObject(newleaf);
+			thisscene->AddNewObject(newquestionblock);
+		}
+		else if (qblock->GetBlockType() == 3)		//LIFE_UP
+		{
+			qblock->SetHasItem(false);
+			float qblock_x, qblock_y;
+			qblock->GetPosition(qblock_x, qblock_y);
+
+			LPSCENE thisscene = CGame::GetInstance()->GetCurrentScene();
+			CQuestionBlock* newquestionblock = new CQuestionBlock(qblock_x, qblock_y);
+
+			qblock->Delete();
+			newquestionblock->SetPosition(qblock_x, qblock_y - QUESTIONBLOCK_OFFSET);
+
+
+			CMushroom* newmushroom = new CMushroom(qblock_x, qblock_y - 32, 1);
+			newquestionblock->SetHasItem(false);
+
+			thisscene->AddNewObject(newmushroom);
 			thisscene->AddNewObject(newquestionblock);
 		}
 	}

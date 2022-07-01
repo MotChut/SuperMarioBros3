@@ -12,7 +12,7 @@
 
 class CQuestionBlock : public CGameObject {
 	float base_y;
-	int block_type;				// 0: coin, 1: mushroom, 2: leaf, 3: mush/leaf
+	int block_type;				// 0: coin, 1: mushroom, 2: leaf, 3: mush/leaf, 4: life up
 	bool hasItem = true;
 public:
 	CQuestionBlock(float x, float y, int type = 0) : CGameObject(x, y) { this->block_type = type; this->base_y = y; }
