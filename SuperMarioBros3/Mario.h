@@ -172,8 +172,7 @@
 #define MARIO_BIG_SITTING_BBOX_WIDTH  14
 #define MARIO_BIG_SITTING_BBOX_HEIGHT 16
 
-#define MARIO_MAP_SIZE	14
-
+#define MARIO_MAP_SIZE	15
 
 #define MARIO_SIT_HEIGHT_ADJUST ((MARIO_BIG_BBOX_HEIGHT-MARIO_BIG_SITTING_BBOX_HEIGHT)/2)
 
@@ -197,6 +196,7 @@ class CMario : public CGameObject
 
 	int level; 
 	int live;
+	int bonusItem[3] = { -1, -1, -1 };
 
 	int dir = 1;			// -1: left, 1: right
 	int untouchable; 
@@ -245,8 +245,8 @@ public:
 		ax = 0.0f;
 		ay = MARIO_GRAVITY; 
 
-		live = 5;
-		level = MARIO_LEVEL_TAIL;
+		live = 4;
+		level = MARIO_LEVEL_SMALL;
 		untouchable = 0;
 		untouchable_start = -1;
 		kickable = 0;
@@ -257,6 +257,17 @@ public:
 		isOnPlatform = false;
 		coin = 0;
 		score = 0;
+
+		int c, l, s, b1, b2, b3, lv;
+		CGame::GetInstance()->GetCurrentScene()->GetInfo(c, l, s, b1, b2, b3, lv);
+		
+		coin = c;
+		live = l;
+		score = s;
+		bonusItem[0] = b1;
+		bonusItem[1] = b2;
+		bonusItem[2] = b3;
+		level = lv;
 	}
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void Render();

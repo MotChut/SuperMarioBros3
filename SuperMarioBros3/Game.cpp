@@ -552,6 +552,7 @@ void CGame::SwitchScene()
 
 	CSprites::GetInstance()->Clear();
 	CAnimations::GetInstance()->Clear();
+	
 
 	current_scene = next_scene;
 	LPSCENE s = scenes[next_scene];
@@ -561,6 +562,21 @@ void CGame::SwitchScene()
 
 void CGame::InitiateSwitchScene(int scene_id)
 {
+	if (current_scene != 0)
+	{
+		int c, l, sc, b1, b2, b3, level;
+		if (current_scene == 7)
+		{
+			scenes[7]->GetInfo(c, l, sc, b1, b2, b3, level);
+			scenes[5]->SetInfoHud(c, l, sc, b1, b2, b3, level);
+		}
+		else if (current_scene == 5)
+		{	
+			scenes[5]->GetInfo(c, l, sc, b1, b2, b3, level);
+			scenes[7]->SetInfoHud(c, l, sc, b1, b2, b3, level);
+		}
+	}
+
 	next_scene = scene_id;
 }
 

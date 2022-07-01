@@ -40,6 +40,8 @@ public:
 	void SetScore(int s) {}
 	void SetBonusGift(int g) {}
 	void AddNewObject(LPGAMEOBJECT o) {}
+	void SetInfoHud(int c, int l, int s, int b1, int b2, int b3, int level) {}
+	void GetInfo(int& c, int& l, int& s, int& b1, int& b2, int& b3, int& level) {}
 	LPGAMEOBJECT GetPlayer() { return cursor; }
 };
 typedef CTitle* LPTITLE;

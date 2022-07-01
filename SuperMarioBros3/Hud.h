@@ -4,6 +4,7 @@
 #include "Animation.h"
 #include "Animations.h"
 #include "HudItem.h"
+#include "InfoHud.h"
 
 #define ANI_HUD	260000
 
@@ -21,6 +22,7 @@ protected:
 	int life;
 	int score;
 	int time;
+	InfoHud *info = NULL;
 
 	ULONGLONG time_start;
 
@@ -29,7 +31,7 @@ protected:
 									//11->17: score, 18->20: time
 									//21->23: bonus
 public:
-	CHud(float x, float y, int speed, int flyable, int coin, int life, int score, int time);
+	CHud(float x, float y, int speed, int flyable, int coin, int life, int score, int time, int b1, int b2, int b3, InfoHud *info = NULL);
 	void Render();
 	void Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects);
 	void GetBoundingBox(float& l, float& t, float& r, float& b);

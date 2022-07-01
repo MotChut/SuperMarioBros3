@@ -6,6 +6,7 @@
 #include "TitleItem.h"
 #include "Mario.h"
 
+
 void CTitleKey::OnKeyDown(int KeyCode)
 {
 	float vx, vy;
@@ -53,7 +54,10 @@ void CTitleKey::OnKeyDown(int KeyCode)
 		if (dynamic_cast<CMario*>(CGame::GetInstance()->GetCurrentScene()->GetPlayer()))
 		{
 			if (vx == 0 && vy == 0 && CGame::GetInstance()->GetCurrentScene()->GetPlayer()->GetState() == MARIO_STATE_MAP_TRANS)
+			{
+				
 				CGame::GetInstance()->InitiateSwitchScene(5);
+			}
 		}
 		break;
 	}

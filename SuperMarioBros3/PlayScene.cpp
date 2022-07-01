@@ -28,9 +28,9 @@ using namespace std;
 
 //int countflag = 0;
 
-CPlayScene::CPlayScene(int id, LPCWSTR filePath):
-	CScene(id, filePath)
+CPlayScene::CPlayScene(int id, LPCWSTR filePath):CScene(id, filePath)
 {
+	info = NULL;
 	player = NULL;
 	hud = NULL;
 	key_handler = new CSampleKeyHandler(this);
@@ -143,8 +143,17 @@ void CPlayScene::_ParseSection_OBJECTS(string line)
 
 		int time = atoi(tokens[3].c_str());
 
-		obj = new CHud(x, y, 0, 0, 0, 15, 0, time);
+		int c, l, s, b1, b2, b3;
+		c = info->GetCoin();
+		l = info->GetLife();
+		s = info->GetScore();
+		b1 = info->GetB1();
+		b2 = info->GetB2();
+		b3 = info->GetB3();
+
+		obj = new CHud(x, y, 0, 0, c, l, s, 300, b1, b2, b3, info);
 		this->hud = (CHud*)(obj);
+
 		break;
 	}
 	case OBJECT_TYPE_PLAIN:

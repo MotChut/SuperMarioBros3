@@ -207,6 +207,9 @@
     <ClCompile Include="WorldItem.cpp">
       <Filter>Source Files\Characters &amp; Objects</Filter>
     </ClCompile>
+    <ClCompile Include="InfoHud.cpp">
+      <Filter>Source Files\Characters &amp; Objects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AssetIDs.h">
@@ -348,6 +351,9 @@
       <Filter>Game Framework\Scene</Filter>
     </ClInclude>
     <ClInclude Include="WorldItem.h">
+      <Filter>Header Files\Characters &amp; Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="InfoHud.h">
       <Filter>Header Files\Characters &amp; Objects</Filter>
     </ClInclude>
   </ItemGroup>

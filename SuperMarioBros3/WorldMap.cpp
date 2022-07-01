@@ -21,10 +21,12 @@
 
 using namespace std;
 
-CWorldMap::CWorldMap(int id, LPCWSTR filePath) : CScene(id, filePath)
+CWorldMap::CWorldMap(int id, LPCWSTR filePath, InfoHud* info) : CScene(id, filePath)
 {
 	hud = NULL;
 	player = NULL;
+	InfoHud* ifo = new InfoHud(0, 5, 0, -1, -1, -1, MARIO_LEVEL_SMALL);
+	this->info = ifo;
 	key_handler = new CTitleKey(this);
 }
 
@@ -169,7 +171,16 @@ void CWorldMap::_ParseSection_OBJECTS(string line)
 
 		int time = atoi(tokens[3].c_str());
 
-		obj = new CHud(x, y, 0, 0, 0, 4, 0, time);
+		int c, l, s, b1, b2, b3;
+		c = info->GetCoin();
+		l = info->GetLife();
+		s = info->GetScore();
+		b1 = info->GetB1();
+		b2 = info->GetB2();
+		b3 = info->GetB3();
+
+		obj = new CHud(x, y, 0, 0, c, l, s, time, b1, b2, b3, info);
+
 		this->hud = (CHud*)(obj);
 		break;
 	}

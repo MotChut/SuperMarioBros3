@@ -379,22 +379,32 @@ void CMario::OnCollisionWithBonusItem(LPCOLLISIONEVENT e)
 	CBonusItem* objitem = dynamic_cast<CBonusItem*>(e->obj);
 	if (objitem->GetRanState() == 1)
 	{
+		int thistype = -1;
 		objitem->SetRanState(0);
 		vy = -vy;
 		switch (objitem->GetType())
 		{
 		case 0:
+			thistype = 12;
 			CGame::GetInstance()->GetCurrentScene()->SetBonusGift(12);
 			break;
 		case 1:
+			thistype = 13;
 			CGame::GetInstance()->GetCurrentScene()->SetBonusGift(13);
 			break;
 		case 2:
+			thistype = 14;
 			CGame::GetInstance()->GetCurrentScene()->SetBonusGift(14);
 			break;
 		}
 
+		if (bonusItem[0] == -1) bonusItem[0] = thistype;
+		else if (bonusItem[1] == -1) bonusItem[1] = thistype;
+		else if (bonusItem[2] == -1) bonusItem[2] = thistype;
+
 		objitem->Delete();	
+	
+		CGame::GetInstance()->GetCurrentScene()->SetInfoHud(coin, live, score, bonusItem[0], bonusItem[1], bonusItem[2], level);
 		CGame::GetInstance()->InitiateSwitchScene(7);
 	}
 }
@@ -932,7 +942,7 @@ void CMario::Render()
 
 	animations->Get(aniId)->Render(x, y);
 
-	RenderBoundingBox();
+	//RenderBoundingBox();
 	
 	//DebugOutTitle(L"Coins: %d", coin);
 }
@@ -1061,7 +1071,10 @@ void CMario::SetState(int state)
 		vy = -MARIO_JUMP_DEFLECT_SPEED;
 		vx = 0;
 		ax = 0;
+		level = MARIO_LEVEL_SMALL;
 		CGame::GetInstance()->GetCurrentScene()->SetLife(--live);
+		CGame::GetInstance()->GetCurrentScene()->SetInfoHud(coin, live, score, bonusItem[0], bonusItem[1], bonusItem[2], level);
+		CGame::GetInstance()->InitiateSwitchScene(7);
 		break;
 	}
 

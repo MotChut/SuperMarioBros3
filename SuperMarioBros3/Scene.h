@@ -27,7 +27,8 @@ public:
 	virtual void SetLife(int l) = 0;
 	virtual void SetScore(int s) = 0;
 	virtual void SetBonusGift(int gift) = 0;
-
+	virtual void SetInfoHud(int c, int l, int s, int b1, int b2, int b3, int level) = 0;
+	virtual void GetInfo(int& c, int& l, int& s, int& b1, int& b2, int& b3, int& level) = 0;
 
 	virtual LPGAMEOBJECT GetPlayer() = 0;
 };

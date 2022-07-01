@@ -1,17 +1,32 @@
 #include "Hud.h"
 #include "Debug.h"
 
-CHud::CHud(float x, float y, int speed, int flyable, int coin, int life, int score, int time) : CGameObject(x, y)
+CHud::CHud(float x, float y, int speed, int flyable, int coin, int life, int score, int time, int b1, int b2, int b3, InfoHud *info) : CGameObject(x, y)
 {
-	this->speed = speed;
-	this->flyable = flyable;
-	this->coin = coin;
-	this->life = life;
-	this->score = score;
-	this->time = time;
-	properties = {};
+	if (info == NULL)
+	{
+		this->speed = speed;
+		this->flyable = flyable;
+		this->coin = coin;
+		this->life = life;
+		this->score = score;
+		this->time = time;
+		properties = {};
 
-	time_start = GetTickCount64();
+		time_start = GetTickCount64();
+	}
+	else
+	{
+		this->speed = 0;
+		this->flyable = 0;
+		this->coin = info->GetCoin();
+		this->life = info->GetLife();
+		this->score = info->GetScore();
+		this->time = time;
+		this->info = info;
+		properties = {};
+		time_start = GetTickCount64();
+	}
 }
 
 void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
@@ -165,6 +180,16 @@ void CHud::Update(DWORD dt, vector<LPGAMEOBJECT>* coObjects)
 
 	for (int i = 18; i < 21; i++)
 		properties[i]->SetPosition(ccx + 154 + 8 * (i - 18), ccy + 214);
+
+
+	if (info != NULL)
+	{
+		properties[21]->SetType(info->GetB1());
+		properties[22]->SetType(info->GetB2());
+		properties[23]->SetType(info->GetB3());
+		DebugOut(L"%i \n\n\n\n\n", info->GetB1());
+	}
+
 
 	for (int i = 21; i < 24; i++)
 		properties[i]->SetPosition(ccx + 197 + 24 * (i - 21), ccy + 210);
